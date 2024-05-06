@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">AristoMovil2</string>
+    <string name="title_activity_prueba_configuracion">PruebaConfiguracion</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_activity_configuracion">Configuracion</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="cierra_contenedor">Cierra\nContenedor</string>
+    <string name="finaliza_factura">Finaliza\nDocumento</string>
+    <string name="ajustaoc">Ajusta\nOC</string>
+    <string name="title_activity_lista_acomodo">Lista_Acomodo</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="producto">Producto:</string>
+    <string name="prodhint">7500...</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="fact_titulo">Datos del cliente</string>
+    <string name="fact_uso">Uso CFDI:</string>
+    <string name="fact_formapago">Forma pago:</string>
+    <string name="fact_comp">Datos Comprobante</string>
+    <string name="viaj_btn01">Carga</string>
+    <string name="viaj_detalle">Detalles</string>
+    <string name="viaj_carga">Carga</string>
+    <string name="viaj_fin">Cierra Viaje</string>
+    <style name="AlertDialog_Style" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/aristo_verde</item>
+        <item name="android:colorBackground">@color/casiAgotado</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+</resources>

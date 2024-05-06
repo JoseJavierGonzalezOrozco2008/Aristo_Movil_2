@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_ubicaciones_lista"
+        android:title="Lista de Productos" />
+    <item android:id="@+id/menu_ubicaciones_ubica"
+        android:title="Ubica Producto" />
+</menu>

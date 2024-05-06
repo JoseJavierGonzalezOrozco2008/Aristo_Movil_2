@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fondoListas">
+
+            <RelativeLayout android:id="@+id/inventario_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:id="@+id/linearInventario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/groupInventarioNuevoCaptura"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioInventarioNuevo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:fontFamily="@font/arial"
+                                android:text="Nuevo"
+                                android:textSize="@dimen/textSizeXSmall"
+                                tools:ignore="TextSizeCheck,TouchTargetSizeCheck" />
+
+                            <RadioButton
+                                android:id="@+id/radioInvetarioCaptura"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:fontFamily="@font/arial"
+                                android:text="En captura"
+                                android:textSize="@dimen/textSizeXSmall"
+                                tools:ignore="TextSizeCheck,TouchTargetSizeCheck" />
+                        </RadioGroup>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <Button
+                                android:id="@+id/btnInventarioRecibeSurte"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_verdesecundario"
+                                android:fontFamily="@font/arial"
+                                android:paddingHorizontal="5dp"
+                                android:text="Recibe"
+                                android:textColor="@drawable/white_text_button"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/txtInventarioDocumentos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Documentos: 0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeTiny"
+                            tools:ignore="TextSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lyMulti"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone">
+
+                        <TextView android:id="@+id/txtMultiSurtido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textSize="@dimen/textSizeTiny"
+                            android:text="Las tareas marcadas son las que se surten"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/inventario_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:dividerHeight="0dp" />
+
+                    <TextView
+                        android:id="@+id/emptyDocumentos"
+                        android:text="Sin documentos"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeLarge"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/buscarOrdenInventario"
+                    layout="@layout/inventario_buscar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+                <include
+                    android:id="@+id/RecibeSurteInventario"
+                    layout="@layout/inventario_recibe_surte" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap='wrap'
+            app:alignContent="flex_end"
+            app:flexDirection="row"
+            app:alignItems="flex_end"
+            app:justifyContent="flex_end"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnInventarioBuscar"
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/color_filtro"
+                android:clickable="true"
+                android:src="@android:drawable/ic_menu_search"/>
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+    </LinearLayout>

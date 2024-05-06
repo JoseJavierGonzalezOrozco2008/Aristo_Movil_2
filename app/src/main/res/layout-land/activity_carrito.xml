@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".Acrividades.Carrito">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout android:id="@+id/conteo_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar2"
+                    layout="@layout/toolbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar2"
+                    android:orientation="horizontal"
+                    >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/toolbar"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:id="@+id/vntaSinRegistros"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:text="Sin artículos"
+                            android:gravity="center"
+                            android:textColor="@color/colorNegro"
+                            android:textSize="@dimen/_22sdp"
+                            android:textStyle="bold"
+                            />
+                        <ListView
+                            android:id="@+id/vntacarrito"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/toolbar"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="0.5"
+                                >
+                                <EditText
+                                    android:id="@+id/vntaCodigo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="7500..."
+                                    android:textSize="@dimen/textSizeSmall"
+                                    android:inputType="text"
+                                    />
+
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/vntaTotal"
+                                android:layout_height="match_parent"
+                                android:layout_width="0dp"
+                                android:text="$100.00"
+                                android:gravity="center|end"
+                                android:layout_weight="0.5"
+                                android:textColor="@color/aristo_amarillo"
+                                android:textSize="@dimen/_18sdp"
+                                android:textStyle="bold"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            >
+                            <ImageButton
+                                android:id="@+id/vntaEnter"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/select"
+                                android:layout_weight="0.16"
+                                android:visibility="gone"
+                                />
+
+                            <Button
+                                android:id="@+id/vntaF1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="F1"
+                                android:layout_weight="0.16"
+                                android:textSize="@dimen/textSizeXSmall"
+                                />
+                            <Button
+                                android:id="@+id/vntaF2"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F2" />
+                            <Button
+                                android:id="@+id/vntaF3"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F3"
+                                />
+
+                            <Button
+                                android:id="@+id/vntaF8"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F8" />
+                            <Button
+                                android:id="@+id/vntaF9"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F9"
+                                />
+                            <Button
+                                android:id="@+id/vntaF11"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F11"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_200sdp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginBottom="@dimen/_25sdp"
+                            >
+                            <GridView
+                                android:id="@+id/listPrueba"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:gravity="center"
+                                android:horizontalSpacing="10dp"
+                                android:numColumns="5"
+                                android:scrollbars="vertical"
+                                android:stretchMode="columnWidth"
+                                android:verticalSpacing="10dp" />
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            >
+                            <Button
+                                android:id="@+id/vntaF4"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F4"
+                                />
+                            <Button
+                                android:id="@+id/vntaF5"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F5"
+                                />
+                            <Button
+                                android:id="@+id/vntaF6"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F6"
+                                />
+                            <Button
+                                android:id="@+id/vntaF7"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F7"
+                                />
+
+                            <Button
+                                android:id="@+id/vntaF10"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F10"
+                                />
+
+                            <Button
+                                android:id="@+id/vntaF12"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.16"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:text="F12"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>

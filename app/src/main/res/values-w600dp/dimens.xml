@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="activity_horizontal_margin">48dp</dimen>
+
+    <dimen name="textSizeTiny">@dimen/_12sdp</dimen>
+    <dimen name="textSizeXSmall">@dimen/_14sdp</dimen>
+    <dimen name="textSizeSmall">@dimen/_16sdp</dimen>
+    <dimen name="textSizeMedium">@dimen/_18sdp</dimen>
+    <dimen name="textSizeLarge">@dimen/_18sdp</dimen>
+    <dimen name="textSizeBigger">@dimen/_28sdp</dimen>
+    <dimen name="textSizexSmallx2">@dimen/_32sdp</dimen>
+    <dimen name="fab_margin">48dp</dimen>
+</resources>

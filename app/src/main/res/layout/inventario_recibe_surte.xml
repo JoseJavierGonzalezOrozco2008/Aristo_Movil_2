@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+    <androidx.core.widget.NestedScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/Mensaje_layout_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:background="@drawable/filtros_shape"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content">
+
+                    <Button android:id="@+id/btnRSInventarioGuardar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@drawable/white_text_button"
+                        android:text="Guardar"
+                        android:background="@drawable/button_green"
+                        android:fontFamily="@font/arial"
+                        android:outlineSpotShadowColor="@color/white"
+                        android:textSize="@dimen/textSizeSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+
+                    <Button android:id="@+id/btnRSInventarioCerrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@drawable/white_text_button"
+                        android:text="Cerrar"
+                        android:fontFamily="@font/arial"
+                        android:background="@drawable/button_red"
+                        android:outlineSpotShadowColor="@color/white"
+                        android:textSize="@dimen/textSizeSmall" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView android:id="@+id/txtRSInventariosOrdenCompra"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Orden de Compra:"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:textStyle="bold"/>
+
+                <EditText android:id="@+id/editRSInventariosOrdenCompra"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
+                    android:lines="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <Button android:id="@+id/btnRSInventariosProveedorSucursal"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Proveedor: "
+                    android:background="@drawable/button_light_blue_900"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:textColor="@drawable/white_text_button"
+                    android:textStyle="bold"/>
+
+                <EditText android:id="@+id/editRSInventarioProveedorSucursal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="text"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listRSProveedoresSucursales"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorExito"
+                android:visibility="gone"
+                android:fadeScrollbars="false"
+                android:scrollX="0px"
+                android:scrollY="0px"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbarSize="20dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                android:nestedScrollingEnabled="true"/>
+
+            <LinearLayout android:id="@+id/linearRSFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="*Fecha factura: "
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:textStyle="bold"/>
+
+                <EditText android:id="@+id/editRSInventarioFecha"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeXSmall"
+                    android:text=""
+                    android:editable="false"
+                    android:layout_marginHorizontal="10dp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/linearRSFactura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="*Factura: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText android:id="@+id/editRSInventarioFactura"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="text"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/linearRSDivisa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Valor de la divisa: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText android:id="@+id/editRSInventarioDivisa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="numberDecimal"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/linearRSCosto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Total factura: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText android:id="@+id/editRSInventarioCosto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="numberDecimal"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/linearDiasCred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Dias crédito: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText android:id="@+id/editDiasCredito"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="numberDecimal"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Notas: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText android:id="@+id/editRSInventarioCNotas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:lines="1"
+                    android:inputType="text"
+                    android:layout_marginHorizontal="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/linearRSSubalmacen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Submalmacen: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <Spinner
+                    android:id="@+id/spinnerRSInventariosSubAlmacen"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:dropDownWidth="match_parent"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+

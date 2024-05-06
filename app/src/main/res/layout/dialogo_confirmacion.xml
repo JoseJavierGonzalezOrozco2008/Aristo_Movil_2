@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/cfm_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/cfm_men"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeSmall"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/cfm_aviso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_24sdp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|end"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_20sdp">
+
+        <Button
+            android:id="@+id/cfm_but_cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSizeSmall"
+            android:fontFamily="@font/arial"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textColor="@drawable/white_text_button"
+            android:background="@drawable/button_red"
+            android:text="CANCELAR" />
+
+        <Button
+            android:id="@+id/cfm_but_acepta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textColor="@drawable/white_text_button"
+            android:fontFamily="@font/arial"
+            android:background="@drawable/button_exitoinsertado"
+            android:text="FINALIZAR" />
+
+
+    </LinearLayout>
+</LinearLayout>

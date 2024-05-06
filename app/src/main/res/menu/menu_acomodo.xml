@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menuAcomodoSubidos"
+        android:title="Lista subidos"/>
+    <item android:id="@+id/menuAcomodoProSubir"
+        android:title="Ver lista por subir"/>
+</menu>

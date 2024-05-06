@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout android:id="@+id/acomodo_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lyMensajesSig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#bd9240"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/pen_codigo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.6"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <TextView
+                                android:id="@+id/pen_cant"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.4"
+                                android:fontFamily="@font/arial"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/pen_prod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/pen_origen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/pen_destino"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/lyUbicIndic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="0dp">
+
+                            <ImageButton
+                                android:id="@+id/btnAcomodoAnterior"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.2"
+                                android:contentDescription="Anterior"
+                                android:background="@color/acomodo_renglon"
+                                android:paddingVertical="5dp"
+                                android:src="@drawable/left_arrow" />
+
+                            <TextView
+                                android:id="@+id/txtAcomodoTraslado"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-1dp"
+                                android:layout_weight="0.6"
+                                android:fontFamily="@font/arial"
+                                android:textAlignment="center"
+                                android:textColor="@color/grisMedio"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <ImageButton
+                                android:id="@+id/btnAcomodoSoguiente"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.2"
+                                android:background="@color/acomodo_renglon"
+                                android:paddingVertical="5dp"
+                                android:contentDescription="Siguiente"
+                                android:src="@drawable/right_arrow" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/acomMensajes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#2F3033"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/repoMen1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:fontFamily="@font/arial"
+                            android:text="XXXXXXXXXXXXXX"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/repoMen2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:fontFamily="@font/arial"
+                            android:text="XXXXXXXXXXXXXX"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/repoMen3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:fontFamily="@font/arial"
+                            android:text="XXXXXXXXXXXXXX"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/repoMen4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:fontFamily="@font/arial"
+                            android:text="XXXXXXXXXXXXXX"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </LinearLayout>
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/lineaUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="space_around"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Ubicación: "
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <EditText
+                            android:id="@+id/repoUbicacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionDone"
+                            android:ems="8"
+                            android:inputType="number"
+                            android:lines="1"
+                            android:hint="10100..."
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/repoUbiclave"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                        <ImageButton
+                            android:id="@+id/btnUbiBarcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_shape"
+                            android:paddingHorizontal="10dp"
+                            android:contentDescription="Código de Barras"
+                            android:paddingVertical="5dp"
+                            android:src="@drawable/bars_code"
+                            android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lyCapCodi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <Button android:id="@+id/btnRecibeDocumentoCodigo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/producto"
+                            android:layout_weight="0.1"
+                            android:textColor="@drawable/white_text_button"
+                            android:background="@drawable/button_casiagotado"
+                            android:textSize="@dimen/textSizeXSmall" />
+
+                        <EditText
+                            android:id="@+id/repoCodigo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionDone"
+                            android:layout_weight="0.7"
+                            android:ems="8"
+                            android:hint="@string/prodhint"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+
+                        <ImageButton
+                            android:id="@+id/btnProdBarcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_shape"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:contentDescription="Escanear Código de Barras"
+                            android:src="@drawable/bars_code"
+                            android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+                    </LinearLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="space_around"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+                        <TextView
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:fontFamily="@font/arial"
+                            android:text="Cantidad:"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <EditText
+                            android:id="@+id/repoCantidad"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionDone"
+                            android:layout_weight="0.3"
+                            android:ems="8"
+                            android:hint="1..."
+                            android:inputType="number"
+                            android:lines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                        <LinearLayout
+                            android:id="@+id/lineaLleno"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <CheckBox
+                                android:id="@+id/repoLleno"
+                                android:layout_width="0dp"
+                                android:text="¿Lleno?"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:ems="8"
+                                android:padding="@dimen/_10sdp"
+                                android:lines="1"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"  />
+
+
+                        </LinearLayout>
+                    </com.google.android.flexbox.FlexboxLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Proceso en:"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:visibility="gone"/>
+
+                        <RadioGroup
+                            android:id="@+id/radioGripo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:flexWrap='wrap'
+                            app:alignContent="center"
+                            app:flexDirection="row"
+                            app:alignItems="center"
+                            app:justifyContent="space_around"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:paddingVertical="10dp">
+
+                                <RadioButton
+                                    android:id="@+id/radioCarro"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/arial"
+                                    android:text="Subir al carro"
+                                    android:textSize="@dimen/textSizeSmall"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="@dimen/_50sdp"/>
+
+                                <RadioButton
+                                    android:id="@+id/radioAlmacenado"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/arial"
+                                    android:text="Almacenando"
+                                    android:textSize="@dimen/textSizeSmall"
+                                    android:textStyle="bold"/>
+
+
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+                        <Button android:id="@+id/btnActualCodigo"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Actual"
+                            android:textColor="@drawable/white_text_button"
+                            android:background="@drawable/button_light_blue_900"
+                            android:textSize="@dimen/textSizeXSmall"
+                            android:fontFamily="@font/arial"
+                            android:layout_marginTop="@dimen/_15sdp" />
+
+                        <Button
+                            android:id="@+id/btnAcomodoQuitar"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/white_text_button"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/button_colordiferencias"
+                            android:fontFamily="@font/arial"
+                            android:text="Baja"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:layout_marginTop="@dimen/_15sdp" />
+                        <Button
+                            android:id="@+id/btnAcomodoBorra"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/button_red"                            android:fontFamily="@font/arial"
+                            android:text="Borra"
+                            android:textColor="@drawable/white_text_button"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:layout_marginTop="@dimen/_15sdp" />
+                        <Button
+                            android:id="@+id/btnAcomodoTermina"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/button_negro"
+                            android:text="Termina"
+                            android:textColor="@drawable/white_text_button"
+                            android:fontFamily="@font/arial"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:layout_marginTop="@dimen/_15sdp"/>
+
+                        <Button
+                            android:id="@+id/btnAcomodoSube"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/button_exitoinsertado"
+                            android:text="Sube"
+                            android:textColor="@drawable/white_text_button"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:fontFamily="@font/arial"
+                            android:layout_marginTop="@dimen/_15sdp" />
+
+                        <Button
+                            android:id="@+id/btnAcomodoCargar"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                            android:text="Guardar"
+                            android:textColor="@drawable/white_text_button"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:layout_marginTop="@dimen/_15sdp" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+

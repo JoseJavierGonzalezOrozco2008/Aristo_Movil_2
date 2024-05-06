@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnGuarda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@drawable/white_text_button"
+                    android:text="GUARDAR"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCerrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_red"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@drawable/white_text_button"
+                    android:text="CERRAR"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/vistaLoteMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vistaProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Producto:"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vistaCaptura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Capturado:"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+        <TextView
+            android:id="@+id/vistaTotales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Total Bulto:"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"/>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap='wrap'
+            app:alignContent="center"
+            app:flexDirection="column"
+            app:alignItems="center"
+            app:justifyContent="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/ly_lotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap='wrap'
+                app:alignContent="center"
+                app:flexDirection="row"
+                app:alignItems="center"
+                app:justifyContent="space_around"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                android:background="@color/azulMedio">
+
+                <TextView
+                    android:id="@+id/vistaLoteLote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:text="Lote:"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <EditText
+                    android:id="@+id/editLoteLote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:ems="4"
+                    android:fontFamily="@font/arial"
+                    android:inputType="textPersonName"
+                    android:nextFocusRight="@id/editLoteFecha"
+                    android:nextFocusDown="@id/editLoteFecha"
+                    android:nextFocusForward="@id/editLoteFecha"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <TextView
+                    android:id="@+id/vistaLoteFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:text="Fecha:"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <EditText
+                    android:id="@+id/editLoteFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:ems="4"
+                    android:fontFamily="@font/arial"
+                    android:hint="DDMMAA"
+                    android:inputType="date"
+                    android:nextFocusForward="@id/editLoteCant"
+                    android:textColor="@color/grisMedio"
+                    android:textSize="@dimen/textSizeSmall" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"                app:flexWrap='wrap'
+                app:alignContent="center"
+                app:flexDirection="row"
+                app:alignItems="center"
+                app:justifyContent="space_around"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                android:background="@color/azulMedio">
+
+                <TextView
+                    android:id="@+id/vistaLoteCant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:text="Cant :"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <EditText
+                    android:id="@+id/editLoteCant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/aristo_azul"
+                    android:ems="4"
+                    android:fontFamily="@font/arial"
+                    android:inputType="numberSigned"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall" />
+
+
+                <Button
+                    android:id="@+id/btnAgrega"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/button_grismedio"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@drawable/white_text_button"
+                    android:paddingHorizontal="5dp"
+                    android:text="AGREGAR"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:text=""
+                    android:textSize="@dimen/textSizeSmall"
+                    android:textColor="@color/black"/>
+            </com.google.android.flexbox.FlexboxLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+        <TextView
+            android:id="@+id/vistaTituloLote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Lotes capturados"
+            android:textAlignment="center"
+            android:layout_marginBottom="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vistaHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Lote      Fecha   Exis  Capt"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeXSmall"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/tablaLotes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:gravity="center" />
+
+        <TableLayout
+            android:id="@+id/loteTabla"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center"></TableLayout>
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

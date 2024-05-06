@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="10dp">
+        <TextView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Captura Arqueo"
+            android:gravity="center"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeMedium"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/arial"
+                android:gravity="end"
+                android:text="Captura:"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+            <EditText
+                android:id="@+id/arqeCaptura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:layout_weight="0.5"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textSize="@dimen/textSizeSmall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="Transferencia:"
+                android:gravity="end"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+            <TextView
+                android:id="@+id/arqeTrans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="1.00"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="T Debito:"
+                android:gravity="end"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+            <TextView
+                android:id="@+id/arqeDebito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="1.00"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="T. Credito:"
+                android:gravity="end"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+            <TextView
+                android:id="@+id/arqeCredito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="1.00"
+                android:layout_weight="0.5"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSizeSmall" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/arqebtnregresa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Regresar" />
+            <Button
+                android:id="@+id/arqebtnguarda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Aplicar" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

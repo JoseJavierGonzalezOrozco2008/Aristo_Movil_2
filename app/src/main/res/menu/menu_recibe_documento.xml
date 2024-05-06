@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="HardcodedText" >
+
+    <item android:id="@+id/menuRecibe_listaContenedor"
+        android:title="Lista Contenedor" />
+    <item android:id="@+id/menuRecibe_RecibidoFaltantes"
+        android:title="Renglones Por Surtir"/>
+    <item android:id="@+id/menuRecibe_ListaSurtidos"
+        android:title="Lista Surtidos"/>
+    <item android:id="@+id/menuRecibe_EnviaEspera"
+        android:title="Envia Espera"/>
+    <item android:id="@+id/menuRecibe_Ubicacioon"
+        android:title="Ubicacion"/>
+    <item android:id="@+id/menuRecibe_BorrarRenglon"
+        android:title="Borrar Renglon"/>
+    <item android:id="@+id/menuRecibe_DiferenciasCaucidades"
+        android:title="Diferencias Caducidades"/>
+    <item android:id="@+id/menuRecibe_Impuestos"
+        android:title="Impuestos"
+        android:checkable="true"/>
+    <item android:id="@+id/menuRecibe_PorPasada"
+        android:title="Por Pasada"
+        android:checkable="true"/>
+    <item android:id="@+id/menuRecibe_Info"
+        android:title="Info"/>
+</menu>

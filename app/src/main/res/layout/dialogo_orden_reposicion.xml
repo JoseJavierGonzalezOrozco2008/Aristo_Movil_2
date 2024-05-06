@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/nrepoTitulo"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial"
+        android:textColor="@color/black"
+        android:text="Orden"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:textSize="@dimen/textSizeMedium"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/nrepoUbi1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:imeOptions="actionDone"
+            android:ems="8"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+        <EditText
+            android:id="@+id/nrepoUbi2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:imeOptions="actionDone"
+            android:ems="8"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+
+        <EditText
+            android:id="@+id/nrepoUbi3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:imeOptions="actionDone"
+            android:ems="8"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+        <EditText
+            android:id="@+id/nrepoUbi4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:imeOptions="actionDone"
+            android:ems="8"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+        <EditText
+            android:id="@+id/nrepoUbi5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:imeOptions="actionDone"
+            android:ems="8"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:gravity="center">
+
+        <Button android:id="@+id/btnOrdenDialogoOrden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calcula"
+            android:fontFamily="@font/arial"
+            android:background="@drawable/button_green"
+            android:paddingHorizontal="10dp"
+            android:textColor="@drawable/white_text_button"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="@dimen/textSizeSmall" />
+
+        <Button android:id="@+id/btnCerrarDialogoOrden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crear"
+            android:fontFamily="@font/arial"
+            android:background="@drawable/button_amarilloacomodo"
+            android:paddingHorizontal="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@drawable/white_text_button"/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/lista_acomodo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp"/>
+
+    <TextView
+        android:id="@+id/vacioRepo"
+        android:text="Lista Vacía"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:fontFamily="@font/arial"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeLarge"/>
+</LinearLayout>

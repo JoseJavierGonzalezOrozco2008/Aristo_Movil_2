@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout android:id="@+id/ViewDocumento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/venta_shape"
+        android:padding="10dp"
+        android:layout_margin="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_10sdp">
+            <TextView
+                android:id="@+id/acomid"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:fontFamily="@font/arial"
+                android:text="Acomid"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/acomfe"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="Fecha"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"  />
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/acomubica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:fontFamily="@font/arial"
+                    android:text="Ubicación"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeXSmall" />
+
+                <TextView
+                    android:id="@+id/acomDIfolio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:fontFamily="@font/arial"
+                    android:text="Doc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeXSmall" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/acoAction1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:layout_alignParentEnd="true"
+                android:textColor="@drawable/white_text_button"
+                android:text="Acomoda"
+                android:background="@drawable/button_green"
+                />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

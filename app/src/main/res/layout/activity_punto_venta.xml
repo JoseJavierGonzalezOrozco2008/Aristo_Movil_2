@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondoListas">
+
+        <RelativeLayout android:id="@+id/punto_venta_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:translationZ="1dp">
+
+                    <include
+                        android:id="@+id/menu_pv"
+                        layout="@layout/menu_pv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_below="@id/toolbar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@color/fondoRecibe">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:background="@color/fondoRecibe">
+
+
+                            <TextView android:id="@+id/txtRecibeDocumentoCodigo"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.6"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text=""
+                                android:textColor="@color/white"
+                                android:contentDescription="Código"
+                                android:textSize="@dimen/textSizeMedium"
+                                android:textIsSelectable="true"/>
+
+                            <TextView android:id="@+id/txtRecibeDocumentoCantidad"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.4"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text=""
+                                android:textColor="@color/white"
+                                android:textAlignment="textEnd"
+                                android:textSize="@dimen/textSizeMedium"/>
+
+                        <EditText
+                            android:id="@+id/editPuntoVentaBusqueda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:ems="8"
+                            android:fontFamily="@font/arial"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:nextFocusLeft="@+id/editPuntoVentaBusqueda"
+                            android:nextFocusRight="@+id/editPuntoVentaBusqueda"
+                            android:nextFocusUp="@+id/editPuntoVentaBusqueda"
+                            android:nextFocusDown="@+id/editPuntoVentaBusqueda"
+                            android:nextFocusForward="@+id/editPuntoVentaBusqueda"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeXSmall"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                        <ImageButton android:id="@+id/btnPuntoVentaBarcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/bars_code"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:contentDescription="Código de barras"
+                            android:backgroundTint="@color/design_default_color_surface"/>
+
+                        <ImageButton android:id="@+id/btnPuntoVentaBuscar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:contentDescription="Buscar"
+                            android:src="@android:drawable/ic_menu_search"
+                            android:backgroundTint="@color/light_blue_900"/>
+
+                        <ImageButton android:id="@+id/btnPuntoVentaPromociones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:contentDescription="Promociones"
+                            android:src="@drawable/promo_icon"
+                            android:backgroundTint="@color/colorPrimary" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingHorizontal="5dp"
+                    android:background="@color/aristo_morado">
+
+                    <TextView android:id="@+id/txtPuntoVentaArticulos"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/white"
+                        android:text="Artículos: 10"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                    <TextView android:id="@+id/txtPuntoVentaTotal"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/white"
+                        android:textAlignment="textEnd"
+                        android:text="Total: $100.00"
+                        android:textSize="@dimen/textSizeSmall"/>
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/renglones_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp" />
+
+                <TextView
+                    android:id="@+id/emptyPuntoVenta"
+                    android:text="Sin productos"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeLarge"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/PVCaducidad"
+                layout="@layout/panel_caducidad" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/PVLotes"
+                layout="@layout/panel_lotes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPuntoVentaCobrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/color_filtro"
+            android:contentDescription="Cobrar"
+            android:clickable="true"
+            android:src="@drawable/pesos" />
+    </RelativeLayout>
+</LinearLayout>

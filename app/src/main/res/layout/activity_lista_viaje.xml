@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Acrividades.ListaViaje">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fondoListas">
+
+            <RelativeLayout android:id="@+id/viaj_ordenes_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/viajeradio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+                        <RadioGroup
+                            android:id="@+id/grupoNuevoCaptura"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioNuevo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:fontFamily="@font/arial"
+                                android:text="Nuevo"
+                                android:textSize="@dimen/textSizeXSmall" />
+
+                            <RadioButton
+                                android:id="@+id/radioCaptura"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:fontFamily="@font/arial"
+                                android:text="En captura"
+                                android:textSize="@dimen/textSizeXSmall" />
+                        </RadioGroup>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end">
+
+                            <Button android:id="@+id/btnAcomoda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/aristo_verde"
+                                android:textColor="@color/white"
+                                android:background="@drawable/button_shape"
+                                android:fontFamily="@font/arial"
+                                android:paddingHorizontal="5dp"
+                                android:text="Nueva"
+                                android:visibility="gone"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/lista_viajes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"/>
+
+                    <TextView
+                        android:id="@+id/emptyViaje"
+                        android:text="Lista Vacía"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeLarge"/>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@color/white"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/filtro_viaje"
+                    layout="@layout/filtroviaje" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="Buscar"
+                android:backgroundTint="@color/color_filtro"
+                android:clickable="true"
+                android:src="@android:drawable/ic_menu_search"
+                android:focusable="true"
+                tools:ignore="RelativeOverlap" />
+        </RelativeLayout>
+
+    </LinearLayout>

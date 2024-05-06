@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item android:id="@+id/item_ubicacion_asigna"
+            android:title="Asignar"
+            android:icon="@drawable/check_withe"/>
+        <item android:id="@+id/item_ubicacion_quita"
+            android:title="Quitar"
+            android:icon="@drawable/share_square_white"/>
+        <item android:id="@+id/item_ubicacion_imprime"
+            android:title="Imprimir"
+            android:icon="@drawable/printing_white"
+            app:showAsAction="ifRoom"
+            />
+    </group>
+</menu>

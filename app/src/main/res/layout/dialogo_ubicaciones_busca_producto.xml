@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap='wrap'
+            app:alignContent="center"
+            app:flexDirection="row"
+            app:alignItems="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:justifyContent="space_around"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+            <Button android:id="@+id/btnUbiCodigo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/producto"
+                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_casiagotado"
+                android:textSize="@dimen/textSizeXSmall" />
+
+
+            <EditText
+                android:id="@+id/editubicacionesDialogoCodigo"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:ems="6"
+                android:fontFamily="@font/arial"
+                android:hint="@string/prodhint"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeMedium"/>
+
+            <ImageButton android:id="@+id/btnUbicacionesDialogoBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bars_code"
+                android:background="@drawable/button_shape"
+                android:padding="10dp"
+                android:backgroundTint="@color/zxing_custom_possible_result_points" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+        <TextView
+            android:id="@+id/txtUbicacionesDialogoUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/arial"
+            android:gravity="center"
+            android:text="Ubicación..."
+            android:textAlignment="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeMedium"/>
+
+        <TextView
+            android:id="@+id/txtUbicacionesDialogoProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/arial"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:text="Producto..."
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium"
+            android:textColor="@color/black"/>
+        <ListView
+            android:id="@+id/ltUbicaciones"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

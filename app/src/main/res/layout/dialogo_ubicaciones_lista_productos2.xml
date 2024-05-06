@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView android:id="@+id/listUbicacionesDialogoTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/aristo_azul"
+        android:text="Ubicación"
+        android:fontFamily="@font/arial"
+        android:textSize="@dimen/textSizeMedium"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:paddingVertical="5dp"/>
+
+    <ListView android:id="@+id/listUbicacionesDialogoProductos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout android:id="@+id/ubicaciones_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/linearUbicacionesMensaje"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtUbicacionesMensajes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+                        </LinearLayout>
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:flexWrap='wrap'
+                            app:alignContent="center"
+                            app:flexDirection="row"
+                            app:alignItems="center"
+                            app:justifyContent="space_around"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp">
+
+                            <TextView
+                                android:id="@+id/txtUbicacionesCodigo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Ubicación:"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/editUbicacionesCodigo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ems="6"
+                                android:fontFamily="@font/acme"
+                                android:hint="101001011"
+                                android:inputType="number"
+                                android:textAlignment="center"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <ImageButton android:id="@+id/btnUbicacionesBarcodeUbicacion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/bars_code"
+                                android:background="@drawable/button_shape"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+
+                        </com.google.android.flexbox.FlexboxLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearUbicacionesLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtUbicacionesUbicacion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Ubicación..."
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeLarge" />
+
+                            <TextView
+                                android:id="@+id/txtUbicacionesBusqueda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium"  />
+
+                            <TextView
+                                android:id="@+id/txtUbicacionesSucursal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/acme"
+                                android:text="Sucursal..."
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                                android:textColor="@color/black"
+                                android:layout_marginBottom="@dimen/_15sdp"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <RadioGroup
+                                    android:id="@+id/groupUbicacionesRadio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    app:flexWrap='wrap'
+                                    app:alignContent="center"
+                                    app:flexDirection="row"
+                                    app:alignItems="center"
+                                    app:justifyContent="space_around"
+                                    android:gravity="center"
+                                    android:paddingVertical="10dp">
+
+                                    <RadioButton
+                                        android:id="@+id/radioUbicacionesAgrega"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/_15sdp"
+                                        android:buttonTint="@color/aristo_verde"
+                                        android:minHeight="48dp"
+                                        android:paddingHorizontal="10dp"
+                                        android:text="Agrega"
+                                        android:textSize="@dimen/textSizeSmall" />
+
+                                    <RadioButton
+                                        android:id="@+id/radioUbicacionesQuita"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/_15sdp"
+                                        android:buttonTint="@color/aristo_verde"
+                                        android:minHeight="48dp"
+                                        android:paddingHorizontal="10dp"
+                                        android:text="Quita"
+                                        android:textSize="@dimen/textSizeSmall" />
+
+                                    <RadioButton
+                                        android:id="@+id/radioUbicacionesCuenta"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/_15sdp"
+                                        android:buttonTint="@color/aristo_verde"
+                                        android:minHeight="48dp"
+                                        android:paddingHorizontal="10dp"
+                                        android:text="Cuenta"
+                                        android:textSize="@dimen/textSizeSmall" />
+
+                                </RadioGroup>
+
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/swAuto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginBottom="@dimen/_5sdp">
+
+                                <Switch
+                                    android:id="@+id/switchUbicacionesAutomatico"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="10dp"
+                                    android:text="Automático     "
+                                    android:textSize="@dimen/textSizeSmall"
+                                    android:thumbTint="@color/aristo_verde"
+                                    tools:ignore="TouchTargetSizeCheck" />
+                            </LinearLayout>
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:flexWrap='wrap'
+                                app:alignContent="center"
+                                app:flexDirection="row"
+                                app:alignItems="center"
+                                app:justifyContent="space_around"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingVertical="10dp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginBottom="@dimen/_15sdp">
+                                <Button
+                                    android:id="@+id/btnCodigo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@drawable/white_text_button"
+                                    android:text="@string/producto"
+                                    android:background="@drawable/button_casiagotado"
+                                    android:textSize="@dimen/textSizeXSmall" />
+
+                                <EditText
+                                    android:id="@+id/editUbicacionProducto"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ems="6"
+                                    android:fontFamily="@font/arial"
+                                    android:hint="@string/prodhint"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/textSizeSmall" />
+
+                                <ImageButton
+                                    android:id="@+id/btnUbicacionesBarcodeProducto"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/button_shape"
+                                    android:backgroundTint="@color/zxing_custom_possible_result_points"
+                                    android:contentDescription="Código de barras"
+                                    android:paddingHorizontal="10dp"
+                                    android:paddingVertical="5dp"
+                                    android:src="@drawable/bars_code"
+                                    tools:ignore="TouchTargetSizeCheck" />
+
+                            </com.google.android.flexbox.FlexboxLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/linearUbicacionesCantidades"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/linearUbicacionesMaxMin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/arial"
+                                            android:text="Cant Max:"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall" />
+
+                                        <EditText
+                                            android:id="@+id/editUbicacionesCantMax"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:ems="5"
+                                            android:fontFamily="@font/arial"
+                                            android:inputType="number"
+                                            android:nextFocusLeft="@id/editUbicacionesCantMin"
+                                            android:nextFocusRight="@id/editUbicacionesCantMin"
+                                            android:nextFocusUp="@id/editUbicacionesCantMin"
+                                            android:nextFocusDown="@id/editUbicacionesCantMin"
+                                            android:nextFocusForward="@id/editUbicacionesCantMin"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall"
+                                            tools:ignore="SpeakableTextPresentCheck" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/arial"
+                                            android:text="Cant Min:"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall" />
+
+                                        <EditText
+                                            android:id="@+id/editUbicacionesCantMin"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:ems="5"
+                                            android:fontFamily="@font/arial"
+                                            android:inputType="number"
+                                            android:nextFocusLeft="@id/editUbicacionesCantidad"
+                                            android:nextFocusRight="@id/editUbicacionesCantidad"
+                                            android:nextFocusUp="@id/editUbicacionesCantidad"
+                                            android:nextFocusDown="@id/editUbicacionesCantidad"
+                                            android:nextFocusForward="@id/editUbicacionesCantidad"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall"
+                                            tools:ignore="SpeakableTextPresentCheck" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/linearUbicacionesCaptura"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/arial"
+                                            android:text="Cantidad:"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall" />
+
+                                        <EditText
+                                            android:id="@+id/editUbicacionesCantidad"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:ems="5"
+                                            android:fontFamily="@font/arial"
+                                            android:inputType="number"
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall"
+                                            tools:ignore="SpeakableTextPresentCheck" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/arial"
+                                            android:text="Lleno: "
+                                            android:textColor="#000000"
+                                            android:textSize="@dimen/textSizeSmall" />
+
+                                        <CheckBox
+                                            android:id="@+id/checkUbicacionesLleno"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_2sdp"
+                                            android:layout_marginLeft="@dimen/_5sdp"
+                                            android:buttonTint="@color/aristo_verde" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btnUbicacionesGuarda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                                android:text="GUARDA"
+                                android:layout_marginBottom="@dimen/_15sdp"
+                                android:textColor="@drawable/white_text_button"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

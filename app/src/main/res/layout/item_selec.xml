@@ -1,0 +1,34 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <RadioButton
+    android:id="@+id/selec"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+
+    <TextView
+        android:id="@+id/txtDato1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingRight="@dimen/_10sdp"
+        android:textSize="@dimen/textSizeXSmall" />
+    <TextView
+        android:id="@+id/txtDato2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSizeXSmall" />
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

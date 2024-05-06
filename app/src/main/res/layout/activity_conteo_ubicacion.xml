@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/lyUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:text="Ingresa clave de ubicación para iniciar conteo: "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:layout_marginHorizontal="15dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <EditText android:id="@+id/editConteoUbicacionUbicacion"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeSmall"
+                        android:fontFamily="@font/arial"
+                        android:layout_marginHorizontal="15dp"
+                        android:lines="1"
+                        android:inputType="number"/>
+
+                    <ImageButton android:id="@+id/btnConteoUbicacionBarcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bars_code"
+                    android:background="@drawable/button_shape"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                        android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

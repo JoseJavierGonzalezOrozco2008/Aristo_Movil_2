@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/arial"
+        android:textSize="@dimen/textSizeMedium"
+        android:text="Cambiar Precio"
+        android:layout_marginBottom="@dimen/_15sdp"/>
+
+    <TextView android:id="@+id/txtDialogoCambiarPrecioActual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/arial"
+        android:textSize="@dimen/textSizeSmall"
+        android:text="Precio actual: $"
+        android:layout_marginBottom="@dimen/_15sdp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_15sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"
+            android:text="Precio nuevo: $"/>
+
+        <EditText android:id="@+id/editDialogoCambiarPrecioNuevo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"
+            android:inputType="number"/>
+    </LinearLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:alignContent="center"
+        app:alignItems="center"
+        app:flexDirection="row"
+        app:flexWrap='wrap'
+        app:justifyContent="center">
+        <Button android:id="@+id/btnDialogoCambiarPrecioGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSizeMedium"
+            android:textColor="@drawable/white_text_button"
+            android:text="Guardar"
+            android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+            android:paddingHorizontal="5dp" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+</LinearLayout>

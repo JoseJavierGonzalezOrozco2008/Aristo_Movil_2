@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondoListas">
+
+        <RelativeLayout android:id="@+id/punto_venta_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:translationZ="1dp">
+
+
+                        <include
+                            android:id="@+id/menu_pv"
+                            layout="@layout/menu_pv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                     </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_below="@id/toolbar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fondoRecibe"
+                    android:orientation="horizontal">
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="column"
+                        app:alignItems="center"
+                        app:justifyContent="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <EditText
+                                android:id="@+id/editPuntoVentaBusqueda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_15sdp"
+                                android:ems="8"
+                                android:fontFamily="@font/arial"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:nextFocusLeft="@+id/editPuntoVentaBusqueda"
+                                android:nextFocusRight="@+id/editPuntoVentaBusqueda"
+                                android:nextFocusUp="@+id/editPuntoVentaBusqueda"
+                                android:nextFocusDown="@+id/editPuntoVentaBusqueda"
+                                android:nextFocusForward="@+id/editPuntoVentaBusqueda"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall"
+                                tools:ignore="SpeakableTextPresentCheck" />
+
+                            <ImageButton android:id="@+id/btnPuntoVentaBarcode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/bars_code"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:contentDescription="Código de barras"
+                                android:backgroundTint="@color/design_default_color_surface"/>
+
+                            <ImageButton
+                                android:id="@+id/btnPuntoVentaBuscar"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="Buscar"
+                                android:src="@android:drawable/ic_menu_search"
+                                android:backgroundTint="@color/light_blue_900"/>
+
+                            <ImageButton
+                                android:id="@+id/btnPuntoVentaPromociones"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/promo_icon"
+                                android:contentDescription="Promociones"
+                                android:backgroundTint="@color/colorPrimary"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView android:id="@+id/txtPuntoVentaArticulos"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/white"
+                                android:text="Artículos: 10"
+                                android:textSize="@dimen/textSizeSmall"/>
+
+                            <TextView android:id="@+id/txtPuntoVentaTotal"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/white"
+                                android:textAlignment="textEnd"
+                                android:text="Total: $100.00"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_marginRight="@dimen/_10sdp"/>
+                        </LinearLayout>
+                    </com.google.android.flexbox.FlexboxLayout>
+
+
+
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/renglones_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp" />
+
+                <TextView
+                    android:id="@+id/emptyPuntoVenta"
+                    android:text="Sin productos"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeLarge"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/PVCaducidad"
+                layout="@layout/panel_caducidad" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/PVLotes"
+                layout="@layout/panel_lotes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPuntoVentaCobrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:contentDescription="Cobrar"
+            android:backgroundTint="@color/color_filtro"
+            android:clickable="true"
+            android:src="@drawable/pesos" />
+    </RelativeLayout>
+</LinearLayout>

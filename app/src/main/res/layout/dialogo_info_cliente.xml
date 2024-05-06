@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtDialogoInfoClienteCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/arial"
+        android:gravity="start"
+        android:text="Cliente"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDialogoInfoClienteRazon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDialogoInfoClienteCliente"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/arial"
+        android:gravity="start"
+        android:text="Razón"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDialogoInfoClienteDomicilio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDialogoInfoClienteRazon"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/arial"
+        android:gravity="start"
+        android:text="Domicilio"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDialogoInfoClienteRfc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDialogoInfoClienteDomicilio"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/arial"
+        android:gravity="start"
+        android:text="RFC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold" />
+</RelativeLayout>

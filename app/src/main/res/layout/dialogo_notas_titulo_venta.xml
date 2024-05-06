@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_13sdp"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/vistaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título: "
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"/>
+
+        <EditText android:id="@+id/editPuntoVentaTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/vistaNotas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notas: "
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"/>
+
+        <EditText android:id="@+id/editPuntoVentaNotas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lyExtra1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/vistaExtra1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notas: "
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"/>
+
+        <EditText android:id="@+id/editExtra1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textSize="@dimen/textSizeSmall"/>
+    </LinearLayout>
+</LinearLayout>

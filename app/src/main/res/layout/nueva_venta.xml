@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="100dp">
+
+    <LinearLayout
+        android:id="@+id/Mensaje_layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:background="@drawable/filtros_shape"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <Button android:id="@+id/btnVentasCerrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar"
+                    android:fontFamily="@font/arial"
+                    android:background="#FFFFFF"
+                    android:textColor="@color/aristo_azul"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:textSize="@dimen/textSizeLarge"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView android:id="@+id/txtVentasCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/fondoError"
+            android:text="Público en General"
+            android:textSize="@dimen/textSizeMedium"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buscar: "
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:textSize="@dimen/textSizeMedium"/>
+
+            <EditText android:id="@+id/editVentaClienteBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:backgroundTint="@color/aristo_azul"
+                android:hint="Cliente"
+                android:inputType="text"
+                android:lines="1"
+                android:textSize="@dimen/textSizeMedium"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content">
+
+                <Button android:id="@+id/btnVentasBuscarcliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buscar Cliente"
+                    android:fontFamily="@font/arial"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="@drawable/white_text_button"
+                    android:textSize="@dimen/textSizeMedium"
+                    android:background="@drawable/button_light_blue_900" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <Button android:id="@+id/btnVentasNuevoCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nuevo Cliente"
+                    android:textColor="@drawable/white_text_button"
+                    android:paddingHorizontal="10dp"
+                    android:fontFamily="@font/arial"
+                    android:background="@drawable/button_casiagotado"
+                    android:textSize="@dimen/textSizeMedium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableLayout android:id="@+id/tableVentasClientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Productos Contados"
+        android:id="@+id/menu_conteo_productos"/>
+    <item android:title="Elimina renglon"
+        android:id="@+id/menu_conteo_BorraRenglon"/>
+</menu>

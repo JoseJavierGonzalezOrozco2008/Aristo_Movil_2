@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/checkExistencias"
+        android:title="Solo Existencias"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/cancelarVenta"
+        android:title="Cancelar Venta"
+        />
+    <item android:id="@+id/notasVenta"
+        android:title="Notas de venta"/>
+    <item
+        android:id="@+id/lotesList"
+        android:title="Lotes"/>
+    <item
+        android:id="@+id/credito"
+        android:title="Pagar con Crédito"
+        android:checkable="true"/>
+</menu>

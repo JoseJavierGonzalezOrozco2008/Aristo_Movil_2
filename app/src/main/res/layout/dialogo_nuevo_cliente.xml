@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="column"
+        app:alignItems="center"
+        app:justifyContent="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteRazonCliente"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:text="Razón*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteRazonCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteRazonCliente"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRazonCliente"
+            android:ems="8"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/textSizeMedium"/>
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoclienteAliasCliente"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteRazonCliente"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Alias*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium"/>
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteAliasCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoclienteAliasCliente"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRazonCliente"
+            android:ems="8"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/textSizeMedium"/>
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteRFC"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoclienteAliasCliente"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="RFC*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium"/>
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteRFC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteRFC"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/textSizeMedium"/>
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteCorreo"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteRFC"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Correo:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteCorreo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteCorreo"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:hint="correo@gmail.com"
+            android:inputType="textWebEmailAddress|textPersonName"
+            android:textSize="@dimen/textSizeMedium"/>
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteNota"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteCorreo"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Nota:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteNota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteNota"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteTelefono"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteNota"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Teléfono*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteTelefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteTelefono"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="number|phone"
+            android:textSize="@dimen/textSizeMedium" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteCalle"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteTelefono"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Calle*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteCalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteCalle"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="text"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteNumExterior"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteCalle"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Num Ext*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteNumExterior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteNumExterior"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="text"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteNumInterior"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteNumExterior"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Num Int:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteNumInterior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteNumInterior"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="text"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteFraccionamiento"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteCP"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Fracc*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <Spinner
+            android:id="@+id/SpinnerDialogoNuevoclienteFraccionamiento"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteFraccionamiento"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap='wrap'
+        app:alignContent="center"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="space_around"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+        <TextView
+            android:id="@+id/txtDialogoNuevoClienteCP"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDialogoNuevoClienteNumInterior"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="CP*:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <EditText
+            android:id="@+id/editDialogoNuevoClienteCP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtDialogoNuevoClienteCP"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/txtDialogoNuevoClienteRFC"
+            android:ems="8"
+            android:inputType="number"
+            android:textSize="@dimen/textSizeMedium" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+        <Button
+            android:id="@+id/btnDialogoNuevoClienteGuardarCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SpinnerDialogoNuevoclienteFraccionamiento"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="15dp"
+            android:textColor="@drawable/white_text_button"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/button_green"
+            android:fontFamily="@font/arial"
+            android:text="Guardar Cliente"
+            android:textSize="@dimen/textSizeMedium" />
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+</ScrollView>

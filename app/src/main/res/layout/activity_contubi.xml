@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:id="@+id/lyNuevo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/toolbar"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/contubi_Men3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="No hay conteo disponible"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeMedium" />
+                    <Button android:id="@+id/btnCoUbNuevo"
+                        android:layout_width="@dimen/_110sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                        android:paddingEnd="5dp"
+                        android:textColor="@drawable/white_text_button"
+                        android:layout_margin="2dp"
+                        android:text="NUEVO"
+                        android:textSize="@dimen/textSizeSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:layout_marginTop="39dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/contubi_Men1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text=""
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <TextView
+                            android:id="@+id/contubi_Men2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text=""
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:fontFamily="@font/arial"
+                        android:text="Ingresa la clave de ubicación para iniciar conteo: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeSmall" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <EditText
+                            android:id="@+id/editConteoUbicacionUbicacion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/arial"
+                            android:inputType="number"
+                            android:lines="1"
+                            android:minHeight="48dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <ImageButton
+                            android:id="@+id/btnConteoUbicacionBarcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_shape"
+                            android:backgroundTint="@color/zxing_custom_possible_result_points"
+                            android:contentDescription="Escanear código de barras"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:src="@drawable/bars_code"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                    </LinearLayout>
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="208dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp"
+                        app:alignContent="center"
+                        app:alignItems="center"
+                        app:flexDirection="row"
+                        app:flexWrap='wrap'
+                        app:justifyContent="space_around">
+
+                        <Button
+                            android:id="@+id/btnCoUbAsigna"
+                            android:layout_width="@dimen/_110sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:textColor="@drawable/white_text_button"
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:background="@drawable/button_errordefault"
+                            android:paddingEnd="5dp"
+                            android:fontFamily="@font/arial"
+                            android:text="Asigna"
+                            android:textSize="@dimen/textSizeSmall" />
+                        
+                        <Button
+                            android:id="@+id/btnCoUbAbre"
+                            android:layout_width="@dimen/_110sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/white_text_button"
+                            android:layout_margin="2dp"
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:background="@drawable/button_verdesecundario"
+                            android:paddingEnd="5dp"
+                            android:text="ABRE"
+                            android:fontFamily="@font/arial"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <Button
+                            android:id="@+id/btnCoUbContar"
+                            android:layout_width="@dimen/_110sdp"
+                            android:textColor="@drawable/white_text_button"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:background="@drawable/button_negro"
+                            android:paddingEnd="5dp"
+                            android:fontFamily="@font/arial"
+                            android:text="CONTAR"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

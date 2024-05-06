@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tituloIp"
+        android:layout_width="match_parent"
+        android:textSize="24dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:padding="5dp"
+            android:id="@+id/newIp"
+            android:textSize="24dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:lines="1"/>
+
+        <ImageButton android:id="@+id/btnEscaner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bars_code"
+            android:background="@drawable/button_shape"
+            android:layout_weight="0.05"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+    </LinearLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:alignContent="center"
+        app:alignItems="center"
+        app:flexDirection="row"
+        app:flexWrap='wrap'
+        app:justifyContent="center">
+
+            <Button
+                android:id="@+id/btnAceptar"
+                android:text="Aceptar"
+                android:textColor="@drawable/white_text_button"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                android:paddingHorizontal="5dp"
+                android:layout_marginRight="5dp" />
+
+
+            <Button
+                android:id="@+id/btnProbar"
+                android:text="Probar"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white_text_button"
+                android:fontFamily="@font/arial"
+                android:background="@drawable/button_casiagotado"
+                android:paddingHorizontal="5dp"
+                android:layout_marginRight="5dp" />
+
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/arial"
+                android:background="@drawable/button_red"
+                android:textColor="@drawable/white_text_button"
+                android:paddingHorizontal="5dp"
+                android:text="Cerrar"
+                android:textSize="16dp" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondoListas">
+
+        <RelativeLayout android:id="@+id/productos_di_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar"
+                android:orientation="vertical">
+
+                <ExpandableListView
+                    android:id="@+id/listProductosDI"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                    android:divider="@android:color/darker_gray"
+                    android:dividerHeight="0.5dp"/>
+
+                <TextView
+                    android:id="@+id/emptyProductosDI"
+                    android:text="Lista vacia"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeLarge"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/PDICaducidad"
+                layout="@layout/panel_caducidad" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

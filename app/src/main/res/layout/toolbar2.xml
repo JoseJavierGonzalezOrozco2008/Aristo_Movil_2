@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/aristo_morado"
+    android:elevation="4dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/toolRegresa"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/left_arrow_blanco"
+            android:background="@color/aristo_morado"
+            android:paddingRight="@dimen/_5sdp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TitleToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/colorTextos"
+                android:textSize="@dimen/textSizeXSmall"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/TitleToolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/colorTextos"
+                android:textSize="@dimen/textSizeXSmall"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</androidx.appcompat.widget.Toolbar>

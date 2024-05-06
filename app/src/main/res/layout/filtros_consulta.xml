@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/Mensaje_layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:background="@drawable/filtros_shape"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content">
+
+                <Button android:id="@+id/btnFiltrosConsultaFiltrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filtrar"
+                    android:textColor="@drawable/white_text_button"
+                    android:fontFamily="@font/arial"
+                    android:background="@drawable/button_casiagotado"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <Button android:id="@+id/btnFiltrosConsultaCerrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@drawable/white_text_button"
+                    android:background="@drawable/button_red"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:textSize="@dimen/textSizeSmall"
+                    tools:ignore="UnusedAttribute" />
+        </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Criterio: "
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:textSize="@dimen/textSizeSmall"/>
+
+            <EditText android:id="@+id/btnFiltrosConsultaBusqueda"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:backgroundTint="@color/aristo_azul"
+                android:textSize="@dimen/textSizeSmall"
+                android:inputType="text"
+                android:lines="1"/>
+
+            <ImageButton android:id="@+id/btnFiltrosConsultaMicrofono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_shape"
+                android:src="@drawable/microfono"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/light_blue_A200"/>
+
+            <ImageButton android:id="@+id/btnFiltrosConsultaBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bars_code"
+                android:background="@drawable/button_shape"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkFiltrosConsultaExistencias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Solo con existencia"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:textSize="@dimen/textSizeSmall"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

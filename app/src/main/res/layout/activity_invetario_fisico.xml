@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/inventario_fisico_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar"
+                android:orientation="vertical">
+
+                <LinearLayout android:id="@+id/linearUbicacionesNuevo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nuevo Inventario"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/textSizeMedium"/>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Notas: "
+                           android:textColor="@color/black"
+                           android:fontFamily="@font/arial"
+                           android:textSize="@dimen/textSizeXSmall"
+                           android:layout_marginLeft="20dp"/>
+
+                       <EditText
+                           android:id="@+id/editInventarioFisicoNotas"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_marginHorizontal="20dp"
+                           android:fontFamily="@font/arial"
+                           android:gravity="top"
+                           android:inputType="text|textMultiLine"
+                           android:textSize="@dimen/textSizeXSmall"
+                           tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                   </LinearLayout>
+
+                    <Button android:id="@+id/btnInventarioFisicoNuevo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeSmall"
+                        android:textColor="@drawable/white_text_button"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="Nuevo"
+                        android:paddingHorizontal="10dp" />
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/linearUbicacionesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/fondoListas"
+                    android:orientation="vertical">
+
+                    <ListView android:id="@+id/listUbicaciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"/>
+
+                    <TextView
+                        android:id="@+id/emptyInventario"
+                        android:text="Sin Ubicaciones"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeLarge"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

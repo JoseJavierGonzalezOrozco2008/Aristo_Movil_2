@@ -1,0 +1,318 @@
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+
+        tools:ignore="HardcodedText">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/Mensaje_layout_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:background="@drawable/filtros_shape"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content">
+
+                        <Button android:id="@+id/btnBuscarInventarioBuscar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Filtrar"
+                            android:textColor="@drawable/white_text_button"
+                            android:background="@drawable/button_casiagotado"
+                            android:outlineSpotShadowColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:gravity="right">
+
+                        <Button android:id="@+id/btnBuscarInventarioCerrar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cerrar"
+                            android:fontFamily="@font/arial"
+                            android:outlineSpotShadowColor="@color/white"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:textColor="@drawable/white_text_button"
+                            android:background="@drawable/button_red"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ordenar"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeSmall"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/_15sdp"/>
+
+                    <RadioGroup android:id="@+id/radioBucarInventarioOrdenGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        app:flexWrap='wrap'
+                        app:alignContent="space_around"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="space_around"
+                        android:gravity="center"
+                        android:paddingVertical="10dp">
+
+                            <RadioButton android:id="@+id/radioBuscarInventarioFecha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Fecha"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:layout_marginHorizontal="10dp"/>
+
+                            <RadioButton android:id="@+id/radioBuscarInventarioProveedor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:fontFamily="@font/arial"
+                                android:text="Proveedor"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:layout_marginHorizontal="10dp"/>
+
+                            <RadioButton android:id="@+id/radioBuscarInventarioOrden"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:fontFamily="@font/arial"
+                                android:text="Orden"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:layout_marginHorizontal="10dp"/>
+
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeSmall"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/_15sdp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+
+                    </LinearLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="space_around"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeXSmall"
+                            android:text="Desde: "
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/_30sdp"/>
+
+                        <TextView android:id="@+id/txtBuscarInventarioDesde"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeXSmall"
+                            android:text=""
+                            android:hint="Fecha"
+                            android:layout_marginRight="@dimen/_30sdp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeXSmall"
+                            android:text="Hasta: "
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/_30sdp"/>
+
+                        <TextView android:id="@+id/txtBuscarInventarioHasta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeXSmall"
+                            android:text=""
+                            android:hint="Fecha"
+                            android:textAlignment="textEnd"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                </LinearLayout>
+
+                <CheckBox android:id="@+id/checkMisPedidosInventarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="Mis pedidos"
+                    android:layout_marginBottom="@dimen/_15sdp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:text="Orden/Pedido: "
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                    <EditText android:id="@+id/editOrdenPedidoInventarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:backgroundTint="@color/aristo_azul"
+                        android:textSize="@dimen/textSizeSmall"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/linearFacturaInventarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:text="Factura: "
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                    <EditText android:id="@+id/editFacturaInventarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:backgroundTint="@color/aristo_azul"
+                        android:textSize="@dimen/textSizeSmall"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/linearBuscaCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_15sdp">
+
+                    <Button android:id="@+id/btnClienteInventarios"
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@drawable/white_text_button"
+                        android:text="Cliente"
+                        android:background="@drawable/button_negro"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                    <EditText android:id="@+id/editClienteInventarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:backgroundTint="@color/aristo_azul"
+                        android:textSize="@dimen/textSizeSmall"/>
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listRSClienteBuscar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorExito"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button android:id="@+id/btnProveedorSucursalInventarios"
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:text="Proveedor"
+                        android:textColor="@drawable/white_text_button"
+                        android:background="@drawable/button_light_blue_900"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                    <EditText android:id="@+id/editProveedorSucursalInventarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/arial"
+                        android:backgroundTint="@color/aristo_azul"
+                        android:textSize="@dimen/textSizeSmall"/>
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listRSProveedoresSucursalesBuscar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorExito"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+

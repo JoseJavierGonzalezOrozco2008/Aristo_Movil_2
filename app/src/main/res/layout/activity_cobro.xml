@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/cobro_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_13sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginTop="@dimen/_13sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/arial"
+                            android:text="Monto a pagar:   "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <TextView
+                            android:id="@+id/txtCobroMonto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/arial"
+                            android:text="$1000.00"
+                            android:textColor="@color/aristo_amarillo"
+                            android:textSize="@dimen/textSizeMedium"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/aristo_azul" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Efectivo: "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <EditText
+                            android:id="@+id/editCobroEfectivo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:fontFamily="@font/arial"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtCobroMensajeCuentas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/fondoRecibe2"
+                        android:fontFamily="@font/arial"
+                        android:paddingVertical="3dp"
+                        android:text="No existen cuentas para tarjetas de credito o debito"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeXSmall"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/loCobroCuentas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:id="@+id/loCobroSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Cuenta: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium"
+                                android:layout_marginTop="@dimen/_3sdp"/>
+
+                            <Spinner
+                                android:id="@+id/spinnerCobroCuenta"
+                                android:layout_width="165dp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginLeft="@dimen/_50sdp"
+                                android:layout_marginBottom="@dimen/_20sdp" />
+
+                            <TextView
+                                android:id="@+id/txtCobroCuenta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="5dp"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="15dp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="T. Crédito: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <EditText
+                                android:id="@+id/editCobroMontoCredito"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ems="6"
+                                android:fontFamily="@font/arial"
+                                android:inputType="number"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Ref: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <EditText
+                                android:id="@+id/editCobroRefCredito"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="5"
+                                android:fontFamily="@font/arial"
+                                android:inputType="number"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="15dp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="T. Débito: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <EditText
+                                android:id="@+id/editCobroMontoDebito"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ems="6"
+                                android:fontFamily="@font/arial"
+                                android:inputType="number"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Ref: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+
+                            <EditText
+                                android:id="@+id/editCobroRefDebito"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="5"
+                                android:fontFamily="@font/arial"
+                                android:inputType="number"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeMedium" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="5dp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_85sdp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Cobrado:"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <TextView
+                            android:id="@+id/txtcobroCobrado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/arial"
+                            android:text="$0.00"
+                            android:textColor="@color/aristo_amarillo"
+                            android:textSize="@dimen/textSizeLarge"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_85sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:fontFamily="@font/arial"
+                            android:text="Faltante:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <TextView
+                            android:id="@+id/txtcobroFaltante"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/arial"
+                            android:text="$0.00"
+                            android:textColor="@color/aristo_amarillo"
+                            android:textSize="@dimen/textSizeLarge"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_7sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_85sdp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Cambio:"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <TextView
+                            android:id="@+id/txtcobroCambio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:fontFamily="@font/arial"
+                            android:text="$0.00"
+                            android:textColor="@color/aristo_amarillo"
+                            android:textSize="@dimen/textSizeLarge"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnCobroReimprimir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_shape"
+                        android:fontFamily="@font/arial"
+                        android:text="Reimprimir Ticket"
+                        android:textSize="@dimen/textSizeLarge"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnCobroSalir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_shape"
+                        android:fontFamily="@font/arial"
+                        android:text="Pulse para nueva venta"
+                        android:textSize="@dimen/textSizeLarge"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnCobroCobrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/color_filtro"
+            android:clickable="true"
+            android:src="@drawable/pesos" />
+    </RelativeLayout>
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>

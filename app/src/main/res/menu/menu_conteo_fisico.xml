@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Aplica y Cierra"
+        android:id="@+id/menuInventarioFisicoAplica"/>
+    <item android:title="Cancela Inventario"
+        android:id="@+id/menuInventarioFisicoCancela"/>
+    <item android:title="Informacion"
+        android:id="@+id/menuInventarioFisicioinfo"/>
+</menu>

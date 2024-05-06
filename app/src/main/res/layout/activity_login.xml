@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_101sdp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        tools:context=".Login">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/login_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:paddingHorizontal="50dp">
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+                        <ImageView
+                            android:layout_width="@dimen/_170sdp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="Logo"
+                            android:src="@drawable/logoaristo" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <EditText
+                        android:id="@+id/editLoginUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@android:drawable/ic_menu_myplaces"
+                        android:drawableTint="@color/aristo_verde"
+                        android:fontFamily="@font/arial"
+                        android:hint="Usuario"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:minHeight="48dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeMedium"
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:layout_marginTop="@dimen/_15sdp"/>
+
+                    <EditText
+                        android:id="@+id/editLoginPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@android:drawable/ic_lock_lock"
+                        android:drawableTint="@color/aristo_verde"
+                        android:fontFamily="@font/arial"
+                        android:hint="Contraseña"
+                        android:inputType="textPassword"
+                        android:minHeight="48dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeMedium"
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:layout_marginTop="@dimen/_15sdp"/>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp"
+                        app:alignContent="center"
+                        app:alignItems="center"
+                        app:flexDirection="row"
+                        app:flexWrap='wrap'
+                        app:justifyContent="space_around"
+                        android:layout_marginTop="@dimen/_14sdp">
+                        <Button
+                            android:id="@+id/btnLoginLogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:background="@drawable/button_login"
+                            android:fontFamily="@font/arial"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:text="Entrar"
+                            android:textSize="@dimen/textSizeLarge"
+                            android:textColor="@color/white"/>
+                        <Button
+                            android:id="@+id/btnImpr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:background="@drawable/button_red"
+                            android:fontFamily="@font/arial"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:text="Imprimir"
+                            android:textSize="@dimen/textSizeLarge"
+                            android:textColor="@color/white"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtLoginVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="50dp"
+                    android:fontFamily="@font/arial"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeLarge"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

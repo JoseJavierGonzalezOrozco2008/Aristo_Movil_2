@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:paddingBottom="0dp"
+            android:background="@drawable/card">
+
+            <ImageView
+                android:id="@+id/adapter_consulta_img"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/logoaristo"
+                android:adjustViewBounds="true"/>
+
+            <TextView android:id="@+id/adapter_consulta_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:text="Nombre"
+                android:layout_gravity="center"/>
+
+            <TextView android:id="@+id/adapter_consulta_precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/aristo_amarillo_ant"
+                android:textSize="@dimen/textSizeSmall"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:text="$10.00"
+                android:layout_gravity="center"/>
+
+            <TextView android:id="@+id/adapter_consulta_disponible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textAlignment="center"
+                android:text="Disponible: 10"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:textSize="@dimen/textSizeSmall"/>
+
+            <LinearLayout
+                android:id="@+id/lyagrega"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/agregar_shape"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <Button android:id="@+id/btnAdapterConsultaAgregar"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.35"
+                    android:layout_height="match_parent"
+                    android:text="Agregar"
+                    android:textColor="@drawable/white_text_button"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                    />
+
+                <ImageButton android:id="@+id/btnAdapterConsultaMinus"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.20"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/minus"
+                    android:background="@color/white"
+                    android:layout_marginVertical="2dp"
+                    android:outlineSpotShadowColor="@color/white"/>
+
+                <EditText android:id="@+id/editAdapterConsultaCantidad"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="match_parent"
+                    android:ems="3"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSizeXSmall"
+                    android:textStyle="bold"
+                    android:lines="1"
+                    android:inputType="number"
+                    android:textColor="@color/aristo_amarillo"
+                    android:backgroundTint="@color/aristo_amarillo"/>
+
+                <ImageButton android:id="@+id/btnAdapterConsultaPlus"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.20"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/add"
+                    android:background="@drawable/agregar_button_right_shape"
+                    android:layout_marginVertical="2dp"
+                    android:layout_marginRight="2dp"
+                    android:outlineSpotShadowColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+</FrameLayout>

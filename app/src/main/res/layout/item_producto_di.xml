@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout android:id="@+id/ViewDocumento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/venta_shape"
+        android:padding="10dp"
+        android:layout_margin="5dp">
+        <TextView
+            android:id="@+id/txtProductoDIProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:text="Nombre Producto"
+            android:textSize="@dimen/textSizeSmall" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtProductoDIUsuario"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="(Usuario)"
+                android:textColor="@color/fondoExito"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSizeXSmall" />
+
+            <Button
+                android:id="@+id/btnProductoDICaduca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/button_colordiferencias"
+                android:fontFamily="@font/arial"
+                android:text="Caducidad"
+                android:textColor="@drawable/white_text_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/txtProductoDICodigo"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:text="Código"
+                android:textSize="@dimen/textSizeXSmall" />
+
+            <TextView
+                android:id="@+id/txtProsuctoDIRegistrado"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:text="Registrado"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/textSizeXSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

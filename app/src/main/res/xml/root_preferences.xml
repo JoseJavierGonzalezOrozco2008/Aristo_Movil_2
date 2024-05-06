@@ -1,0 +1,61 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <PreferenceCategory app:title="Estacion" >
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="configuracion_edit_ip"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Ip"
+            app:useSimpleSummaryProvider="true"/>
+
+        <ListPreference
+            app:key="configuracion_list_estaciones"
+            app:title="Estacion"
+            app:summary="Selecciona una estacion"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Impresora" >
+        <ListPreference
+            android:key="tipoImpresion"
+            android:title="Tipo de Impresión"
+            android:entryValues="@array/tipo_impresion"
+            android:entries="@array/tipo_impresion"
+            />
+        <EditTextPreference
+            android:defaultValue="Default"
+            android:key="configuracion_edit_ip_impresora"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Ip Impresora por Red"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            android:defaultValue="Default"
+            android:key="configuracion_edit_puerto_impresora"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Puerto Impresora por Red"
+            app:useSimpleSummaryProvider="true"/>
+        <Preference
+            android:key="configuracion_edit_pruebaRed"
+            app:title="Probar Impresora por Red"/>
+        <ListPreference
+            android:key="configuracion_list_impresoras"
+            app:title="Impresora"
+            app:summary="Selecciona una impresora"/>
+
+        <Preference
+            android:key="configuracion_edit_prueba"
+            app:title="Probar Impresora"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="configuracion_switch_codigo"
+            android:title="Genera codigo de barras"
+            app:summary="Crea una imagen del codigo de barras para la impresion"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

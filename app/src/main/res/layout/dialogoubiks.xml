@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="start"
+                android:orientation="horizontal" >
+                <Button android:id="@+id/btnGuarda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@drawable/white_text_button"
+                    android:text="GUARDAR"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_green"
+                    android:fontFamily="@font/arial"
+                    android:paddingHorizontal="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="end"
+                android:orientation="horizontal" >
+                <Button android:id="@+id/btnCerrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CERRAR"
+                    android:fontFamily="@font/arial"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textColor="@drawable/white_text_button"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/button_red"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/vistaUbikMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"/>
+        <TextView
+            android:id="@+id/vistaLeyenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Elija ubicación e ingrese la cantidad"
+            android:textSize="@dimen/textSizeMedium"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:background="@color/aristo_amarillo"/>
+
+        <TextView
+            android:id="@+id/vistaProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Producto:"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:textSize="@dimen/textSizeSmall"/>
+        <TextView
+            android:id="@+id/vistaCaptura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Capturado:"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"/>
+        <TextView
+            android:id="@+id/vistaTotales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Bulto:"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@color/azulMedio">
+
+            <TextView
+                android:id="@+id/vistaUbikUbic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text=""
+                android:textSize="@dimen/textSizeSmall"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/lyUbikubicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap='wrap'
+            app:alignContent="center"
+            app:flexDirection="row"
+            app:alignItems="center"
+            app:justifyContent="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp"
+            android:background="@color/azulMedio">
+            <TextView
+                android:id="@+id/vistaUbikUbicacion"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:text="Ubicación:"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/editUbikUbica"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:ems="4"
+                android:fontFamily="@font/arial"
+                android:textSize="@dimen/textSizeSmall"
+                android:inputType="numberSigned"
+                android:textColor="@color/grisMedio"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:backgroundTint="@color/aristo_azul" />
+
+
+            <Button android:id="@+id/btnBusca"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:text="BUSCA"
+                android:textSize="@dimen/textSizeTiny"
+                android:fontFamily="@font/arial"
+                android:textColor="@drawable/white_text_button"
+                android:textStyle="bold"
+                android:paddingHorizontal="5dp"
+                android:background="@drawable/button_grismedio"            />
+
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/lyUbikCant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap='wrap'
+            app:alignContent="center"
+            app:flexDirection="row"
+            app:alignItems="center"
+            app:justifyContent="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp"
+            android:background="@color/azulMedio">
+
+            <TextView
+                android:id="@+id/vistaUbikCant"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:fontFamily="@font/arial"
+                android:text="Cant :"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/editUbikCant"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:ems="4"
+                android:fontFamily="@font/arial"
+                android:textSize="@dimen/textSizeSmall"
+                android:inputType="numberSigned"
+                android:textColor="@color/grisMedio"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:backgroundTint="@color/aristo_azul" />
+
+
+            <Button android:id="@+id/btnAgrega"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:text="AGREGA"
+                android:textSize="@dimen/textSizeTiny"
+                android:fontFamily="@font/arial"
+                android:textStyle="bold"
+                android:textColor="@drawable/white_text_button"
+                android:paddingHorizontal="5dp"
+                android:background="@drawable/button_grismedio"            />
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/ubikTabla"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:gravity="center">
+
+            </TableLayout>
+        </ScrollView>
+
+
+
+
+    </LinearLayout>
+</ScrollView>

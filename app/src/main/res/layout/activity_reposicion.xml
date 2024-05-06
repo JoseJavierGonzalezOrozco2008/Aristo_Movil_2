@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout android:id="@+id/reposicion_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorDiferencias"
+                        android:fontFamily="@font/arial"
+                        android:paddingVertical="3dp"
+                        android:text="Selecciona Origen de Reposición"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textSizeMedium"
+                        tools:ignore="TextContrastCheck" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView android:id="@+id/txtReposicionE1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Nave: "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <com.example.aristomovil2.componentes.MultiSpinner
+                            android:id="@+id/SpinnerReposicionE1"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.7"
+                            android:contentDescription="Nave"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView android:id="@+id/txtReposicionE2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Area: "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <com.example.aristomovil2.componentes.MultiSpinner
+                            android:id="@+id/SpinnerReposicionE2"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.7"
+                            android:contentDescription="Area"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView android:id="@+id/txtReposicionE3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Andador/Isla: "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <com.example.aristomovil2.componentes.MultiSpinner
+                            android:id="@+id/SpinnerReposicionE3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Andador/Isla"
+                            android:layout_weight="0.7" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView android:id="@+id/txtReposicionE4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Mueble: "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <com.example.aristomovil2.componentes.MultiSpinner
+                            android:id="@+id/SpinnerReposicionE4"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.7"
+                            android:contentDescription="Mueble"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView android:id="@+id/txtReposicionE5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="@font/arial"
+                            android:text="Nivel: "
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <com.example.aristomovil2.componentes.MultiSpinner
+                            android:id="@+id/SpinnerReposicionE5"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.7"
+                            android:contentDescription="Nivel"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap='wrap'
+                        app:alignContent="center"
+                        app:flexDirection="row"
+                        app:alignItems="center"
+                        app:justifyContent="space_around"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp"
+                        android:layout_marginTop="@dimen/_14sdp">
+                        <Button
+                            android:id="@+id/btnAcomodoLimpiar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:background="@drawable/button_casiagotado"
+                            android:text="Limpiar"
+                            android:textColor="@drawable/white_text_button"
+                            android:fontFamily="@font/arial"
+                            android:padding="5dp"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <Button
+                            android:id="@+id/btnAcomodoCalcular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:background="@drawable/button_green"
+                            android:fontFamily="@font/arial"
+                            android:padding="5dp"
+                            android:textColor="@drawable/white_text_button"
+                            android:text="Calcular/Ver"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <Button
+                            android:id="@+id/btnAcomodoOrdenes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:background="@drawable/button_azulcustom"
+                            android:text="Ordenes"
+                            android:fontFamily="@font/arial"
+                            android:padding="5dp"
+                            android:textColor="@drawable/white_text_button"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

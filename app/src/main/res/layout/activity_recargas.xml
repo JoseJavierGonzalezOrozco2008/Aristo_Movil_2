@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".Acrividades.Recargas">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/conteo_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar2"
+                layout="@layout/toolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar2"
+                android:orientation="vertical"
+
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageButton
+                        android:id="@+id/recaCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/share_square"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        style="@style/boton_estilo"
+                        android:layout_weight="0.1"/>
+                    <TextView
+                        android:id="@+id/recaInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        style="@style/boton_estilo"
+                        android:layout_weight="0.9"
+                        />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/recaCompanias"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    >
+
+                </ListView>
+                <ListView
+                    android:id="@+id/recaTelefonos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                </ListView>
+                <LinearLayout
+                    android:id="@+id/recaReferencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Telefono:"
+                            style="@style/boton_estilo"
+                            android:gravity="end|center"
+                            android:layout_weight="0.1" />
+                        <EditText
+                            android:id="@+id/recaNum1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:inputType="phone"
+                            style="@style/boton_estilo"
+                            android:maxLength="10"
+                            android:layout_weight="0.9"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Telefono:"
+                            style="@style/boton_estilo"
+                            android:gravity="end|center"
+                            android:layout_weight="0.1"/>
+                        <EditText
+                            android:id="@+id/recaNum2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:inputType="phone"
+                            style="@style/boton_estilo"
+                            android:maxLength="10"
+                            android:layout_weight="0.9"/>
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/recaAceptar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Inserta"
+                        style="@style/boton_estilo"
+                        android:layout_gravity="end"
+                        android:background="@drawable/button_shape"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

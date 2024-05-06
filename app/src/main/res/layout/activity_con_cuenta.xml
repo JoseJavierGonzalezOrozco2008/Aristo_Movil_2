@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Acrividades.ConCuenta">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button android:id="@+id/btnCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cliente"
+                    android:textColor="@drawable/white_text_button"
+                    android:background="@drawable/button_negro"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+                <EditText
+                    android:id="@+id/infoEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:ems="8"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <ImageButton
+                    android:id="@+id/btnBuscaClte"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_casiagotado"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@mipmap/bus_cliente_foreground" />
+
+            </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/infoCuenta"
+                        android:fontFamily="monospace"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeSmall" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

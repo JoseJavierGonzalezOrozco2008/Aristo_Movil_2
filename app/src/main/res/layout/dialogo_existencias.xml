@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_13sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial"
+            android:text="Titulo"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="@dimen/textSizeSmall" />
+    </LinearLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:alignContent="center"
+        app:alignItems="center"
+        app:flexDirection="row"
+        app:flexWrap='wrap'
+        app:justifyContent="center"
+        android:id="@+id/layout2"
+        android:layout_below="@id/layout1">
+        <Button
+            android:id="@+id/btnSuma"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@drawable/white_text_button"
+            android:padding="10dp"
+            android:textSize="@dimen/textSizeSmall"
+            android:text="SUMAR"
+            android:fontFamily="@font/arial"
+            android:background="@drawable/button_azulcustom"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <Button
+            android:id="@+id/btnReemplaza"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@drawable/white_text_button"
+            android:fontFamily="@font/arial"
+            android:padding="10dp"
+            android:textSize="@dimen/textSizeSmall"
+            android:text="REEMPLAZAR"
+            android:background="@drawable/button_morado"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <Button
+            android:id="@+id/btnIgnora"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/white_text_button"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/arial"
+            android:padding="10dp"
+            android:text="IGNORAR"
+            android:background="@drawable/button_grismedio"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+</RelativeLayout>

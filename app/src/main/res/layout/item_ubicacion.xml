@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout android:id="@+id/ViewDocumento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/venta_shape"
+        android:padding="10dp"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/txtUbicacionCodigo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubicación"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"/>
+
+            <TextView android:id="@+id/txtUbicacionEstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:text="Estatus"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button android:id="@+id/btnUbicacionContar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contar"
+                android:textSize="@dimen/textSizeXSmall"
+                android:textColor="@drawable/white_text_button"
+                android:paddingHorizontal="10dp"
+                android:layout_gravity="center"
+                android:focusable="false"
+                android:background="@drawable/button_green"
+                android:fontFamily="@font/arial"
+                android:focusableInTouchMode="false"
+                />
+
+            <Button android:id="@+id/btnUbicacionVer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver"
+                android:textColor="@drawable/white_text_button"
+                android:fontFamily="@font/arial"
+                android:background="@drawable/button_blue600"
+                android:textSize="@dimen/textSizeXSmall"
+                android:paddingHorizontal="0dp"
+                android:layout_gravity="center"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

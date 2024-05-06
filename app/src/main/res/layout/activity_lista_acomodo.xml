@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@color/fondoListas">
+
+      <RelativeLayout android:id="@+id/ordenes_content"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+         <include
+             android:id="@+id/toolbar"
+             layout="@layout/toolbar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_below="@id/toolbar"
+             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+               <RadioGroup
+                   android:id="@+id/grupoNuevoCaptura"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+
+                  <RadioButton
+                      android:id="@+id/radioNuevo"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginHorizontal="10dp"
+                      android:fontFamily="@font/arial"
+                      android:text="Nuevo"
+                      android:textSize="@dimen/textSizeXSmall" />
+
+                  <RadioButton
+                      android:id="@+id/radioCaptura"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginHorizontal="10dp"
+                      android:fontFamily="@font/arial"
+                      android:text="En captura"
+                      android:textSize="@dimen/textSizeXSmall" />
+               </RadioGroup>
+               <LinearLayout
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="end">
+
+                  <Button android:id="@+id/btnAcomoda"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="@drawable/white_text_button"
+                      android:background="@drawable/button_green"                            android:fontFamily="@font/arial"
+                      android:paddingHorizontal="5dp"
+                      android:text="Nueva"
+                      android:visibility="gone"
+                      android:textSize="@dimen/textSizeSmall" />
+               </LinearLayout>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lista_acomodo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"/>
+
+            <TextView
+                android:id="@+id/emptyReposicion"
+                android:text="Lista Vacía"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeLarge"/>
+
+
+         </LinearLayout>
+
+      </RelativeLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_marginBottom="0dp">
+
+         <include
+             android:id="@+id/Mensaje"
+             layout="@layout/mensaje" />
+      </LinearLayout>
+   </RelativeLayout>
+</LinearLayout>

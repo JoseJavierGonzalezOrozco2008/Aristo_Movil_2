@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/conteo_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Usuario: "
+                            android:textColor="@color/color1"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtConteoUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="20dp">
+
+                        <TextView
+                            android:id="@+id/labEspacio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:text="Espacio: "
+                            android:textColor="@color/color1"
+                            android:textSize="@dimen/textSizeSmall"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtConteoEspacio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arial"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtConteoMensaje"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/txtConteoCodigo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <TextView
+                            android:id="@+id/txtConteoProducto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp">
+
+                            <Button
+                                android:id="@+id/btnConteoCodigo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button_casiagotado"
+                                android:paddingHorizontal="15dp"
+                                android:text="@string/producto"
+                                android:textColor="@drawable/white_text_button"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/editConteoCodigo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/arial"
+                                android:hint="@string/prodhint"
+                                android:inputType="number"
+                                android:lines="1"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <ImageButton
+                                android:id="@+id/btnConteoBarcode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button_shape"
+                                android:contentDescription="Código de Barras"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:src="@drawable/bars_code"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:backgroundTint="@color/zxing_custom_possible_result_points"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearConteoCantidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:paddingHorizontal="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Cantidad: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/editConteoCantidad"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:contentDescription="Cantidad"
+                                android:fontFamily="@font/arial"
+                                android:inputType="numberDecimal"
+                                android:lines="1"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearConteoPasada"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageButton
+                                android:id="@+id/btnConteoMenos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:src="@drawable/minus_32" />
+
+                            <EditText
+                                android:id="@+id/editConteoCantidadPasada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ems="5"
+                                android:inputType="none"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <ImageButton
+                                android:id="@+id/btnConteoMas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:src="@drawable/add_32" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Ultimo: "
+                                android:textColor="@color/color1"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtConteoUltimo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:text="Cantidad: "
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:textColor="@color/color1"
+                                android:textSize="@dimen/textSizeXSmall"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtConteoUltimoCantidad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeXSmall" />
+                        </LinearLayout>
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:flexWrap='wrap'
+                            app:alignContent="center"
+                            app:flexDirection="row"
+                            app:alignItems="center"
+                            app:justifyContent="center"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp">
+                            <Button
+                                android:id="@+id/btnConteoTipo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="20dp"
+                                android:background="@drawable/button_verdesecundario"
+                                android:paddingHorizontal="15dp"
+                                android:text="Por pasada"
+                                android:fontFamily="@font/arial"
+                                android:textColor="@drawable/white_text_button"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_marginTop="@dimen/_15sdp" />
+
+                            <Button
+                                android:id="@+id/btnConteoCerrar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/button_casiagotado"
+                                android:text="Cierra Mueble (Ubicación)"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@drawable/white_text_button"
+                                android:fontFamily="@font/arial"
+                                android:layout_marginTop="@dimen/_15sdp" />
+                        </com.google.android.flexbox.FlexboxLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0dp">
+
+                <include
+                    android:id="@+id/Mensaje"
+                    layout="@layout/mensaje" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
