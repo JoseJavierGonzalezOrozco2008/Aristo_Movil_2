@@ -885,36 +885,41 @@ public class PuntoVenta extends ActividadBase  implements NavigationView.OnNavig
             String contenido = "";
             int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
 
-            for(int copias=0; copias<2; copias++) {
-                contenido += "Venta,T2|";
-                contenido += empresavende+",T1|";
-                contenido += domiempr+",T1|";
-                contenido += "SUCURSAL,T1|";
-                contenido += domisucu+",T1|";
-                contenido += "Vendedor: "+usuario+",T1|";
-                contenido += "Cliente: "+nomCliente+",T1|";
-                contenido += domiclte+",T1|";
-                contenido += folio+",T2|";
-                contenido += "Prod   Can   Precio   Subtotal,T1|";
-                contenido += "----------------,T1|";
-                /*Productos comprados*/
-                for (int i = 0; i < cobrados.size(); i++) {
-                    contenido += cobrados.get(i).getProducto() + " " + cobrados.get(i).getCantidad() + " x $" + cobrados.get(i).getPreciou() + " $" + cobrados.get(i).getSubtotal()+",T1|";
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                for(int copias=0; copias<2; copias++) {
+                    contenido += "Venta,T2|";
+                    contenido += empresavende+",T1|";
+                    contenido += domiempr+",T1|";
+                    contenido += "SUCURSAL,T1|";
+                    contenido += domisucu+",T1|";
+                    contenido += "Vendedor: "+usuario+",T1|";
+                    contenido += "Cliente: "+nomCliente+",T1|";
+                    contenido += domiclte+",T1|";
+                    contenido += folio+",T2|";
+                    contenido += "Prod   Can   Precio   Subtotal,T1|";
+                    contenido += "----------------,T1|";
+                    /*Productos comprados*/
+                    for (int i = 0; i < cobrados.size(); i++) {
+                        contenido += cobrados.get(i).getProducto() + " " + cobrados.get(i).getCantidad() + " x $" + cobrados.get(i).getPreciou() + " $" + cobrados.get(i).getSubtotal()+",T1|";
+                    }
+                    contenido += "----------------,T1|";
+                    contenido += "TOTAL: "+totVenta+",T2|";
+
+                    if (codigoBarras)
+                        contenido += folio+",**|";
+                    else
+                        contenido += folio+",T1|";
+
+                    contenido += despedida+",T1|";
+                    contenido += pagare+",T1|";
+                    contenido += "Firma:_________________,T1";
                 }
-                contenido += "----------------,T1|";
-                contenido += "TOTAL: "+totVenta+",T2|";
 
-                if (codigoBarras)
-                    contenido += folio+",**|";
-                else
-                    contenido += folio+",T1|";
-
-                contenido += despedida+",T1|";
-                contenido += pagare+",T1|";
-                contenido += "Firma:_________________,T1";
+                new Impresora(ip,contenido,puerto,espacios).execute();
             }
 
-            new Impresora(ip,contenido,puerto,espacios).execute();
 
         }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED){

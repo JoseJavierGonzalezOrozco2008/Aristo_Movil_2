@@ -359,15 +359,20 @@ public class Ddincontrolador extends ActividadBase {
                             String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
                             int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
                             String contenido = "";
-                            Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                            ServicioImpresionTicket impBult = new ServicioImpresionTicket();
-                            contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                            new Impresora(ip,contenido,puerto, imprime_espacios).execute();
+                            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+                            } else {
+
+                                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
+                                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                                new Impresora(ip,contenido,puerto, imprime_espacios).execute();
+                            }
+
 
                         } else if(tipoImp != null && tipoImp.equals("Bluethooth")){
                             if(Build.VERSION.SDK_INT >= 31){
                                 if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
-                                    System.out.println("Permiso Scan "+ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN+" "+PackageManager.PERMISSION_GRANTED));
                                     d.setContentView(R.layout.dial_no_permiso);
                                     Button btn_ok = d.findViewById(R.id.btn_ok);
                                     btn_ok.setOnClickListener(view -> {
@@ -430,20 +435,24 @@ public class Ddincontrolador extends ActividadBase {
                                 String contenido = "";
 
                                 String bultencab=obj.getAsString("bultotik");
-                                if(Libreria.tieneInformacion(bultencab))
-                                    contenido+=bultencab;
-                                String bultddindet=obj.getAsString("detallesbulto");
-                                if(Libreria.tieneInformacion(bultddindet))
-                                    contenido+=bultddindet;
-                                String impencab=obj.getAsString("encabtik");
-                                if(Libreria.tieneInformacion(impencab))
-                                    contenido+=impencab;
-                                String impddindet=obj.getAsString("prodstik");
-                                if(Libreria.tieneInformacion(impddindet))
-                                    contenido+=impddindet;
+                                if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                                    muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+                                } else {
+                                    if(Libreria.tieneInformacion(bultencab))
+                                        contenido+=bultencab;
+                                    String bultddindet=obj.getAsString("detallesbulto");
+                                    if(Libreria.tieneInformacion(bultddindet))
+                                        contenido+=bultddindet;
+                                    String impencab=obj.getAsString("encabtik");
+                                    if(Libreria.tieneInformacion(impencab))
+                                        contenido+=impencab;
+                                    String impddindet=obj.getAsString("prodstik");
+                                    if(Libreria.tieneInformacion(impddindet))
+                                        contenido+=impddindet;
 
-                                System.out.println("Contenido: "+contenido);
-                                new Impresora(ip, contenido, puerto, imprime_espacios).execute();
+                                    new Impresora(ip, contenido, puerto, imprime_espacios).execute();
+                                }
+
                             }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
                                 if(Build.VERSION.SDK_INT >= 31){
                                     if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {

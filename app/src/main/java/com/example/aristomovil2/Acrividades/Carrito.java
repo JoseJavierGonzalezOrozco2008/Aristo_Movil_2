@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,7 +21,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -175,7 +178,13 @@ public class Carrito extends ActividadBase {
                 f11.setVisibility(View.VISIBLE);
                 break;
         }
+        int rotacion = getWindowManager().getDefaultDisplay().getRotation();
         gridProds = findViewById(R.id.listPrueba);
+        if (rotacion == Surface.ROTATION_0 || rotacion == Surface.ROTATION_180) {
+            gridProds.setVisibility(View.VISIBLE);
+        } else {
+            gridProds.setVisibility(View.VISIBLE);
+        }
         wsBqdaProd();
         v_codigo.requestFocus();
         colocaTitulo();
@@ -190,7 +199,7 @@ public class Carrito extends ActividadBase {
             muestraMensaje("Captura un código",R.drawable.mensaje_error);
             return;
         }
-        Toast.makeText(this, "Acción para: " + this.v_ultprod, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Acción para: " + this.v_ultprod, Toast.LENGTH_SHORT).show();
         String xml = Libreria.xmlInsertVenta(v_estacion,usuarioID,pCodigo.trim(),v_cliente,v_vntafolio.equalsIgnoreCase("nueva") ? "":v_vntafolio,v_ultprod==null ? 0 : v_ultprod,v_tipovnta,"",v_metpago);
         peticionWS(Enumeradores.Valores.TAREA_INSERTA_RENGLON, "SQL", "SQL", xml,v_vntafolio,"");
     }
@@ -288,6 +297,17 @@ public class Carrito extends ActividadBase {
                     DcarritoAdapter adapter = new DcarritoAdapter(renglones, this);
                     v_carrito.setAdapter(adapter);
                     v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
+                    if(v_carrito != null && v_carrito.getCount() > 0){
+                        int alturaDp = 280;
+                        float factorDensidad = getResources().getDisplayMetrics().density;
+                        int alturaSdp = (int) (alturaDp * factorDensidad);
+
+                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
+                        params.height = alturaSdp;
+                        v_carrito.setLayoutParams(params);
+
+                    }
+
                     v_codigo.requestFocus();
                     if(v_ultprod == 0){
                         v_ultprod = renglones.get(0).getDvtaid();
@@ -301,6 +321,16 @@ public class Carrito extends ActividadBase {
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
                     v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
+                    if(v_carrito != null && v_carrito.getCount() > 0){
+                        int alturaDp = 280;
+                        float factorDensidad = getResources().getDisplayMetrics().density;
+                        int alturaSdp = (int) (alturaDp * factorDensidad);
+
+                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
+                        params.height = alturaSdp;
+                        v_carrito.setLayoutParams(params);
+
+                    }
                     nuevoada.notifyDataSetChanged();
                     v_ultprod = 0;
                     v_importe = 0.0;
@@ -309,7 +339,6 @@ public class Carrito extends ActividadBase {
                 }
                 break;
             case TAREA_INSERTA_RENGLON:
-                System.out.println("Estatus: "+output.getExito());
                 if(output.getExito()){
                     traeUltVnta();
                     traeRenglones();
@@ -367,6 +396,16 @@ public class Carrito extends ActividadBase {
                 }else{
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
+                    if(v_carrito != null && v_carrito.getCount() > 0){
+                        int alturaDp = 280;
+                        float factorDensidad = getResources().getDisplayMetrics().density;
+                        int alturaSdp = (int) (alturaDp * factorDensidad);
+
+                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
+                        params.height = alturaSdp;
+                        v_carrito.setLayoutParams(params);
+
+                    }
                     nuevoada.notifyDataSetChanged();
                     v_nombrecliente = v_default.getTex1();
                     v_vntafolio = v_default.getTex2();

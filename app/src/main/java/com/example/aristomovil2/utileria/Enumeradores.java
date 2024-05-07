@@ -143,7 +143,7 @@ public class Enumeradores {
         TAREA_ARQEGUARDA(1053, "validacion", "", false, false),
         TAREA_BQDACLTE(1061, "lineas", TABLA_GENERICA, true, true),
         TAREA_VNTACONCREDITO(1063, "validacion", "", false, false),
-        TAREA_VNTAMASPROD(-6, "lineas", TABLA_PRODUCTOS_DI,true, true)
+        TAREA_VNTAMASPROD(1069, "lineas", TABLA_PRODUCTOS_DI,true, true)
 
         ;
 

@@ -1558,61 +1558,65 @@ public class RecibeDocumento extends ActividadBase {
             SimpleDateFormat parser;
             SimpleDateFormat formatter;
             String date;
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                if(caso == 1){
+                    cantImpresiones = 1;
+                    caso = 2;
+                }
 
-            if(caso == 1){
-                cantImpresiones = 1;
-                caso = 2;
-            }
+                Bulto bulto;
+                switch (caso){
+                    case 2:
+                        String[] contenedores = contenedor.split(",");
+                        String[] fechas = fecha.split(",");
+                        String[] renglones = rengs.split(",");
+                        String[] piezasMul = piezas.split(",");
+                        String[] detalles = pDetalle.split(",");
 
-            Bulto bulto;
-            switch (caso){
-                case 2:
-                    String[] contenedores = contenedor.split(",");
-                    String[] fechas = fecha.split(",");
-                    String[] renglones = rengs.split(",");
-                    String[] piezasMul = piezas.split(",");
-                    String[] detalles = pDetalle.split(",");
-
-                    for (int i = 0; i < cantImpresiones; i++) {
-                        bulto=new Bulto(contenedores[i],folioDi,"Cerrado",pedidos,fechas[i],usuario,Integer.parseInt(renglones[i]),Float.parseFloat(piezasMul[i]),detalles[i]);
-                        contenido += impBult.impresionBultos(bulto,impBult,provedorSucursal.toUpperCase(),usuario,codigoBarras,imprimeDetalle,espacios);
-                        for (int j = 0; j < espacios; j++)
-                            contenido += "|.,T1";
-                    }
-                    break;
-                case 3:
-                    if (documento == 16) {
-                        bulto=new Bulto(contenedor,folioDi,"Cerrado",pedidos,fecha,usuario,Integer.parseInt(rengs),Float.parseFloat(piezas),pDetalle);
-                        contenido = impBult.impresionBultos(bulto,impBult,provedorSucursal.toUpperCase(),usuario,codigoBarras,imprimeDetalle,espacios);
-                    }
-                    if(contenido.equals("")){
-                        contenido += tituloTicket+",T1|";
-                        contenido += empresa.toUpperCase()+",T2|";
-                        contenido += provedorSucursal.toUpperCase()+",T2|";
-                        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-                        contenido += "Folio: "+folioDi + "\n"+"Fech mov: "+fechaHoy+",T1|";
-                        contenido += folioDi+",T1";
-                        if (documento == 14) {
-                            /*Elemetos recuperados de la pantalla de Compra*/
-                            contenido += "|Fac: "+factura+" "+fechaFolio+",T1";
+                        for (int i = 0; i < cantImpresiones; i++) {
+                            bulto=new Bulto(contenedores[i],folioDi,"Cerrado",pedidos,fechas[i],usuario,Integer.parseInt(renglones[i]),Float.parseFloat(piezasMul[i]),detalles[i]);
+                            contenido += impBult.impresionBultos(bulto,impBult,provedorSucursal.toUpperCase(),usuario,codigoBarras,imprimeDetalle,espacios);
+                            for (int j = 0; j < espacios; j++)
+                                contenido += "|.,T1";
                         }
-                        contenido += "|"+usuario+",T1";
-                        contenido += "|Rengs: "+rengsdi+" Piezas: "+piezasdi+",T1";
-                        if (muestraImportes) {
-                            contenido += "|Total: "+totaldi+",T1";
+                        break;
+                    case 3:
+                        if (documento == 16) {
+                            bulto=new Bulto(contenedor,folioDi,"Cerrado",pedidos,fecha,usuario,Integer.parseInt(rengs),Float.parseFloat(piezas),pDetalle);
+                            contenido = impBult.impresionBultos(bulto,impBult,provedorSucursal.toUpperCase(),usuario,codigoBarras,imprimeDetalle,espacios);
                         }
-                        if (codigoBarras)
-                            contenido += "|"+folioDi+",**";
-                        else
-                            contenido += "|"+folioDi+",T1";
-                        for (int i = 0; i < espacios; i++)
-                            contenido += "|.,T1";
-                    }
+                        if(contenido.equals("")){
+                            contenido += tituloTicket+",T1|";
+                            contenido += empresa.toUpperCase()+",T2|";
+                            contenido += provedorSucursal.toUpperCase()+",T2|";
+                            String fechaHoy = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+                            contenido += "Folio: "+folioDi + "\n"+"Fech mov: "+fechaHoy+",T1|";
+                            contenido += folioDi+",T1";
+                            if (documento == 14) {
+                                /*Elemetos recuperados de la pantalla de Compra*/
+                                contenido += "|Fac: "+factura+" "+fechaFolio+",T1";
+                            }
+                            contenido += "|"+usuario+",T1";
+                            contenido += "|Rengs: "+rengsdi+" Piezas: "+piezasdi+",T1";
+                            if (muestraImportes) {
+                                contenido += "|Total: "+totaldi+",T1";
+                            }
+                            if (codigoBarras)
+                                contenido += "|"+folioDi+",**";
+                            else
+                                contenido += "|"+folioDi+",T1";
+                            for (int i = 0; i < espacios; i++)
+                                contenido += "|.,T1";
+                        }
 
-                    break;
+                        break;
+                }
+
+                new Impresora(ip,contenido,puerto,espacios).execute();
+
             }
-
-            new Impresora(ip,contenido,puerto,espacios).execute();
 
         }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
             if (bluetoothDevicesList != null) {

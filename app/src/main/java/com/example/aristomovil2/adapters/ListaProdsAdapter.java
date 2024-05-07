@@ -69,14 +69,13 @@ public class ListaProdsAdapter extends ArrayAdapter<Generica> {
 
         String textoFinal = primeraLinea + (segundaLinea.isEmpty() ? "" : "\n" + segundaLinea);
 
-        itemButton.setText(textoFinal);
+        itemButton.setText(items.get(position).getTex1());
         itemButton.setOnClickListener(v -> {
             //Toast.makeText(context, "Acción para: " + this.v_ultprod, Toast.LENGTH_SHORT).show();
             //wsLineaCaptura(items.get(position).getTex3());
             if(activity instanceof Carrito){
                 ((Carrito)activity).wsLineaCaptura(items.get(position).getTex3());
             }
-
         });
 
         return convertView;

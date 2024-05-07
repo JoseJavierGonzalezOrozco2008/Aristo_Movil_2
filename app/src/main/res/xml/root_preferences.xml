@@ -40,7 +40,8 @@
             app:useSimpleSummaryProvider="true"/>
         <Preference
             android:key="configuracion_edit_pruebaRed"
-            app:title="Probar Impresora por Red"/>
+            app:title="Probar Impresora por Red"
+            />
         <ListPreference
             android:key="configuracion_list_impresoras"
             app:title="Impresora"
@@ -48,7 +49,8 @@
 
         <Preference
             android:key="configuracion_edit_prueba"
-            app:title="Probar Impresora"/>
+            app:title="Probar Impresora"
+            />
 
         <SwitchPreference
             android:defaultValue="false"

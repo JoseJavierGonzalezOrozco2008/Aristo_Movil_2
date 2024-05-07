@@ -229,74 +229,79 @@ public class Cobro extends ActividadBase {
             int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
             String contenido = "";
             int espacios = getSharedPreferences("renglones", Context.MODE_PRIVATE).getInt("espacios", 3);
-            contenido += "Venta,T2|";
-            contenido += empresavende+",T1|";
-            contenido += domiempr+",T1|";
-            contenido += "SUCURSAL,T1|";
-            contenido += domisucu+",T1|";
-            contenido += "Vendedor: "+usuario+",T1|";
-            contenido += "CLiente: "+nomCliente+",T1|";
-            contenido += domiclte+",T1|";
-            contenido += folio+",T2|";
-            contenido += "Prod   Can   Precio   Subtotal,T1|";
-            contenido += "----------------,T1|";
-            /*Productos comprados*/
-            for (int i = 0; i < cobrados.size(); i++) {
-                contenido += cobrados.get(i).getProducto() + " " + cobrados.get(i).getCantidad() + " x $" + cobrados.get(i).getPreciou() + " $" + cobrados.get(i).getSubtotal()+",T1|";
-            }
-            contenido += "----------------,T1|";
-
-            float efectivo, credito, pagoTot;
-            try {
-                efectivo = Float.parseFloat(editEfectivo.getText().toString());
-            } catch (Exception e) {
-                efectivo = 0;
-            }
-            try {
-                credito = Float.parseFloat(editMontoCredito.getText().toString());
-            } catch (Exception e) {
-                credito = 0;
-            }
-            pagoTot = efectivo + credito;
-
-            contenido += "TOTAL: "+txtMonto.getText()+",T2|";
-            contenido += "PAGO: "+format.format(pagoTot)+",T2|";
-            contenido += "CAMBIO: "+txtCambio.getText().toString()+",T2|";
-
-            if (codigoBarras)
-                contenido += folio+",**|";
-            else
-                contenido += folio+",T1|";
-
-            contenido += despedida+",T1";
-
-            if (null != caducidades && !caducidades.equals("")) {
-                contenido += "|Caducidades,T2";
-                contenido += "|Cod   Prod   Lote   Fecha   Cant,T1";
-                contenido += "|----------------,T1";
-
-                String[] caducidad = caducidades.split("\\|");
-
-                for (String c : caducidad) {
-                    String[] datos = c.split(",");
-                    int i = 0;
-                    StringBuilder txtImprimir = new StringBuilder();
-
-                    while (i < 5) {
-                        if (i == 0)
-                            txtImprimir = new StringBuilder(datos[i++] + " ");
-
-                        while (i < 5 && (txtImprimir + datos[i] + " ").length() <= 32) {
-                            txtImprimir.append(datos[i]).append(" ");
-                            i++;
-                        }
-                        contenido += "|"+txtImprimir.toString()+",T1";
-                        txtImprimir = new StringBuilder();
-                    }
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                contenido += "Venta,T2|";
+                contenido += empresavende+",T1|";
+                contenido += domiempr+",T1|";
+                contenido += "SUCURSAL,T1|";
+                contenido += domisucu+",T1|";
+                contenido += "Vendedor: "+usuario+",T1|";
+                contenido += "CLiente: "+nomCliente+",T1|";
+                contenido += domiclte+",T1|";
+                contenido += folio+",T2|";
+                contenido += "Prod   Can   Precio   Subtotal,T1|";
+                contenido += "----------------,T1|";
+                /*Productos comprados*/
+                for (int i = 0; i < cobrados.size(); i++) {
+                    contenido += cobrados.get(i).getProducto() + " " + cobrados.get(i).getCantidad() + " x $" + cobrados.get(i).getPreciou() + " $" + cobrados.get(i).getSubtotal()+",T1|";
                 }
-                contenido += "|----------------,T1";
+                contenido += "----------------,T1|";
+
+                float efectivo, credito, pagoTot;
+                try {
+                    efectivo = Float.parseFloat(editEfectivo.getText().toString());
+                } catch (Exception e) {
+                    efectivo = 0;
+                }
+                try {
+                    credito = Float.parseFloat(editMontoCredito.getText().toString());
+                } catch (Exception e) {
+                    credito = 0;
+                }
+                pagoTot = efectivo + credito;
+
+                contenido += "TOTAL: "+txtMonto.getText()+",T2|";
+                contenido += "PAGO: "+format.format(pagoTot)+",T2|";
+                contenido += "CAMBIO: "+txtCambio.getText().toString()+",T2|";
+
+                if (codigoBarras)
+                    contenido += folio+",**|";
+                else
+                    contenido += folio+",T1|";
+
+                contenido += despedida+",T1";
+
+                if (null != caducidades && !caducidades.equals("")) {
+                    contenido += "|Caducidades,T2";
+                    contenido += "|Cod   Prod   Lote   Fecha   Cant,T1";
+                    contenido += "|----------------,T1";
+
+                    String[] caducidad = caducidades.split("\\|");
+
+                    for (String c : caducidad) {
+                        String[] datos = c.split(",");
+                        int i = 0;
+                        StringBuilder txtImprimir = new StringBuilder();
+
+                        while (i < 5) {
+                            if (i == 0)
+                                txtImprimir = new StringBuilder(datos[i++] + " ");
+
+                            while (i < 5 && (txtImprimir + datos[i] + " ").length() <= 32) {
+                                txtImprimir.append(datos[i]).append(" ");
+                                i++;
+                            }
+                            contenido += "|"+txtImprimir.toString()+",T1";
+                            txtImprimir = new StringBuilder();
+                        }
+                    }
+                    contenido += "|----------------,T1";
+                }
+                new Impresora(ip,contenido,puerto,espacios);
             }
-            new Impresora(ip,contenido,puerto,espacios);
+
 
         }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {

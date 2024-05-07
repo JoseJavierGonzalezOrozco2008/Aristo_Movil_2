@@ -452,9 +452,14 @@ public class Ventas extends ActividadBase {
             int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
             String contenido = "";
             int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
-            contenido = "Nuevo Cliente,T2|Id Cliente: "+idCliente+",T1|Nombre: "+nombre+",T1|Dom: "+domicilio+",T1|Clave: "+clave+",T1|.,T1";
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                contenido = "Nuevo Cliente,T2|Id Cliente: "+idCliente+",T1|Nombre: "+nombre+",T1|Dom: "+domicilio+",T1|Clave: "+clave+",T1|.,T1";
 
-            new Impresora(ip,contenido,puerto,espacios).execute();
+                new Impresora(ip,contenido,puerto,espacios).execute();
+            }
+
 
         }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
             if (bluetoothDevicesList != null) {

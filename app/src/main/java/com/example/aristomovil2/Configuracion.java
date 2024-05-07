@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -208,6 +209,53 @@ public class Configuracion extends ActividadBase {
             editIpImp.setText(conf.getSharedPreferences("configuracion_edit_ip_impresora",Context.MODE_PRIVATE).getString("ipImpRed",""));
             editPuertoImp.setText(conf.getSharedPreferences("configuracion_edit_puerto_impresora",Context.MODE_PRIVATE).getString("puertoImpRed",""));
 
+
+            if (editIpImp != null) {
+                editIpImp.setSummaryProvider(new Preference.SummaryProvider<EditTextPreference>() {
+                    @Override
+                    public CharSequence provideSummary(EditTextPreference preference) {
+                        String text = preference.getText();
+                        if (text == null || TextUtils.isEmpty(text)){
+                            return "IP sin definir";
+                        }
+                        return text;
+                    }
+                });
+            }
+            if (editPuertoImp != null) {
+                editPuertoImp.setSummaryProvider(new Preference.SummaryProvider<EditTextPreference>() {
+                    @Override
+                    public CharSequence provideSummary(EditTextPreference preference) {
+                        String text = preference.getText();
+                        if (text == null || TextUtils.isEmpty(text)){
+                            return "Puerto para impresora sin definir";
+                        }
+                        return text;
+                    }
+                });
+            }
+            if (btnPruebaRed != null) {
+                btnPruebaRed.setSummaryProvider(new Preference.SummaryProvider<Preference>() {
+                    @Override
+                    public CharSequence provideSummary(Preference preference) {
+                        return "";
+                    }
+                });
+            }
+
+
+
+            System.out.println("Valor para tImmp "+ conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp",""));
+
+            if(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","") == null || conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","").equals("")){
+                System.out.println("Entre a vacio");
+                editIpImp.setEnabled(false);
+                editPuertoImp.setEnabled(false);
+                btnPruebaRed.setEnabled(false);
+                listaImpresoras.setEnabled(false);
+                btnPrueba.setEnabled(false);
+                swCodigo.setEnabled(false);
+            }
             if(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","") != null && conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","").equals("Red")){
                 editIpImp.setEnabled(true);
                 editPuertoImp.setEnabled(true);
@@ -223,9 +271,16 @@ public class Configuracion extends ActividadBase {
                 editIpImp.setEnabled(false);
                 editPuertoImp.setEnabled(false);
                 listaImpresoras.setEnabled(true);
-                btnPrueba.setEnabled(true);
-                swCodigo.setEnabled(true);
                 btnPruebaRed.setEnabled(false);
+                btnPrueba.setEnabled(conf.hayimpresora);
+                swCodigo.setEnabled(conf.hayimpresora);
+
+                assert editIp != null;
+                editIp.setText(ip);
+                assert btnPrueba != null;
+                btnPrueba.setSummary(impresora.equals("") ? "Predeterminada" : impresora);
+                assert swCodigo != null;
+                swCodigo.setEnabled(!impresora.equals("") && !impresora.equals("Predeterminada"));
             }
 
             listaTipoImpresion.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -252,9 +307,16 @@ public class Configuracion extends ActividadBase {
                     editIpImp.setEnabled(false);
                     editPuertoImp.setEnabled(false);
                     listaImpresoras.setEnabled(true);
-                    btnPrueba.setEnabled(true);
-                    swCodigo.setEnabled(true);
                     btnPruebaRed.setEnabled(false);
+                    btnPrueba.setEnabled(conf.hayimpresora);
+                    swCodigo.setEnabled(conf.hayimpresora);
+
+                    assert editIp != null;
+                    editIp.setText(ip);
+                    assert btnPrueba != null;
+                    btnPrueba.setSummary(impresora.equals("") ? "Predeterminada" : impresora);
+                    assert swCodigo != null;
+                    swCodigo.setEnabled(!impresora.equals("") && !impresora.equals("Predeterminada"));
                 }
                 return false;
             });
@@ -308,17 +370,9 @@ public class Configuracion extends ActividadBase {
             //listEstaciones.setEnabled(conf.esLogin);
             //editIp.setEnabled(conf.esLogin);
 
-            listaImpresoras.setEnabled(true);
+            //listaImpresoras.setEnabled(true);
             //listaImpresoras.setEnabled(conf.hayimpresora);
-            btnPrueba.setEnabled(conf.hayimpresora);
-            swCodigo.setEnabled(conf.hayimpresora);
 
-            assert editIp != null;
-            editIp.setText(ip);
-            assert btnPrueba != null;
-            btnPrueba.setSummary(impresora.equals("") ? "Predeterminada" : impresora);
-            assert swCodigo != null;
-            swCodigo.setEnabled(!impresora.equals("") && !impresora.equals("Predeterminada"));
 
             CharSequence[] impresoras = new CharSequence[1];
             impresoras[0] = "Predeterminada";
@@ -402,7 +456,7 @@ public class Configuracion extends ActividadBase {
                     }
                 }
 
-                return  false;
+                return false;
             }));
 
             //Listener para configurar la generacion de codigo de barras por imagen
@@ -415,6 +469,7 @@ public class Configuracion extends ActividadBase {
             });
 
             conf.traeEstaciones();
+
         }
 
         /**

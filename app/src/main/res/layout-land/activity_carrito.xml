@@ -154,27 +154,19 @@
                                 android:text="F11"
                                 />
                         </LinearLayout>
-                        <LinearLayout
+
+
+                        <GridView
+                            android:id="@+id/listPrueba"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_200sdp"
-                            android:orientation="horizontal"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
                             android:gravity="center"
-                            android:layout_marginBottom="@dimen/_25sdp"
-                            >
-                            <GridView
-                                android:id="@+id/listPrueba"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/_15sdp"
-                                android:gravity="center"
-                                android:horizontalSpacing="10dp"
-                                android:numColumns="5"
-                                android:scrollbars="vertical"
-                                android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
-                        </LinearLayout>
-
-
+                            android:horizontalSpacing="10dp"
+                            android:numColumns="5"
+                            android:scrollbars="vertical"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="10dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

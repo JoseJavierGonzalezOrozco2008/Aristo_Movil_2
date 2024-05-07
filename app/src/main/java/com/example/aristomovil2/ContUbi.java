@@ -293,18 +293,22 @@ public class ContUbi extends ActividadBase {
                         int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
                         String contenido = "";
                         int espacios = getSharedPreferences("renglones", Context.MODE_PRIVATE).getInt("espacios", 3);
-
-                        for (Ubicacion u : ubicaciones){
-                            contenido += u.getUbicacion()+",T2|";
-                            contenido += u.getCodigo()+",T2|";
-                            if (codigoBarras)
-                                contenido += u.getCodigo()+",**|";
-                            else
-                                contenido += u.getCodigo()+",**|";
-                            contenido += " ,T1|";
+                        if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                            muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+                        } else {
+                            for (Ubicacion u : ubicaciones){
+                                contenido += u.getUbicacion()+",T2|";
+                                contenido += u.getCodigo()+",T2|";
+                                if (codigoBarras)
+                                    contenido += u.getCodigo()+",**|";
+                                else
+                                    contenido += u.getCodigo()+",**|";
+                                contenido += " ,T1|";
+                            }
+                            contenido = contenido.substring(contenido.length()-1);
+                            new Impresora(ip,contenido,puerto,espacios);
                         }
-                        contenido = contenido.substring(contenido.length()-1);
-                        new Impresora(ip,contenido,puerto,espacios);
+
 
                     }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
                         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED){

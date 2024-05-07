@@ -150,11 +150,16 @@ public class Bultos extends ActividadBase {
             int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
             String contenido = "";
             int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
-            Bulto bulto=bultos.get(i).get(j);
-            ServicioImpresionTicket impBult = new ServicioImpresionTicket();
-            contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,codigoBarras,imprimeDetalles,imprime_espacios);
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                Bulto bulto=bultos.get(i).get(j);
+                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
+                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,codigoBarras,imprimeDetalles,imprime_espacios);
 
-            new Impresora(ip,contenido,puerto,espacios).execute();
+                new Impresora(ip,contenido,puerto,espacios).execute();
+            }
+
 
         }else if(tipoImp != null && tipoImp.equals("Bluethooth")){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED){
