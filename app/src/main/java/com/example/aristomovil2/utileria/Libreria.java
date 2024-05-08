@@ -5,15 +5,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.google.zxing.BarcodeFormat;
@@ -54,6 +53,42 @@ public final class Libreria {
     }
 
     /**
+     * Método que ajusta la altura de un ListView a partir de un límite
+     * @param list ListView a configurar
+     * @param limite cantidad de items a mostrar (límite)
+     */
+     public static void ajustaAltoListView(ListView list, int limite){
+
+         ListAdapter adapter = list.getAdapter();
+         if (adapter == null) {
+             return;
+         }
+         int totalItems = list.getCount();
+
+         if (totalItems < limite) {
+            int totalHeight = 0;
+
+            for (int i = 0; i < totalItems; i++) {
+                View listItem = adapter.getView(i, null, list);
+                listItem.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            ViewGroup.LayoutParams params = list.getLayoutParams();
+            params.height = totalHeight + (list.getDividerHeight() * (totalItems - 1));
+            list.setLayoutParams(params);
+         } else {
+            View listItem = adapter.getView(0, null, list);
+            listItem.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+            ViewGroup.LayoutParams params = list.getLayoutParams();
+            params.height = listItem.getMeasuredHeight() * limite + (list.getDividerHeight() * (limite - 1));
+            list.setLayoutParams(params);
+         }
+     }
+
+
+    /**
      * Evalua si un String tiene informacion ademas de que sea numero
      * @param pCadena (String) Cadena a Evaluar
      * @return  regresa el entero encontrado, en caso de que no sea numero o no hay informacion regresa 0
@@ -74,6 +109,13 @@ public final class Libreria {
 
     public static float tieneInformacionFloat(String pCadena,float pDefault){
         return tieneInformacion(pCadena) && (isNumberInt(pCadena) || isNumeric(pCadena)) ? Float.parseFloat(pCadena):pDefault;
+    }
+    public static String traeInfo(String pCadena,String pDefault){
+        return tieneInformacion(pCadena) ? pCadena:pDefault;
+    }
+
+    public static String traeInfo(String pCadena){
+        return traeInfo(pCadena,"");
     }
 
     /**

@@ -19,6 +19,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -69,6 +70,7 @@ public class Carrito extends ActividadBase {
     private Menu v_menu;
 
     private List<Generica> renglonesGen;
+    private int orientacion;
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -178,9 +180,9 @@ public class Carrito extends ActividadBase {
                 f11.setVisibility(View.VISIBLE);
                 break;
         }
-        int rotacion = getWindowManager().getDefaultDisplay().getRotation();
+        orientacion = getWindowManager().getDefaultDisplay().getRotation();
         gridProds = findViewById(R.id.listPrueba);
-        if (rotacion == Surface.ROTATION_0 || rotacion == Surface.ROTATION_180) {
+        if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
             gridProds.setVisibility(View.VISIBLE);
         } else {
             gridProds.setVisibility(View.VISIBLE);
@@ -284,6 +286,9 @@ public class Carrito extends ActividadBase {
     }
     //</editor-fold>
 
+    private void cancelaVenta(){
+        peticionWS(Enumeradores.Valores.TAREA_VNTACANCELA, "SQL", "SQL", v_vntafolio, ""+usuarioID, "");
+    }
 
     @Override
     public void Finish(EnviaPeticion output) {
@@ -297,15 +302,10 @@ public class Carrito extends ActividadBase {
                     DcarritoAdapter adapter = new DcarritoAdapter(renglones, this);
                     v_carrito.setAdapter(adapter);
                     v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
-                    if(v_carrito != null && v_carrito.getCount() > 0){
-                        int alturaDp = 280;
-                        float factorDensidad = getResources().getDisplayMetrics().density;
-                        int alturaSdp = (int) (alturaDp * factorDensidad);
-
-                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
-                        params.height = alturaSdp;
-                        v_carrito.setLayoutParams(params);
-
+                    if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
+                        if(v_carrito != null && v_carrito.getCount() > 0){
+                            Libreria.ajustaAltoListView(v_carrito,5);
+                        }
                     }
 
                     v_codigo.requestFocus();
@@ -321,16 +321,12 @@ public class Carrito extends ActividadBase {
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
                     v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
-                    if(v_carrito != null && v_carrito.getCount() > 0){
-                        int alturaDp = 280;
-                        float factorDensidad = getResources().getDisplayMetrics().density;
-                        int alturaSdp = (int) (alturaDp * factorDensidad);
-
-                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
-                        params.height = alturaSdp;
-                        v_carrito.setLayoutParams(params);
-
+                    if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
+                        if(v_carrito != null && v_carrito.getCount() > 0){
+                            Libreria.ajustaAltoListView(v_carrito,5);
+                        }
                     }
+
                     nuevoada.notifyDataSetChanged();
                     v_ultprod = 0;
                     v_importe = 0.0;
@@ -396,15 +392,10 @@ public class Carrito extends ActividadBase {
                 }else{
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
-                    if(v_carrito != null && v_carrito.getCount() > 0){
-                        int alturaDp = 280;
-                        float factorDensidad = getResources().getDisplayMetrics().density;
-                        int alturaSdp = (int) (alturaDp * factorDensidad);
-
-                        ViewGroup.LayoutParams params = v_carrito.getLayoutParams();
-                        params.height = alturaSdp;
-                        v_carrito.setLayoutParams(params);
-
+                    if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
+                        if(v_carrito != null && v_carrito.getCount() > 0){
+                            Libreria.ajustaAltoListView(v_carrito,5);
+                        }
                     }
                     nuevoada.notifyDataSetChanged();
                     v_nombrecliente = v_default.getTex1();
@@ -525,29 +516,35 @@ public class Carrito extends ActividadBase {
                 //cambia de credito a cotado y viceversa
                 cambioCredito();
                 break;
+            case 3:
+                dlgVntaCancela();
+                break;
             default:
                 muestraMensaje("Menu en construccion",R.drawable.mensaje_warning);
         }
         return false;
     }
-
+    private boolean cambiaF2(){
+        if(Libreria.tieneInformacion(v_vntafolio) && !v_vntafolio.equals(v_default.getTex2())){
+            Intent intent = new Intent(this, Cobropv.class);
+            intent.putExtra("folio",v_vntafolio);
+            intent.putExtra("importe",v_importe);
+            intent.putExtra("estacion",v_estacion);
+            intent.putExtra("metpago",v_metpago);
+            intent.putExtra("cliente",v_nombrecliente);
+            intent.putExtra("tipoVenta",v_tipovnta);
+            intent.putExtra("virtuales",v_virtuales);
+            mStartForResult.launch(intent);
+            //startActivity(intent);
+        }else{
+            muestraMensaje("No tiene venta para continuar",R.drawable.mensaje_error);
+        }
+        return true;
+    }
     View.OnClickListener accion = (view) -> {
         switch(view.getId()){
             case R.id.vntaF2:
-                if(Libreria.tieneInformacion(v_vntafolio) && !v_vntafolio.equals(v_default.getTex2())){
-                    Intent intent = new Intent(this, Cobropv.class);
-                    intent.putExtra("folio",v_vntafolio);
-                    intent.putExtra("importe",v_importe);
-                    intent.putExtra("estacion",v_estacion);
-                    intent.putExtra("metpago",v_metpago);
-                    intent.putExtra("cliente",v_nombrecliente);
-                    intent.putExtra("tipoVenta",v_tipovnta);
-                    intent.putExtra("virtuales",v_virtuales);
-                    mStartForResult.launch(intent);
-                    //startActivity(intent);
-                }else{
-                    muestraMensaje("No tiene venta para continuar",R.drawable.mensaje_error);
-                }
+                cambiaF2();
                 break;
             case R.id.vntaF1:
                 Intent intent = new Intent(this, BuscaProducto.class);
@@ -722,22 +719,34 @@ public class Carrito extends ActividadBase {
     }
 
     public void dlgBuscaCliente(){
-        v_dlgCliente = new Dialog(this);
-        Objects.requireNonNull(v_dlgCliente.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        v_dlgCliente.setContentView(R.layout.dialogo_cliente);
-        v_dlgCliente.setCancelable(true);
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(false);
 
-        final EditText cantidad = v_dlgCliente.findViewById(R.id.clteBusca);
-        ImageButton busca = v_dlgCliente.findViewById(R.id.btnClteBusca);
-        Button nuevo = v_dlgCliente.findViewById(R.id.btnClteNuevo);
-        ImageButton regresa = v_dlgCliente.findViewById(R.id.btnClteRegresa);
-        v_listaclientes = v_dlgCliente.findViewById(R.id.listClte);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista=inflater.inflate(R.layout.dialogo_cliente, null);
+        View titulo=inflater.inflate(R.layout.item_titulo, null);
+        builder.setView(vista);
+        builder.setCustomTitle(titulo);
+        builder.setTitle("");
+        //builder.setContentView();
+        builder.setCancelable(true);
+
+        final EditText cantidad = vista.findViewById(R.id.clteBusca);
+        ImageButton busca = vista.findViewById(R.id.btnClteBusca);
+        TextView titTitulo = titulo.findViewById(R.id.tit_titulo);
+        ImageButton nuevo = titulo.findViewById(R.id.btnTitNuevo);
+        ImageButton regresa = titulo.findViewById(R.id.btnTitRegresa);
+        v_listaclientes = vista.findViewById(R.id.listClte);
+        titTitulo.setText("Busca Cliente");
 
         cantidad.setText("");
         cantidad.requestFocus();
         cantidad.setSelectAllOnFocus(true);
         v_Adacliente = new ClienteAdapter(new ArrayList(),this);
         v_listaclientes.setAdapter(v_Adacliente);
+        TextView texto=vista.findViewById(R.id.clteListSinReg);
+        texto.setText("");
+        v_listaclientes.setEmptyView(texto);
 
         int[] colors = {0, 0xFF000000, 0};
         v_listaclientes.setDivider(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
@@ -750,8 +759,9 @@ public class Carrito extends ActividadBase {
         regresa.setOnClickListener(v-> dlgClienteCierra());
 
         nuevo.setOnClickListener(v-> {
-
-
+            Intent intent = new Intent(this, com.example.aristomovil2.Acrividades.Cliente.class);
+            intent.putExtra("clteid",0);
+            mStartForResult.launch(intent);
         });
 
         cantidad.setOnKeyListener((view, i, keyEvent) -> {
@@ -760,6 +770,7 @@ public class Carrito extends ActividadBase {
             }
             return false;
         });
+        v_dlgCliente = builder.create();
         v_dlgCliente.show();
     }
 
@@ -786,5 +797,16 @@ public class Carrito extends ActividadBase {
             v_dlgCliente.dismiss();
         }
     }
+    public void dlgVntaCancela(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        builder.setMessage("¿Deseas cancelar la venta?")
+                .setPositiveButton("Si", (dialog, id) -> cancelaVenta())
+                .setNegativeButton("No", (dialog, id) -> {});
+
+        builder.show();
+    }
+    public ActivityResultLauncher<Intent> getmStartForResult() {
+        return mStartForResult;
+    }
 }
