@@ -17,13 +17,14 @@
             app:summary="Selecciona una estacion"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Impresora" >
+    <PreferenceCategory android:title="Impresora" />
         <ListPreference
             android:key="tipoImpresion"
             android:title="Tipo de Impresión"
             android:entryValues="@array/tipo_impresion"
             android:entries="@array/tipo_impresion"
             />
+    <PreferenceCategory android:title="Impresión por Red" />
         <EditTextPreference
             android:defaultValue="Default"
             android:key="configuracion_edit_ip_impresora"
@@ -42,6 +43,7 @@
             android:key="configuracion_edit_pruebaRed"
             app:title="Probar Impresora por Red"
             />
+    <PreferenceCategory android:title="Impresión Bluetooth" >
         <ListPreference
             android:key="configuracion_list_impresoras"
             app:title="Impresora"
