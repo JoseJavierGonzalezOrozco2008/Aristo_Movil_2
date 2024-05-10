@@ -419,6 +419,7 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
                 addPreferenceString(editor, obj, "mensaje", "user", "");
                 addPreferenceString(editor, obj, "usuaid", "usuarioID", "");
                 addPreferenceInt(editor, obj, "estaid", "estaid", 0);
+                addPreferenceString(editor, obj, "estacion", "estacion", "");
                 addPreferenceInt(editor, obj, "tipoventa", "tipoVenta", 0);
                 addPreferenceBoolean(editor, obj, "puedecobrar", "puedecobrar", true);
                 addPreferenceBoolean(editor, obj, "verfoto", "muestrafoto", true);

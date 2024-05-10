@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
@@ -205,10 +206,32 @@ public class Configuracion extends ActividadBase {
             SwitchPreference swCodigo = findPreference("configuracion_switch_codigo");
             ListPreference listaImpresoras = findPreference("configuracion_list_impresoras");
             ListPreference listaTipoImpresion = findPreference("tipoImpresion");
+
+
+            PreferenceCategory estacionConf = findPreference("configuracion_estacion");
+            if(conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion","") != null && !conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion","").equals("")){
+                estacionConf.setTitle("Estación: "+conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion",""));
+            } else{
+              estacionConf.setTitle("Sin Estación");
+            }
+
             listaTipoImpresion.setValue(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp",""));
             editIpImp.setText(conf.getSharedPreferences("configuracion_edit_ip_impresora",Context.MODE_PRIVATE).getString("ipImpRed",""));
             editPuertoImp.setText(conf.getSharedPreferences("configuracion_edit_puerto_impresora",Context.MODE_PRIVATE).getString("puertoImpRed",""));
+            editIp.setText(ip);
 
+            if(editIp != null){
+                editIp.setSummaryProvider(new Preference.SummaryProvider<EditTextPreference>() {
+                    @Override
+                    public CharSequence provideSummary(EditTextPreference preference) {
+                        String text = preference.getText();
+                        if (text == null || TextUtils.isEmpty(text)){
+                            return "IP sin definir";
+                        }
+                        return text;
+                    }
+                });
+            }
 
             if (editIpImp != null) {
                 editIpImp.setSummaryProvider(new Preference.SummaryProvider<EditTextPreference>() {
@@ -275,8 +298,10 @@ public class Configuracion extends ActividadBase {
                 btnPrueba.setEnabled(conf.hayimpresora);
                 swCodigo.setEnabled(conf.hayimpresora);
 
-                assert editIp != null;
-                editIp.setText(ip);
+
+
+                /*assert editIp != null;
+                editIp.setText(ip);*/
                 assert btnPrueba != null;
                 btnPrueba.setSummary(impresora.equals("") ? "Predeterminada" : impresora);
                 assert swCodigo != null;

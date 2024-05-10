@@ -173,6 +173,8 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:fontFamily="@font/arial"
+                                android:nextFocusDown="@+id/cbroTCreRef"
+                                android:nextFocusRight="@+id/cbroTCreRef"
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="numberDecimal"
@@ -195,6 +197,10 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
+                                android:nextFocusDown="@+id/cbroTCreRef"
+                                android:nextFocusRight="@+id/cbroTCreRef"
+                                android:nextFocusLeft="@+id/cbroTCreRef"
+                                android:nextFocusUp="@+id/cbroTCreRef"
                                 android:hint="Refe."
                                 android:lines="1" />
 
@@ -225,6 +231,8 @@
                                 android:fontFamily="@font/arial"
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
+                                android:nextFocusDown="@+id/cbroTDebRef"
+                                android:nextFocusRight="@+id/cbroTDebRef"
                                 android:inputType="numberDecimal"
                                 android:lines="1"/>
 
@@ -244,6 +252,10 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
+                                android:nextFocusDown="@+id/cbroTDebRef"
+                                android:nextFocusRight="@+id/cbroTDebRef"
+                                android:nextFocusLeft="@+id/cbroTDebRef"
+                                android:nextFocusUp="@+id/cbroTDebRef"
                                 android:hint="Refe."
                                 android:lines="1" />
                         </LinearLayout>
@@ -273,6 +285,8 @@
                                 android:fontFamily="@font/arial"
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
+                                android:nextFocusDown="@+id/cbroTransRefe"
+                                android:nextFocusRight="@+id/cbroTransRefe"
                                 android:inputType="numberDecimal"
                                 android:lines="1"/>
                             <Spinner
@@ -289,6 +303,10 @@
                                 android:fontFamily="@font/arial"
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
+                                android:nextFocusDown="@+id/cbroTransRefe"
+                                android:nextFocusRight="@+id/cbroTransRefe"
+                                android:nextFocusLeft="@+id/cbroTransRefe"
+                                android:nextFocusUp="@+id/cbroTransRefe"
                                 android:inputType="text"
                                 android:hint="Refe."
                                 android:lines="1" />
