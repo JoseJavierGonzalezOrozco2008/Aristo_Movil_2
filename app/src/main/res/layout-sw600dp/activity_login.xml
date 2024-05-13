@@ -49,7 +49,7 @@
                         android:paddingVertical="10dp">
 
                         <ImageView
-                            android:layout_width="@dimen/_150sdp"
+                            android:layout_width="@dimen/_145sdp"
                             android:layout_height= "@dimen/_130sdp"
                             android:adjustViewBounds="true"
                             android:contentDescription="Logo"

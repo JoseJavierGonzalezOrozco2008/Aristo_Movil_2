@@ -302,10 +302,10 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:nextFocusDown="@+id/cbroTCreRef"
-                                android:nextFocusRight="@+id/cbroTCreRef"
-                                android:nextFocusLeft="@+id/cbroTCreRef"
-                                android:nextFocusUp="@+id/cbroTCreRef"
+                                android:nextFocusDown="@+id/cbroTDebito"
+                                android:nextFocusRight="@+id/cbroTDebito"
+                                android:nextFocusLeft="@+id/cbroTDebito"
+                                android:nextFocusUp="@+id/cbroTDebito"
                                 android:hint="Refe."
                                 android:lines="1" />
 
@@ -358,10 +358,10 @@
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
                                 android:hint="Refe."
-                                android:nextFocusDown="@+id/cbroTDebRef"
-                                android:nextFocusRight="@+id/cbroTDebRef"
-                                android:nextFocusLeft="@+id/cbroTDebRef"
-                                android:nextFocusUp="@+id/cbroTDebRef"
+                                android:nextFocusDown="@+id/cbroTrans"
+                                android:nextFocusRight="@+id/cbroTrans"
+                                android:nextFocusLeft="@+id/cbroTrans"
+                                android:nextFocusUp="@+id/cbroTrans"
                                 android:lines="1" />
                         </LinearLayout>
                         <LinearLayout
@@ -409,10 +409,7 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:nextFocusDown="@+id/cbroTransRefe"
-                                android:nextFocusRight="@+id/cbroTransRefe"
-                                android:nextFocusLeft="@+id/cbroTransRefe"
-                                android:nextFocusUp="@+id/cbroTransRefe"
+                                android:imeOptions="actionDone"
                                 android:hint="Refe."
                                 android:lines="1" />
                         </LinearLayout>
