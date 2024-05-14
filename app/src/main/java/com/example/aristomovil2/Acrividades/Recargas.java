@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,6 +17,7 @@ import com.example.aristomovil2.ActividadBase;
 import com.example.aristomovil2.R;
 import com.example.aristomovil2.adapters.GenericaAdapter;
 import com.example.aristomovil2.modelos.Generica;
+import com.example.aristomovil2.servicio.NumeroTelefonicoFormat;
 import com.example.aristomovil2.utileria.Libreria;
 
 import java.util.List;
@@ -39,8 +41,10 @@ public class Recargas extends ActividadBase {
         v_referencia = findViewById(R.id.recaReferencia);
         v_Info = findViewById(R.id.recaInfo);
         v_cancel = findViewById(R.id.recaCancel);
-        TextView num1 = findViewById(R.id.recaNum1);
-        TextView num2 = findViewById(R.id.recaNum2);
+        EditText num1 = findViewById(R.id.recaNum1);
+        EditText num2 = findViewById(R.id.recaNum2);
+        num1.addTextChangedListener(new NumeroTelefonicoFormat(num1));
+        num2.addTextChangedListener(new NumeroTelefonicoFormat(num2));
         Button aceptar = findViewById(R.id.recaAceptar);
         GenericaAdapter adapRecarga=new GenericaAdapter(lista,this,1);
         v_recarga.setAdapter(adapRecarga);
@@ -63,16 +67,23 @@ public class Recargas extends ActividadBase {
         aceptar.setOnClickListener(view -> {
             String dato = num1.getText().toString();
             String dato1 = num2.getText().toString();
+            dato = dato.replace("-","");
+            dato = dato.replace("(","");
+            dato = dato.replace(")","");
+            dato1 = dato1.replace("-","");
+            dato1 = dato1.replace("(","");
+            dato1 = dato1.replace(")","");
+
             if(!Libreria.tieneInformacion(dato)){
-                muestraMensaje("Captura informacion",R.drawable.mensaje_error);
+                muestraMensaje("Captura información",R.drawable.mensaje_error);
                 return;
             }
             if(dato.length()>10){
-                muestraMensaje("El numero es demaciado largo",R.drawable.mensaje_error);
+                muestraMensaje("El número es demasiado largo",R.drawable.mensaje_error);
                 return;
             }
             if(!dato.equalsIgnoreCase(dato1)){
-                muestraMensaje("No coinciden los numeros",R.drawable.mensaje_error);
+                muestraMensaje("No coinciden los números",R.drawable.mensaje_error);
                 return;
             }
             v_refe = dato;
