@@ -14,6 +14,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -71,6 +73,7 @@ public class Carrito extends ActividadBase {
 
     private List<Generica> renglonesGen;
     private int orientacion;
+    private boolean isProcessing = false;
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -191,12 +194,16 @@ public class Carrito extends ActividadBase {
         v_codigo.requestFocus();
         colocaTitulo();
         traeUltVnta();
-
+        /*if (savedInstanceState != null) {
+            isProcessing = savedInstanceState.getBoolean("isProcessing", false);
+        }*/
 
     }
 
     //<editor-fold defaultstate="collapsed" desc="Ws">
     public void wsLineaCaptura(String pCodigo){
+        //isProcessing = true;
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         if(!Libreria.tieneInformacion(pCodigo)){
             muestraMensaje("Captura un código",R.drawable.mensaje_error);
             return;
@@ -290,12 +297,36 @@ public class Carrito extends ActividadBase {
         peticionWS(Enumeradores.Valores.TAREA_VNTACANCELA, "SQL", "SQL", v_vntafolio, ""+usuarioID, "");
     }
 
+
+ /*   @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Guardar el estado de procesamiento antes de una rotación
+        outState.putBoolean("isProcessing", isProcessing);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+    }
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (isProcessing) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+        }
+    }*/
+
     @Override
     public void Finish(EnviaPeticion output) {
         ContentValues obj = (ContentValues)output.getExtra1();
         switch (output.getTarea()){
             case TAREA_TRAE_RENGLONES:
-                System.out.println("Entre trae renglones "+v_vntafolio);
+                System.out.println("Entre trae renglones "+v_vntafolio + " "+v_ultprod);
                 ArrayList<Renglon> renglones = servicio.getRenglones(this, v_vntafolio);
                 if(!renglones.isEmpty()){
                     v_importe = Double.valueOf(renglones.get(0).getVntatotal()+"");
@@ -307,20 +338,24 @@ public class Carrito extends ActividadBase {
                             Libreria.ajustaAltoListView(v_carrito,5);
                         }
                     }
-
+                    v_ultprod = renglones.get(0).getDvtaid();
                     v_codigo.requestFocus();
-                    if(v_ultprod == 0){
+                    /*if(v_ultprod == 0){
                         v_ultprod = renglones.get(0).getDvtaid();
                     }else if(v_granel){
                         dlgRenglon(renglones.get(0));
                         v_granel = false;
+                    }*/
+                    if(v_ultprod != 0 && v_granel){
+                        dlgRenglon(renglones.get(0));
+                        v_granel = false;
                     }
-                    System.out.println("Valor ultprod: "+v_ultprod);
                     v_Total.setText("$"+v_importe);
                 }else{
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
                     v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
+                    v_ultprod = 0;
                     if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
                         if(v_carrito != null && v_carrito.getCount() > 0){
                             Libreria.ajustaAltoListView(v_carrito,5);
@@ -356,6 +391,8 @@ public class Carrito extends ActividadBase {
 
                 }
                 v_codigo.requestFocus();
+                //isProcessing = false;
+                //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
                 break;
             case TAREA_VNTAMASPROD:
                 renglonesGen = servicio.traeProductosVnta();
@@ -389,6 +426,7 @@ public class Carrito extends ActividadBase {
                     }
                     traeRenglones();
                     colocaTitulo();
+                    System.out.println("Ultimo valor "+ v_ultprod);
                 }else{
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
@@ -469,6 +507,9 @@ public class Carrito extends ActividadBase {
     protected void onResume() {
         super.onResume();
         v_codigo.requestFocus();
+        /*if (isProcessing) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        }*/
         //traeUltVnta();
     }
 

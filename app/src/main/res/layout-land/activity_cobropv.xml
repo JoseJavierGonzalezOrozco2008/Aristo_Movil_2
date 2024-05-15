@@ -52,7 +52,6 @@
                                 android:textColor="@drawable/white_text_button"
                                 style="@style/boton_estilo"
                                 android:textAllCaps="false"
-                                android:autoSizeTextType="uniform"
                                 android:layout_marginRight="@dimen/_5sdp"
                                 android:layout_weight="0.28" >
                             </Button>
@@ -73,7 +72,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:text="Limpia"
-                                android:autoSizeTextType="uniform"
                                 android:background="@drawable/button_casiagotado"
                                 android:textColor="@drawable/white_text_button"
                                 style="@style/boton_estilo"
@@ -84,23 +82,15 @@
                         </LinearLayout>
 
 
-                        <com.google.android.flexbox.FlexboxLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:flexWrap='wrap'
-                            app:alignContent="center"
-                            app:flexDirection="row"
-                            app:alignItems="center"
-                            app:justifyContent="space_around"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingVertical="10dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:layout_marginBottom="@dimen/_20sdp">
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="horizontal">
                             <Button
                                 android:id="@+id/cbro20"
                                 android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_35sdp"
+                                android:layout_height="match_parent"
                                 android:text="20"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 style="@style/boton_estilo"
@@ -111,7 +101,7 @@
                             <Button
                                 android:id="@+id/cbro50"
                                 android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_35sdp"
+                                android:layout_height="match_parent"
                                 android:text="50"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 style="@style/boton_estilo"
@@ -121,7 +111,7 @@
                             <Button
                                 android:id="@+id/cbro100"
                                 android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_35sdp"
+                                android:layout_height="match_parent"
                                 android:text="100"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 style="@style/boton_estilo"
@@ -131,7 +121,7 @@
                             <Button
                                 android:id="@+id/cbro200"
                                 android:layout_width="@dimen/_70sdp"
-                                android:layout_height="@dimen/_35sdp"
+                                android:layout_height="match_parent"
                                 android:text="200"
                                 style="@style/boton_estilo"
                                 android:layout_marginTop="@dimen/_5sdp"
@@ -142,13 +132,13 @@
                                 android:id="@+id/cbro500"
                                 android:layout_width="@dimen/_70sdp"
                                 android:layout_marginTop="@dimen/_5sdp"
-                                android:layout_height="@dimen/_30sdp"
+                                android:layout_height="match_parent"
                                 android:text="500"
                                 style="@style/boton_estilo"
                                 android:background="@drawable/button_shape"
                                 android:layout_weight="1"
                                 />
-                        </com.google.android.flexbox.FlexboxLayout>
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -162,9 +152,8 @@
                                 style="@style/boton_estilo"
                                 android:background="@drawable/button_light_blue_900"
                                 android:textColor="@drawable/white_text_button"
-                                android:autoSizeTextType="uniform"
                                 android:textAllCaps="false"
-                                android:layout_marginRight="@dimen/_15sdp"
+
                                 android:layout_weight="1">
                             </Button>
                             <EditText android:id="@+id/cbroTCredito"
@@ -197,11 +186,12 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:nextFocusDown="@+id/cbroTDebito"
-                                android:nextFocusRight="@+id/cbroTDebito"
-                                android:nextFocusLeft="@+id/cbroTDebito"
-                                android:nextFocusUp="@+id/cbroTDebito"
+                                android:nextFocusDown="@+id/cbroTCreRef"
+                                android:nextFocusRight="@+id/cbroTCreRef"
+                                android:nextFocusLeft="@+id/cbroTCreRef"
+                                android:nextFocusUp="@+id/cbroTCreRef"
                                 android:hint="Refe."
+                                android:imeOptions="actionNext"
                                 android:lines="1" />
 
                         </LinearLayout>
@@ -215,12 +205,11 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:text="T.Debito:"
-                                android:autoSizeTextType="uniform"
                                 style="@style/boton_estilo"
                                 android:background="@drawable/button_amarilloacomodo"
                                 android:textColor="@drawable/white_text_button"
                                 android:textAllCaps="false"
-                                android:layout_marginRight="@dimen/_15sdp"
+
                                 android:layout_weight="1">
                             </Button>
                             <EditText android:id="@+id/cbroTDebito"
@@ -252,11 +241,12 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:nextFocusDown="@+id/cbroTrans"
-                                android:nextFocusRight="@+id/cbroTrans"
-                                android:nextFocusLeft="@+id/cbroTrans"
-                                android:nextFocusUp="@+id/cbroTrans"
+                                android:nextFocusDown="@+id/cbroTDebRef"
+                                android:nextFocusRight="@+id/cbroTDebRef"
+                                android:nextFocusLeft="@+id/cbroTDebRef"
+                                android:nextFocusUp="@+id/cbroTDebRef"
                                 android:hint="Refe."
+                                android:imeOptions="actionNext"
                                 android:lines="1" />
                         </LinearLayout>
                         <LinearLayout
@@ -273,8 +263,7 @@
                                 android:textColor="@drawable/white_text_button"
                                 style="@style/boton_estilo"
                                 android:textAllCaps="false"
-                                android:autoSizeTextType="uniform"
-                                android:layout_marginRight="@dimen/_15sdp"
+
                                 android:layout_weight="1" >
                             </Button>
                             <EditText android:id="@+id/cbroTrans"
@@ -303,9 +292,13 @@
                                 android:fontFamily="@font/arial"
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
-                                android:imeOptions="actionDone"
+                                android:nextFocusDown="@+id/cbroTransRefe"
+                                android:nextFocusRight="@+id/cbroTransRefe"
+                                android:nextFocusLeft="@+id/cbroTransRefe"
+                                android:nextFocusUp="@+id/cbroTransRefe"
                                 android:inputType="text"
                                 android:hint="Refe."
+                                android:imeOptions="actionDone"
                                 android:lines="1" />
                         </LinearLayout>
                     </LinearLayout>
@@ -362,10 +355,8 @@
                                 android:id="@+id/cbroPagar"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:autoSizeTextType="uniform"
                                 android:background="@drawable/button_green"
                                 android:textColor="@drawable/white_text_button"
-                                android:autoSizeMaxTextSize="@dimen/_12sdp"
                                 android:text="Pagar"
                                 android:textSize="@dimen/textSizeSmall"
                                 />

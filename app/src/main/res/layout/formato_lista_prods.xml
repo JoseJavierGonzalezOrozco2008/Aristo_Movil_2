@@ -9,6 +9,7 @@
              android:layout_width="@dimen/_50sdp"
              android:layout_height="wrap_content"
              android:text="Acción"
+             android:typeface="monospace"
              android:textAlignment="center"
              android:textSize="@dimen/_8sdp"
              android:textColor="@drawable/white_text_button"
