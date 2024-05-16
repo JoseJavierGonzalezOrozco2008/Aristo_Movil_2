@@ -38,7 +38,7 @@
 
                     <com.google.android.flexbox.FlexboxLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_90sdp"
                         app:flexWrap='wrap'
                         app:alignContent="center"
                         app:flexDirection="row"
@@ -49,8 +49,8 @@
                         android:paddingVertical="10dp">
 
                         <ImageView
-                            android:layout_width="@dimen/_145sdp"
-                            android:layout_height= "@dimen/_130sdp"
+                            android:layout_width="@dimen/_135sdp"
+                            android:layout_height= "@dimen/_120sdp"
                             android:adjustViewBounds="true"
                             android:contentDescription="Logo"
                             android:src="@drawable/logoaristo" />
@@ -63,7 +63,7 @@
                         android:layout_weight="0.65"
                         android:orientation="vertical"
                         android:paddingHorizontal="80dp"
-                        android:paddingVertical="20dp">
+                        android:paddingVertical="0dp">
 
                         <EditText
                             android:id="@+id/editLoginUsuario"

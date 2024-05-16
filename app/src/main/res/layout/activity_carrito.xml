@@ -62,7 +62,18 @@
                             android:layout_weight="0.3"
                             android:visibility="gone"
                             />
-
+                        <ImageButton
+                            android:id="@+id/vntaBarcode"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.20"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:layout_marginRight="@dimen/_2sdp"
+                            android:backgroundTint="@color/design_default_color_surface"
+                            android:contentDescription="Código de barras"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:src="@drawable/bars_code" />
                         <Button
                             android:id="@+id/vntaF1"
                             android:layout_width="0dp"
