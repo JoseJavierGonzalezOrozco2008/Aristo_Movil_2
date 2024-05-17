@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <TextView
-        android:id="@+id/dvtaProducto"
-        android:layout_width="match_parent"
-        android:textSize="26dp"
-        android:text="Busca Cliente"
-        android:textColor="@color/black"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +19,7 @@
             android:visibility="gone"
             />
         <Button
-            android:id="@+id/btnClteNuevo"
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -36,52 +28,52 @@
             android:background="@drawable/button_shape"
             />
     </LinearLayout>
-
     <LinearLayout
+        android:id="@+id/clteLtBusca"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:orientation="horizontal">
-
         <ImageButton
             android:id="@+id/btnClteRegresa"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/left_arrow"
             android:background="@drawable/button_shape"
-            android:layout_weight="0.1"
+            android:layout_weight="0.05"
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
+            android:visibility="gone"
             />
         <TextView
-            android:id="@+id/dvtaCantcapt"
-            android:layout_width="0dp"
-            android:layout_weight=".25"
-            android:text="Cliente:"
-            android:textSize="24dp"
-            android:textColor="@color/black"
+            android:id="@+id/btnClteNuevo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"/>
+            android:text="Cliente:"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            />
+
         <EditText
             android:padding="5dp"
             android:id="@+id/clteBusca"
             android:textSize="24dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight="1"
             android:inputType="text"
             android:lines="1"/>
 
         <ImageButton android:id="@+id/btnClteBusca"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/right_arrow"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:background="@drawable/button_shape"
-            android:layout_weight="0.1"
+            android:src="@drawable/eye"
+            android:backgroundTint="@color/design_default_color_surface"
+            android:layout_weight="0.05"
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"/>
+
     </LinearLayout>
 
     <ListView
@@ -89,4 +81,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/clteListSinReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sin registro"
+        android:textSize="@dimen/textSizeSmall"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        />
 </LinearLayout>

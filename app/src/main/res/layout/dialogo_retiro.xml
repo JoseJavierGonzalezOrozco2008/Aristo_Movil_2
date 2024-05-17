@@ -23,12 +23,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_65sdp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/arial"
                 android:text="Retiro:"
-                android:gravity="end"
-                android:layout_weight="1"
+                android:gravity="start"
                 android:textColor="#000000"
                 android:textSize="@dimen/textSizeSmall" />
 
@@ -51,12 +50,11 @@
             android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_65sdp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/arial"
                 android:text="Clave:"
-                android:gravity="end"
-                android:layout_weight="1"
+                android:gravity="start"
                 android:textColor="#000000"
                 android:textSize="@dimen/textSizeSmall" />
 
@@ -73,17 +71,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center">
             <Button
                 android:id="@+id/retibtnregresa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_colordiferencias"
                 android:layout_weight="1"
+                android:layout_marginRight="@dimen/_7sdp"
                 android:text="Regresar" />
             <Button
                 android:id="@+id/retibtnguarda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_green"
                 android:layout_weight="1"
                 android:text="Guardar" />
         </LinearLayout>

@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -35,6 +36,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -100,6 +102,11 @@ public class Ddincontrolador extends ActividadBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        cambio();
+    }
+
+    public void cambio(){
         setContentView(R.layout.activity_ddincontrolador);
         inicializarActividad("Folio doc");
         Bundle extras = getIntent().getExtras();
@@ -192,7 +199,7 @@ public class Ddincontrolador extends ActividadBase {
         });
 
         editCant.setOnKeyListener((view, i, keyEvent) -> {
-           return enterCant(view,i,keyEvent);
+            return enterCant(view,i,keyEvent);
         });
         editCosto.setOnKeyListener((view, i, keyEvent) -> {
             return enterCant(view,i,keyEvent);
@@ -275,7 +282,10 @@ public class Ddincontrolador extends ActividadBase {
         ubicaid = 0;
     }
 
-
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        cambio();
+    }
 
     @Override
     public void Finish(EnviaPeticion output) throws UnsupportedEncodingException {
@@ -1516,6 +1526,14 @@ public class Ddincontrolador extends ActividadBase {
         contraseña.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         contraseña.requestFocus();
         contraseña.setHint("00.0");
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contraseña.getLayoutParams();
+        int margLeft = 20;
+        int margTop = 30;
+        int margRig = 20;
+        int margBotto = 30;
+
+        layoutParams.setMargins(margLeft, margTop, margRig, margBotto);
+        contraseña.setLayoutParams(layoutParams);
 
         aceptar.setOnClickListener(v -> {
             hideKeyboard(contraseña);
@@ -1554,7 +1572,7 @@ public class Ddincontrolador extends ActividadBase {
             auto.setVisibility(View.GONE);
             //auto.setOnCheckedChangeListener((view,b)->onSeleccinaSwith(view,b));
             //ubicacion="";
-            titulo.setText("Selecciona un Anden de Salida");
+            titulo.setText("Selecciona un Andén de Salida");
             for (String anden:andenes){
                 datos=anden.split(",");
                 RadioButton nuevoRadio = new RadioButton(this);
@@ -1667,7 +1685,7 @@ public class Ddincontrolador extends ActividadBase {
 
     private void wsGuardaAnden(){
         if(!Libreria.tieneInformacion(anden)){
-            muestraMensaje("No se ha seleccionado anden",R.drawable.mensaje_error);
+            muestraMensaje("No se ha seleccionado andén",R.drawable.mensaje_error);
             return;
         }
         peticionWS(TAREA_GUARDA_ANDEN_SURT, "SQL", "SQL", folioDi,anden,"");

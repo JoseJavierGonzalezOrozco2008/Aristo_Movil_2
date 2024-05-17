@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+    <ImageButton
+        android:id="@+id/btnTitRegresa"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/left_arrow"
+        android:background="@drawable/button_colordiferencias"
+        android:gravity="start"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:id="@+id/tit_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Titulo"
+        android:layout_weight="1"
+        android:textSize="@dimen/textSizeMedium"
+        android:textStyle="bold"
+        android:textColor="@color/colorNegro"
+        android:gravity="center"/>
+    <ImageButton
+        android:id="@+id/btnTitNuevo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/add_black"
+        android:background="@drawable/button_green"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        />
+
+</LinearLayout>

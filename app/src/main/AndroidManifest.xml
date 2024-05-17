@@ -40,10 +40,20 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".Acrividades.Cuentas"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+        <activity
+            android:name=".Acrividades.Fiscal"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+        <activity
             android:name=".Acrividades.Cliente"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Acrividades.Recargas"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Acrividades.BuscaProducto"
@@ -53,6 +63,7 @@
             android:exported="false" />
         <activity
             android:name=".Acrividades.Carrito"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Acrividades.Listado"
@@ -68,6 +79,7 @@
             android:exported="false" />
         <activity
             android:name=".Acrividades.Ddincontrolador"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Lista_Acomodo"
