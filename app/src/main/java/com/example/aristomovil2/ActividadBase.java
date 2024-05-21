@@ -1,6 +1,7 @@
 package com.example.aristomovil2;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,7 +11,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,20 +42,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
 import com.example.aristomovil2.adapters.ContadosAdapter;
+import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.facade.Servicio;
+import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.modelos.Producto;
 import com.example.aristomovil2.servicio.Finish;
 import com.example.aristomovil2.servicio.MetodoWs;
 import com.example.aristomovil2.servicio.PruebaWs;
+import com.example.aristomovil2.servicio.ServicioImpresionTicket;
+import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
+import com.example.aristomovil2.utileria.Impresora;
 import com.example.aristomovil2.utileria.Libreria;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -546,4 +557,109 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
 
         return selectedDevice;
     }
+
+    public boolean doPermisos(Context cont, Dialog d){
+        if ((ActivityCompat.checkSelfPermission(cont, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(cont, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
+            d.setContentView(R.layout.dial_no_permiso);
+            Button btn_ok = d.findViewById(R.id.btn_ok);
+            btn_ok.setOnClickListener(view -> {
+                d.dismiss();
+            });
+            d.show();
+            return false;
+        }
+        return true;
+    }
+
+    public void doImprimeCB(Dialog d, ContentValues obj, String folioDi, String ordenCompra, String provedorSucursal, boolean imprime_codbarras, boolean imprime_detalle, int imprime_espacios, String nombre_impresora){
+        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
+        String tipoImp = preferences.getString("tImp","");
+
+        if(tipoImp != null && tipoImp.equals("Red")){
+            String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
+            int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
+            String contenido = "";
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+
+                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
+                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                new Impresora(ip,contenido,puerto, imprime_espacios).execute();
+            }
+
+
+        } else if(tipoImp != null && tipoImp.equals("Bluetooth")){
+            if(Build.VERSION.SDK_INT >= 31){
+                if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
+                    d.setContentView(R.layout.dial_no_permiso);
+                    Button btn_ok = d.findViewById(R.id.btn_ok);
+                    btn_ok.setOnClickListener(view -> {
+                        d.dismiss();
+                    });
+                    d.show();
+                }else{
+                    Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                    BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
+                    ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                    impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                    try {
+                        new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+            }else {
+
+                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
+                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                try {
+                    new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+
+            }
+        }else{
+            muestraMensaje("Error al imprimir.",R.drawable.mensaje_error);
+        }
+    }
+    @SuppressLint("ResourceType")
+    public void dlgMensajeError(String pMensaje, Integer pTipo){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista=inflater.inflate(R.layout.item_venta, null);
+        LinearLayout linea = vista.findViewById(R.id.regeGen);
+        TextView uno=vista.findViewById(R.id.rere_codigo);
+        TextView dos=vista.findViewById(R.id.rere_can);
+        uno.setVisibility(View.GONE);
+        dos.setVisibility(View.GONE);
+        Button regresa= new Button(this);
+        linea.addView(regresa);
+        TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
+        mensaje.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        mensaje.setText(pMensaje);
+        builder.setView(vista);
+        builder.setTitle("");
+        builder.setCancelable(true);
+        AlertDialog alert=builder.create();
+        regresa.setText("Cancelar");
+        regresa.setGravity(Gravity.CENTER);
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2, -1, 1));
+        regresa.setOnClickListener(view -> alert.dismiss());
+
+        mensaje.setBackgroundResource(pTipo);
+
+        if( pTipo == R.drawable.mensaje_error ){
+            mensaje.setTextColor(getResources().getColor(R.color.colorWhite));
+        }else{
+            mensaje.setTextColor(getResources().getColor(R.color.colorNegro));
+        }
+        alert.show();
+    }
+
 }
