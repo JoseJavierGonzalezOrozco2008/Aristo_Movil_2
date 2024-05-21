@@ -90,12 +90,33 @@ public class ServicioImpresionTicket  {
                             case "T1n":sIT.textNormIzq(texto,n);break;
                             case "T2n":sIT.textNormBold(texto,n);break;
                             case "T1w":sIT.textNormDer(texto,n);break;
+                            case "CT":sIT.cortTick(); break;
                         }
                     }
                 }
             }
         }
         return sIT;
+    }
+
+    public void cortTick(){
+        ArrayList<Byte> listaBytes = new ArrayList<>();
+
+        listaBytes.add((byte) 29);
+        listaBytes.add((byte) 86);
+        listaBytes.add((byte) 65);
+        listaBytes.add((byte) 1);
+
+
+        byte[] bytesArray = new byte[listaBytes.size()];
+        for (int i = 0; i < listaBytes.size(); i++) {
+            bytesArray[i] = listaBytes.get(i);
+        }
+
+        byte[] aux = new byte[this.imprVal.length + bytesArray.length];
+        System.arraycopy(this.imprVal, 0, aux, 0, this.imprVal.length);
+        System.arraycopy(bytesArray, 0, aux, this.imprVal.length, bytesArray.length);
+        this.imprVal = aux;
     }
     public void textNormIzq(String texto, int n) {
         ArrayList<Byte> listaBytes = new ArrayList<>();
