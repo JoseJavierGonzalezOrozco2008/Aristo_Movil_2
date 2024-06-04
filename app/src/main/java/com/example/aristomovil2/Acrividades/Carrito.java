@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 
 import android.annotation.SuppressLint;
@@ -17,13 +18,18 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +49,15 @@ import com.example.aristomovil2.adapters.ClienteAdapter;
 import com.example.aristomovil2.adapters.DcarritoAdapter;
 import com.example.aristomovil2.adapters.ListaProdsAdapter;
 import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
+import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.modelos.Cliente;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.Renglon;
+import com.example.aristomovil2.servicio.ServicioImpresionTicket;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
+import com.example.aristomovil2.utileria.Impresora;
 import com.example.aristomovil2.utileria.Libreria;
 
 import java.text.MessageFormat;
@@ -58,9 +68,9 @@ import java.util.Objects;
 
 public class Carrito extends ActividadBase {
     private String v_vntafolio,v_nombrecliente,v_nombreestacion,v_nombre_impresora,v_ticket;
-    private Integer v_estacion,v_tipovnta,v_ultprod,v_cliente,v_imprime_espacios;
+    private Integer v_estacion,v_tipovnta,v_ultprod,v_cliente,v_imprime_espacios,v_cantidadUsual,v_visibleF;
     private Double v_importe,v_retiimporte;
-    private Boolean v_metpago,v_granel,v_tieneCredito,v_virtuales;
+    private Boolean v_metpago,v_granel,v_tieneCredito,v_virtuales,v_vertouch,v_puedeCobrar;
     private ListView v_carrito,v_listaclientes;
     private GridView gridProds;
     private Generica v_default;
@@ -68,12 +78,11 @@ public class Carrito extends ActividadBase {
     private EditText v_codigo;
     private List<Generica> v_clientes;
     private ClienteAdapter v_Adacliente;
-    private Dialog v_dlgCliente;
+    private AlertDialog v_dlgCliente;
     private Menu v_menu;
-
     private List<Generica> renglonesGen;
+    private Button v_F2;
     private int orientacion;
-    private boolean isProcessing = false;
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -92,7 +101,12 @@ public class Carrito extends ActividadBase {
                         if(Libreria.tieneInformacion(codigo))
                             wsLineaCaptura(codigo);
                         break;
-
+                    case 3:
+                        String alias = resultado.getStringExtra("alias");
+                        if(Libreria.tieneInformacion(alias)){
+                            buscarCliente(alias);
+                        }
+                        break;
                     default:
                         muestraMensaje("Sin resultados obtenidos",R.drawable.mensaje_warning);
                 }
@@ -102,6 +116,19 @@ public class Carrito extends ActividadBase {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrito);
+        cambio();
+
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.activity_carrito);
+        cambio();
+    }
+
+    public void cambio(){
+
         inicializarActividad2("Folio Cliente Tipo","");
         SharedPreferences sharedPreferences = getSharedPreferences("renglones", MODE_PRIVATE);
         SharedPreferences preferences = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
@@ -112,9 +139,12 @@ public class Carrito extends ActividadBase {
         v_cliente = sharedPreferences.getInt("clientedefault",-1);
         v_nombrecliente = sharedPreferences.getString("nomCliente", "Publico en general");
         v_metpago = preferences.getBoolean("ventaCredito", false);
+        v_vertouch = sharedPreferences.getBoolean("vertouch", false);
         v_imprime_espacios = sharedPreferences.getInt("espacios", 3);
-        Integer visible = sharedPreferences.getInt("muestaf", 3);
+        v_visibleF = sharedPreferences.getInt("muestraf", 3);
         v_nombre_impresora = preferences.getString("impresora", "Predeterminada");
+        v_puedeCobrar = sharedPreferences.getBoolean("puedecobrar", false);
+        v_cantidadUsual = sharedPreferences.getInt("cantidadusualvnta", 1000);
         v_vntafolio = "Nueva";
         v_ticket = "";
         v_ultprod = 0;
@@ -127,11 +157,12 @@ public class Carrito extends ActividadBase {
         v_default.setLog2(false);
         v_default.setLog3(false);
         v_virtuales=v_default.getLog3();
-        v_codigo = findViewById(R.id.vntaCodigo);
         v_retiimporte = 1000.0;
         v_tieneCredito = v_default.getLog2();
+
+        v_codigo = findViewById(R.id.vntaCodigo);
         ImageButton enter = findViewById(R.id.vntaEnter);
-        Button f2 = findViewById(R.id.vntaF2);
+        v_F2 = findViewById(R.id.vntaF2);
         Button f1 = findViewById(R.id.vntaF1);
         Button f3 = findViewById(R.id.vntaF3);
         Button f4 = findViewById(R.id.vntaF4);
@@ -145,6 +176,10 @@ public class Carrito extends ActividadBase {
         Button f12 = findViewById(R.id.vntaF12);
         v_Total = findViewById(R.id.vntaTotal);
         v_carrito = findViewById(R.id.vntacarrito);
+        ImageButton escaner= findViewById(R.id.vntaBarcode);
+
+        escaner.setOnClickListener(view -> {barcodeEscaner();});
+
         v_Total.setText("$0.0");
         v_granel = false;
         v_codigo.setOnKeyListener((view, i, keyEvent) -> {
@@ -155,9 +190,10 @@ public class Carrito extends ActividadBase {
             }
             return false;
         });
-        f2.setOnClickListener(accion);
+        v_F2.setOnClickListener(accion);
         f1.setOnClickListener(accion);
         f3.setOnClickListener(accion);
+        f11.setOnClickListener(accion);
         enter.setOnClickListener(view -> {
             String captura = v_codigo.getText().toString();
             wsLineaCaptura(captura);
@@ -172,10 +208,9 @@ public class Carrito extends ActividadBase {
             f8.setOnClickListener(accion);
             f9.setOnClickListener(accion);
             f10.setOnClickListener(accion);
-            f11.setOnClickListener(accion);
             f12.setOnClickListener(accion);
         }
-        switch (visible){
+        switch (v_visibleF){
             case 3:
                 f3.setVisibility(View.VISIBLE);
                 break;
@@ -183,23 +218,15 @@ public class Carrito extends ActividadBase {
                 f11.setVisibility(View.VISIBLE);
                 break;
         }
-        orientacion = getWindowManager().getDefaultDisplay().getRotation();
-        gridProds = findViewById(R.id.listPrueba);
-        if (orientacion == Surface.ROTATION_0 || orientacion == Surface.ROTATION_180) {
-            gridProds.setVisibility(View.VISIBLE);
-        } else {
-            gridProds.setVisibility(View.VISIBLE);
-        }
-        wsBqdaProd();
+        v_F2.setVisibility(View.GONE);
         v_codigo.requestFocus();
+        gridProds = findViewById(R.id.listPrueba);
+        gridProds.setVisibility(v_vertouch ? View.VISIBLE : View.GONE);
+        wsBqdaProd();
         colocaTitulo();
         traeUltVnta();
-        /*if (savedInstanceState != null) {
-            isProcessing = savedInstanceState.getBoolean("isProcessing", false);
-        }*/
 
     }
-
     //<editor-fold defaultstate="collapsed" desc="Ws">
     public void wsLineaCaptura(String pCodigo){
         //isProcessing = true;
@@ -277,10 +304,6 @@ public class Carrito extends ActividadBase {
     }
 
     private void traeValoresArqueo(){
-        if(!v_vntafolio.equalsIgnoreCase(v_default.getTex2())){
-            muestraMensaje("Tiene una venta en captura",R.drawable.mensaje_error);
-            return;
-        }
         peticionWS(Enumeradores.Valores.TAREA_ARQEINICIO, "SQL", "SQL",v_estacion+"" , "", "");
     }
 
@@ -326,7 +349,6 @@ public class Carrito extends ActividadBase {
         ContentValues obj = (ContentValues)output.getExtra1();
         switch (output.getTarea()){
             case TAREA_TRAE_RENGLONES:
-                System.out.println("Entre trae renglones "+v_vntafolio + " "+v_ultprod);
                 ArrayList<Renglon> renglones = servicio.getRenglones(this, v_vntafolio);
                 if(!renglones.isEmpty()){
                     v_importe = Double.valueOf(renglones.get(0).getVntatotal()+"");
@@ -426,7 +448,6 @@ public class Carrito extends ActividadBase {
                     }
                     traeRenglones();
                     colocaTitulo();
-                    System.out.println("Ultimo valor "+ v_ultprod);
                 }else{
                     DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
                     v_carrito.setAdapter(nuevoada);
@@ -515,24 +536,71 @@ public class Carrito extends ActividadBase {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, 1, Menu.NONE, !v_metpago ? "Contado" : "Credito");
-        menu.add(Menu.NONE, 2, Menu.NONE, "Cliente");
-        menu.add(Menu.NONE, 3, Menu.NONE, "Borra Venta");
-        menu.add(Menu.NONE, 4, Menu.NONE, "Retiro");
-        menu.add(Menu.NONE, 5, Menu.NONE, "Ultimo ticket");
-        menu.add(Menu.NONE, 6, Menu.NONE, "Arqueo");
-        menu.add(Menu.NONE, 7, Menu.NONE, "Lealtad");
-        menu.add(Menu.NONE, 8, Menu.NONE, "Devolucion");
-        menu.add(Menu.NONE, 10, 1, usuario);
-        menu.add(Menu.NONE, 11, 1, v_nombreestacion);
+
+        createMenuItem(menu, 1, !v_metpago ? "Contado" : "Credito");
+        createMenuItem(menu, 2, "Cliente");
+        createMenuItem(menu, 3, "Borra Venta");
+        createMenuItem(menu, 4, "Retiro");
+        createMenuItem(menu, 5, "Ultimo ticket");
+        createMenuItem(menu, 6, "Arqueo");
+        createMenuItem(menu, 7, "Lealtad");
+        createMenuItem(menu, 8, "Devolucion");
+        createMenuItem(menu, 10, usuario);
+        createMenuItem(menu, 11, v_nombreestacion);
+
         menu.getItem(2).setVisible(false);
         menu.getItem(6).setVisible(false);
         menu.getItem(7).setVisible(false);
-        menu.getItem(0).setTitle(v_tieneCredito ? (!v_metpago ? "Contado" : "Credito"):"Sin credito");
+
+        menu.getItem(0).setTitle(v_tieneCredito ? (!v_metpago ? "Contado" : "Credito") : "Sin credito");
         menu.getItem(0).setEnabled(v_tieneCredito);
+
         v_menu = menu;
+
         return true;
     }
+
+    private void createMenuItem(Menu menu, int groupId, String title) {
+        MenuItem menuItem = menu.add(groupId, groupId, Menu.NONE, title);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                20));
+        layout.setPadding(0, 10, 0, 10);
+
+        TextView textView = new TextView(this);
+        //SpannableString s = new SpannableString("Texto");
+        //s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
+        textView.setText(title);
+        //menuItem.setTitle(s);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                20));
+        textView.setPadding(20, 20, 20, 20);
+        textView.setTextSize(16);
+        layout.addView(textView);
+
+        View divider = new View(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 2);
+        params.setMargins(20, 0, 20, 0);
+        divider.setLayoutParams(params);
+        divider.setBackgroundColor(Color.GRAY);
+        layout.addView(divider);
+
+        menuItem.setActionView(layout);
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            menu.setGroupDividerEnabled(true);
+        }
+        return true;
+    }
+
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
@@ -651,6 +719,12 @@ public class Carrito extends ActividadBase {
         Button regresar = dialog.findViewById(R.id.btnRegresar);
         Button guardar = dialog.findViewById(R.id.btnGuardar);
 
+        borrar.setBackgroundResource(R.drawable.button_red);
+        regresar.setBackgroundResource(R.drawable.button_colordiferencias);
+        guardar.setBackgroundResource(R.drawable.button_green);
+        mas.setBackgroundResource(R.drawable.button_green);
+        menos.setBackgroundResource(R.drawable.button_red);
+
         v_ultprod = pRen.getDvtaid();
         cantidad.setText(pRen.getCant()+"");
         cantidad.setSelectAllOnFocus(true);
@@ -661,10 +735,44 @@ public class Carrito extends ActividadBase {
             dialog.dismiss();
         });
 
+
+        mas.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mas.setColorFilter(Color.WHITE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        mas.clearColorFilter();
+                        break;
+                }
+                return false;
+            }
+        });
+
         menos.setOnClickListener(v -> {
             hideKeyboard(cantidad);
             wsLineaCaptura("-");
             dialog.dismiss();
+        });
+
+        menos.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        menos.setColorFilter(Color.WHITE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        menos.clearColorFilter();
+                        break;
+                }
+                return false;
+            }
         });
 
         borrar.setOnClickListener(v -> {
@@ -688,6 +796,38 @@ public class Carrito extends ActividadBase {
         });
         dialog.show();
     }
+    public void cambiaCliente(Integer pId){
+        Intent intent = new Intent(this, com.example.aristomovil2.Acrividades.Cliente.class);
+        intent.putExtra("clteid",pId);
+        mStartForResult.launch(intent);
+    }
+    /*public void dlgCliente(Generica gRen){
+        Dialog dialog = new Dialog(this);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.setContentView(R.layout.dialogo_dventa);
+        dialog.setCancelable(true);
+
+        final LinearLayout llCantNuev = dialog.findViewById(R.id.llCantNuev);
+        final TextView infoCliente = dialog.findViewById(R.id.dvtaProducto);
+        final Button edita = dialog.findViewById(R.id.btnBorrar);
+        final Button seleccionar = dialog.findViewById(R.id.btnGuardar);
+
+        llCantNuev.setVisibility(View.GONE);
+
+        infoCliente.setTypeface(Typeface.MONOSPACE);
+        infoCliente.setText(gRen.getTex2());
+
+        edita.setText("EDITAR");
+        edita.setOnClickListener(v->{
+            Intent intent = new Intent(this, com.example.aristomovil2.Acrividades.Cliente.class);
+            intent.putExtra("clteid",gRen.getId());
+            mStartForResult.launch(intent);
+        });
+
+        seleccionar.setText("SELECC");
+
+        dialog.show();
+    }*/
 
     public void dlgRetiroParcial(){
         Dialog dialog = new Dialog(this);
@@ -797,6 +937,22 @@ public class Carrito extends ActividadBase {
             cantidad.setText("");
         });
 
+        regresa.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        regresa.setColorFilter(Color.WHITE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        regresa.clearColorFilter();
+                        break;
+                }
+                return false;
+            }
+        });
         regresa.setOnClickListener(v-> dlgClienteCierra());
 
         nuevo.setOnClickListener(v-> {
@@ -804,7 +960,22 @@ public class Carrito extends ActividadBase {
             intent.putExtra("clteid",0);
             mStartForResult.launch(intent);
         });
-
+        nuevo.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        nuevo.setColorFilter(Color.WHITE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        nuevo.clearColorFilter();
+                        break;
+                }
+                return false;
+            }
+        });
         cantidad.setOnKeyListener((view, i, keyEvent) -> {
             if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)){
                 busca.callOnClick();
@@ -816,14 +987,36 @@ public class Carrito extends ActividadBase {
     }
 
     private void imprimeTicket(){
-        BluetoothConnection selectedDevice = traeImpresora(v_nombre_impresora);
-        ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-        Libreria.imprimeSol(impresora,v_ticket,-1);
-        try {
-            new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());
-        } catch (/*ExecutionException | InterruptedException e*/ Exception e) {
-            System.out.println(e);
+        Dialog d = new Dialog(this);
+        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
+        String tipoImp = preferences.getString("tImp","");
+        if(tipoImp != null && tipoImp.equals("Red")){
+            String contenido = "";
+            int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
+            if(getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "") == null || getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "").equals("") || getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", "") == null || getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", "").equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+                String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
+                int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
+
+                contenido = v_ticket;
+                new Impresora(ip,contenido,puerto,-1).execute();
+            }
+
+
+        }else if(tipoImp != null && tipoImp.equals("Bluetooth")){
+            if(doPermisos2(d,this)){
+                BluetoothConnection selectedDevice = traeImpresora(v_nombre_impresora);
+                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                Libreria.imprimeSol(impresora,v_ticket,-1);
+                try {
+                    new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());
+                } catch (/*ExecutionException | InterruptedException e*/ Exception e) {
+                    System.out.println(e);
+                }
+            }
         }
+
     }
 
     public void setCliente(Integer pClteid,String pCliente,Boolean pLogico){
