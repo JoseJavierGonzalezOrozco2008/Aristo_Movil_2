@@ -173,7 +173,41 @@ public class ServicioImpresora {
     public void addImage(Bitmap img){
         this.textToPrint +=  CENTER + "<img>" + PrinterTextParserImg.bitmapToHexadecimalString(this.printer, img) + "</img>" + END_LINE;
     }
+    public void addQRCode(String qrData, String alignment, int size) {
+        this.textToPrint += alignment + "<qrcode size='" + size + "'>"
+                + qrData + "</qrcode>" + END_LINE + END_LINE;
+    }
 
+    public void addQRCode(String qrData, String alignment) {
+        this.addQRCode(qrData, alignment, 25);
+    }
+
+    /**
+     * Añade un codigo QR
+     * @param qrData Los datos del codigo QR
+     * @param alignment Tipo de alineación
+     * @param size Tipo de tamaño
+     */
+    // size: 'c' chico , 'm' mediano, 'g' grande
+    public void addQRCode(String qrData, String alignment, String size) {
+        if(size != null && size.equals("c")){
+            this.addQRCode(qrData, alignment, 20);
+        } else if(size != null && size.equals("m")){
+            this.addQRCode(qrData, alignment, 25);
+        } else if(size != null && size.equals("g")){
+            this.addQRCode(qrData, alignment, 30);
+        } else {
+            this.addQRCode(qrData, alignment, 25);
+        }
+    }
+
+    public void addQRCode(String qrData, int size) {
+        this.addQRCode(qrData, CENTER, size);
+    }
+
+    public void addQRCode(String qrData) {
+        this.addQRCode(qrData, CENTER);
+    }
     /**
      * Añade un codigo de barras para impresoras que no soportan en comando <barcode></barcode>
      * @param data Los datos del codigo de barras

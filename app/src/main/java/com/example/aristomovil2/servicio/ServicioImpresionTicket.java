@@ -4,14 +4,9 @@ import static com.example.aristomovil2.utileria.Libreria.tieneInformacion;
 import static com.example.aristomovil2.utileria.Libreria.upper;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import androidx.preference.PreferenceManager;
 
 import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.utileria.Libreria;
-import com.google.zxing.BarcodeFormat;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -90,6 +85,9 @@ public class ServicioImpresionTicket  {
                             case "T1n":sIT.textNormIzq(texto,n);break;
                             case "T2n":sIT.textNormBold(texto,n);break;
                             case "T1w":sIT.textNormDer(texto,n);break;
+                            case "QRc":sIT.generaQR(texto,'c');break;
+                            case "QRm":sIT.generaQR(texto,'m');break;
+                            case "QRg":sIT.generaQR(texto,'g');break;
                             case "CT":sIT.cortTick(); break;
                         }
                     }
@@ -99,8 +97,99 @@ public class ServicioImpresionTicket  {
         return sIT;
     }
 
+    public void generaQR(String texto, char tam) {
+        Byte tama = switch (tam) {
+            case 'c' -> 0x08;
+            case 'm' -> 0x0A;
+            case 'g' -> 0x0C;
+            default -> 0xA;
+        };
+
+        ArrayList<Byte> listaBytes = new ArrayList<>();
+        listaBytes.add((byte) 0x1B);
+        listaBytes.add((byte) 'a');
+        listaBytes.add((byte) 0x01);
+
+        int store_len = texto.length() + 3;
+        byte store_pL = (byte) (store_len % 256);
+        byte store_pH = (byte) (store_len / 256);
+
+        //Selecciona el modelo
+        listaBytes.add((byte) 0x1D);
+        listaBytes.add((byte) 0x28);
+        listaBytes.add((byte) 0x6B);
+        listaBytes.add((byte) 0x04);
+        listaBytes.add((byte) 0x00);
+        listaBytes.add((byte) 0x31);
+        listaBytes.add((byte) 0x41);
+        listaBytes.add((byte) 0x32); // n1 [49 x31, modelo 1] [50 x32, modelo 2] [51 x33, micro qr]
+        listaBytes.add((byte) 0x00);
+
+        //Asigna el tamaño del módulo
+        listaBytes.add((byte) 0x1D);
+        listaBytes.add((byte) 0x28);
+        listaBytes.add((byte) 0x6B);
+        listaBytes.add((byte) 0x03);
+        listaBytes.add((byte) 0x00);
+        listaBytes.add((byte) 0x31);
+        listaBytes.add((byte) 0x43);
+        listaBytes.add(tama);//Tamaño QR: c = 8, m = 10, g = 12
+
+        //Asigna n para corrección de errores
+        listaBytes.add((byte) 0x1D);
+        listaBytes.add((byte) 0x28);
+        listaBytes.add((byte) 0x6B);
+        listaBytes.add((byte) 0x03);
+        listaBytes.add((byte) 0x00);
+        listaBytes.add((byte) 0x31);
+        listaBytes.add((byte) 0x45);
+        listaBytes.add((byte) 0x31); // n: 48 -> 7% , 49 -> 15%, 50 -> 25%, 51 -> 30%
+
+        //Almacena los datos del símbolo del código QR (d1...dk) en el área de almacenamiento de símbolos.
+        listaBytes.add((byte) 0x1D);
+        listaBytes.add((byte) 0x28);
+        listaBytes.add((byte) 0x6B);
+        listaBytes.add(store_pL);
+        listaBytes.add(store_pH);
+        listaBytes.add((byte) 0x31);
+        listaBytes.add((byte) 0x50);
+        listaBytes.add((byte) 0x30);
+
+        //d1...dk
+        for (byte b : texto.getBytes()) {
+            listaBytes.add(b);
+        }
+
+        //Imprimir los datos del símbolo en el área de almacenamiento de símbolos
+        listaBytes.add((byte) 0x1D);
+        listaBytes.add((byte) 0x28);
+        listaBytes.add((byte) 0x6B);
+        listaBytes.add((byte) 0x03);
+        listaBytes.add((byte) 0x00);
+        listaBytes.add((byte) 0x31);
+        listaBytes.add((byte) 0x51);
+        listaBytes.add((byte) 0x30);
+
+        listaBytes.add((byte) 0x1B);
+        listaBytes.add((byte) 0x64);
+        listaBytes.add((byte) 1);
+
+        byte[] bytesArray = new byte[listaBytes.size()];
+        for (int i = 0; i < listaBytes.size(); i++) {
+            bytesArray[i] = listaBytes.get(i);
+        }
+
+        byte[] aux = new byte[this.imprVal.length + bytesArray.length];
+        System.arraycopy(this.imprVal, 0, aux, 0, this.imprVal.length);
+        System.arraycopy(bytesArray, 0, aux, this.imprVal.length, bytesArray.length);
+        this.imprVal = aux;
+    }
+
     public void cortTick(){
         ArrayList<Byte> listaBytes = new ArrayList<>();
+        listaBytes.add((byte) 0x1B);
+        listaBytes.add((byte) 'a');
+        listaBytes.add((byte) 0x00);
 
         listaBytes.add((byte) 29);
         listaBytes.add((byte) 86);

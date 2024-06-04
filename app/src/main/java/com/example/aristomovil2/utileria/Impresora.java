@@ -49,13 +49,13 @@ public class Impresora extends AsyncTask<Void, Void, Boolean>  {
             byte[] lineFeedCommand = new byte[] { 0x1B, 'd', 3 };
             byte[] charsetCommand = new byte[] { 0x1B, 0x74, 0x10 };
             byte[] comandoTamañoNormal = new byte[]{0x1B, 0x21, 0x00};
+            byte[] cutCommand = new byte[] {29,86,66,3};
             outputStream.write(charsetCommand);
 
             ServicioImpresionTicket x = new ServicioImpresionTicket();
             x = x.impresionTicketServicio(x,TEXT, n_salto);
             outputStream.write(new String(x.getImprVal()).getBytes("ISO-8859-15"));
-            byte[] cutCommand = new byte[] {29,86,66,3};
-            outputStream.write(cutCommand);
+            //outputStream.write(cutCommand);
 
             // Flushing y cerrando el OutputStream
             outputStream.flush();
