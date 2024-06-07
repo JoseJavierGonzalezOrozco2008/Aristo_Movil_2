@@ -1,5 +1,9 @@
 package com.example.aristomovil2.adapters;
 
+import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_CIERRA_BULTO;
+
+import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,21 +11,33 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aristomovil2.Acrividades.Carrito;
+import com.example.aristomovil2.Acrividades.Cobropv;
+import com.example.aristomovil2.Acrividades.Recargas;
 import com.example.aristomovil2.ActividadBase;
+import com.example.aristomovil2.Inventario;
 import com.example.aristomovil2.R;
 import com.example.aristomovil2.modelos.Generica;
+import com.example.aristomovil2.utileria.Enumeradores;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public class GenericaAdapter extends BaseAdapter {
     private List<Generica> listado;
     private ActividadBase base;
-    private int opcion;
+    private int opcion,v_xml;
 
     public GenericaAdapter(List<Generica> pListado, ActividadBase pBase, Integer pOpcion) {
         listado=pListado;
         base=pBase;
         opcion = pOpcion;
+        v_xml=R.layout.item_acomodo;
+        switch(opcion){
+            case 1:
+                v_xml=R.layout.item_buton;
+                break;
+        }
     }
 
     @Override
@@ -42,20 +58,105 @@ public class GenericaAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_acomodo, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(v_xml, viewGroup, false);
         }
         Generica gen=listado.get(i);
+        Button accion;
         switch(opcion){
             case 0://default
                 ((TextView)view.findViewById(R.id.acomid)).setText(gen.getTex1());
                 ((TextView)view.findViewById(R.id.acomfe)).setText(gen.getTex2());
                 ((TextView)view.findViewById(R.id.acomDIfolio)).setVisibility(View.GONE);
                 ((TextView)view.findViewById(R.id.acomubica)).setVisibility(View.GONE);
-                Button accion=view.findViewById(R.id.acoAction1);
+                accion=view.findViewById(R.id.acoAction1);
                 accion.setVisibility(View.GONE);
-                view.setTag(gen);
+                break;
+            case 1:
+                accion=view.findViewById(R.id.btnGen);
+                accion.setVisibility(View.VISIBLE);
+                accion.setText(gen.getTex1());
+                accion.setOnClickListener(v->{
+                    if(gen.getEnt1()==51){
+                        ((Recargas)base).recaTelefono(gen);
+                    }else{
+                        ((Recargas)base).recaReferencia(gen);
+                    }
+                });
+
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                TextView info=view.findViewById(R.id.acomid);
+                info.setText(gen.getTex2());
+                info.setTypeface(Typeface.MONOSPACE);
+                ViewGroup.LayoutParams layoutParams =info.getLayoutParams();
+                layoutParams.width=ViewGroup.LayoutParams.MATCH_PARENT;
+                layoutParams.height=ViewGroup.LayoutParams.WRAP_CONTENT;
+                info.setLayoutParams(layoutParams);
+                (view.findViewById(R.id.acomfe)).setVisibility(View.GONE);
+                (view.findViewById(R.id.acomDIfolio)).setVisibility(View.GONE);
+                (view.findViewById(R.id.acomubica)).setVisibility(View.GONE);
+                view.findViewById(R.id.acoAction1).setVisibility(View.GONE);
+                if(opcion!=7)
+                    info.setOnClickListener(v->{
+                        String titulo="Imprime ticket";
+                        String Mensaje = "";
+                        String boton = "Imprimir";
+                        String pantalla = "Pantalla";
+                        switch (opcion){
+                            case 5:
+                                titulo="Continuar con la venta";
+                                Mensaje=MessageFormat.format("¿Seguro de bajar la venta con folio {0}?",gen.getTex1());
+                                boton = "Continuar";
+                                break;
+                            default:
+                                Mensaje=MessageFormat.format("¿Seguro que volver a imprimir el folio {0}?",gen.getTex1());
+                        }
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(base);
+                        dialog.setTitle(titulo);
+                        dialog.setMessage(Mensaje);
+                        dialog.setNegativeButton(pantalla,(dialogInterface, i1) -> {
+                            base.aPantalla(true);
+                            accion(gen);
+                        });
+                        dialog.setPositiveButton(boton, (dialogInterface, i2) -> {
+                            accion(gen);
+                        });
+                        dialog.setNeutralButton("Regresar", (dialogInterface, i2) -> {dialogInterface.dismiss();});
+                        dialog.show();
+                    });
                 break;
         }
+        view.setTag(gen);
         return view;
+    }
+
+    public void accion(Generica pGen){
+        switch (opcion){
+            case 2:
+                ((Carrito)base).traeTicketVnta(pGen.getTex1());
+                break;
+            case 3:
+                ((Carrito)base).traeTicketArqe(Enumeradores.Valores.TAREA_IMPRIMEARQE,pGen.getTex1());
+                break;
+            case 4:
+                //((Inventario)base).traeTicketDoc(pGen.getTex1());
+                break;
+            case 5:
+                if (base instanceof Carrito) {
+                    ((Carrito)base).vntaLimpia();
+                    ((Carrito)base).traeVnta(pGen.getTex1());
+                }else if (base instanceof Cobropv) {
+                    //((Cobropv)base).asignaVntafolio(pGen.getTex1());
+                }
+                break;
+            case 6:
+                ((Carrito)base).traeTicketArqe(Enumeradores.Valores.TAREA_IMPRIMERETIRO,pGen.getTex1());
+                break;
+        }
     }
 }
