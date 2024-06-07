@@ -31,7 +31,7 @@ public class Impresora extends AsyncTask<Void, Void, Boolean>  {
     public int n_salto;
     public Impresora(String IP_RED, String TEXT, int PUERTO_RED, int n_salto) {
         this.IP_RED = IP_RED;
-        this.TEXT = TEXT;
+        this.TEXT = TEXT+"|CT,CT";
         this.PUERTO_RED = PUERTO_RED;
         this.n_salto = n_salto;
     }
@@ -55,6 +55,7 @@ public class Impresora extends AsyncTask<Void, Void, Boolean>  {
             ServicioImpresionTicket x = new ServicioImpresionTicket();
             x = x.impresionTicketServicio(x,TEXT, n_salto);
             outputStream.write(new String(x.getImprVal()).getBytes("ISO-8859-15"));
+            //byte[] cutCommand = new byte[] {29,86,66,3};
             //outputStream.write(cutCommand);
 
             // Flushing y cerrando el OutputStream

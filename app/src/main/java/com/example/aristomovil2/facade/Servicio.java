@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.aristomovil2.modelos.Cuenta;
 import com.example.aristomovil2.modelos.Detviaje;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.RenglonCalcula;
@@ -390,7 +391,7 @@ public class Servicio {
 
         db.abreConexion();
         String[] params = {folioVenta};
-        try(Cursor cursor = db.getDatabase().rawQuery("SELECT * FROM " + Estatutos.TABLA_RENGLONES + " WHERE folio=?", params)){
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT * FROM " + Estatutos.TABLA_RENGLONES + " WHERE folio=? ORDER BY dvtaid DESC", params)){
             if(cursor.moveToFirst()){
                 do{
                     String folio = cursor.getString(cursor.getColumnIndex("folio"));
@@ -424,7 +425,6 @@ public class Servicio {
                         opt.inMutable = true;
                         bm = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
                     }
-
                     renglones.add(new Renglon(folio, codigo, producto, fraccionable, refer, notas, bm, dvtaid, prodid, estatus, cant, precio, dscto, dsctoad, subtotal, impuesto, total, vntatotal, disponible, futura, caduca));
                 }while (cursor.moveToNext());
             }
@@ -492,6 +492,23 @@ public class Servicio {
         return listaDcatalogos;
     }
 
+    public ArrayList<Generica> traeDcatGenerica(Integer pCatalogo){
+        ArrayList<Generica> listaDcatalogos = new ArrayList<>();
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,abrevi tex1,cata ent1,t1 tex2 FROM " + Estatutos.TABLA_DCATALOGO+" WHERE cata="+pCatalogo+" ORDER BY id DESC", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    listaDcatalogos.add(Generica.leerCursor2(cursor,"tex1,ent1,tex2"));
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            db.cierraConexion();
+        }
+        return listaDcatalogos;
+    }
+
     @SuppressLint("Range")
     public Integer traeDcatIdporAbrevi(Integer pCatalogo,String pAbrevi){
         Integer grupos = 0;
@@ -501,6 +518,21 @@ public class Servicio {
             if(cursor.moveToFirst()){
                 do{
                     grupos =cursor.getInt(cursor.getColumnIndex("id"));
+                }while (cursor.moveToNext());
+            }
+        }
+        return grupos;
+    }
+
+    @SuppressLint("Range")
+    public String traeAbreviPorCata(Integer pCatalogo,Integer pDcatid){
+        String grupos = "";
+        db.abreConexion();
+        String[] where= {pCatalogo+"",pDcatid+""};
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT abrevi FROM dcatalogo  WHERE cata=? AND id=?", where)){
+            if(cursor.moveToFirst()){
+                do{
+                    grupos =cursor.getString(cursor.getColumnIndex("abrevi"));
                 }while (cursor.moveToNext());
             }
         }
@@ -914,10 +946,10 @@ public class Servicio {
             String where=" codigo = '" + pCodigo + "' AND pediid='"+pediid+"'" ;
             if(pPorSurtir==0){
                 int numrenglon = 0;
-             Integer eliminado=db.getDatabase().delete("renglon",where,null);
-             if(eliminado>0){
-                 return db.getDatabase().update("renglon",contentValues,where, null);
-             }
+                Integer eliminado=db.getDatabase().delete("renglon",where,null);
+                if(eliminado>0){
+                    return db.getDatabase().update("renglon",contentValues,where, null);
+                }
             }else{
                 return db.getDatabase().update("renglon",contentValues,where, null);
             }
@@ -1088,7 +1120,7 @@ public class Servicio {
         ArrayList<String> grupos = new ArrayList<>();
 
         db.abreConexion();
-        try(Cursor cursor = db.getDatabase().rawQuery("SELECT DISTINCT pediid,dcinfolio,substr(vntafolio,1,1)||'*'||substr(vntafolio,-4,3) vntafolio FROM bultos r INNER JOIN catalogos c ON r.pediid=c.pedido", null)){
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT DISTINCT pediid,dcinfolio,substr(vntafolio,1,1)||'*'||substr(vntafolio,-4,3) vntafolio FROM bultos r LEFT JOIN catalogos c ON r.pediid=c.pedido", null)){
             if(cursor.moveToFirst()){
                 do{
                     String venta=cursor.getString(cursor.getColumnIndex("vntafolio"));
@@ -1298,7 +1330,10 @@ public class Servicio {
                     String clave = cursor.getString(cursor.getColumnIndex("clave"));
                     String colonia = cursor.getString(cursor.getColumnIndex("colonia"));
                     String codigo = cursor.getString(cursor.getColumnIndex("codigo"));
-                    colonias.add(new Colonia(clave, colonia, codigo));
+                    String id = cursor.getString(cursor.getColumnIndex("id"));
+                    String estado = cursor.getString(cursor.getColumnIndex("estado"));
+                    String muni = cursor.getString(cursor.getColumnIndex("municipio"));
+                    colonias.add(new Colonia(clave, colonia, codigo, id,muni,estado));
                 }while (cursor.moveToNext());
             }
         }catch (Exception e){
@@ -1308,6 +1343,42 @@ public class Servicio {
             db.cierraConexion();
         }
 
+        return colonias;
+    }
+
+    @SuppressLint("Range")
+    public Cuenta traeCuenta(Integer pCuclid){
+        Cuenta colonias =new Cuenta(0);
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,domiid,coloid,cuclid,info,tel,calle,exterior,interior,colonia,muni,estado,cp,clteid,cuenta,nombre FROM cuentas WHERE cuclid="+pCuclid, null)){
+            if(cursor.moveToFirst()){
+                colonias = Cuenta.leerCursor(cursor);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+        return colonias;
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<Cuenta> traeCuentas(){
+        ArrayList<Cuenta> colonias = new ArrayList();
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,domiid,coloid,cuclid, info,tel,calle,exterior,interior,colonia,muni,estado,cp FROM cuentas", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    colonias.add(Cuenta.leerCursor(cursor));
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
         return colonias;
     }
 
@@ -1492,6 +1563,84 @@ public class Servicio {
         return reng_repo;
     }
 
+    public Generica traeGenReporteEnca(){
+        Generica temp=null;
+        db.abreConexion();
+        String estatuto="SELECT * FROM generica WHERE id=0 ";
+        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
+            if(cursor.moveToFirst()){
+                temp=Generica.leerCursor2(cursor,"tex1,tex2,tex3,tex4");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+        return temp;
+    }
+
+    public List<Generica> traeGenReporte(){
+        ArrayList<Generica> reng_repo = new ArrayList<>();
+        db.abreConexion();
+        String estatuto="SELECT * FROM generica WHERE id>0 ORDER BY id ASC ";
+        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
+            if(cursor.moveToFirst()){
+                do{
+                    Generica temp=Generica.leerCursor2(cursor,"tex1,tex2,tex3,tex4");
+                    reng_repo.add(temp);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+        return reng_repo;
+    }
+
+    public List<Generica> traeGenericaBqdaProd(){
+        ArrayList<Generica> reng_repo = new ArrayList<>();
+        db.abreConexion();
+        String estatuto="SELECT id,enoferta log1,prod ent1,detalle tex1,estilo tex2,codigo tex3 FROM dcarro  ";
+        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
+            if(cursor.moveToFirst()){
+                do{
+                    Generica temp=Generica.leerCursor2(cursor,"log1,ent1,tex1,tex2,tex3");
+                    reng_repo.add(temp);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+        return reng_repo;
+    }
+
+    public List<Generica> traeProductosVnta(){
+        ArrayList<Generica> reng_repo = new ArrayList<>();
+        db.abreConexion();
+        String estatuto="SELECT id,prodid ent1,producto tex1,'estilo' tex2,codigo tex3 FROM productos_di  ";
+        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
+            if(cursor.moveToFirst()){
+                do{
+                    Generica temp=Generica.leerCursor2(cursor,"ent1,tex1,tex2,tex3");
+                    reng_repo.add(temp);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+
+        return reng_repo;
+    }
+
     @SuppressLint("Range")
     public String notiConsulta(String pUsuario){
         db.abreConexion();
@@ -1533,63 +1682,6 @@ public class Servicio {
             db.cierraConexion();
         }
         return reng_repo;
-    }
-    public List<Generica> traeGenericaBqdaProd(){
-        ArrayList<Generica> reng_repo = new ArrayList<>();
-        db.abreConexion();
-        String estatuto="SELECT id,enoferta log1,prod ent1,detalle tex1,estilo tex2,codigo tex3 FROM dcarro  ";
-        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
-            if(cursor.moveToFirst()){
-                do{
-                    Generica temp=Generica.leerCursor(cursor);
-                    reng_repo.add(temp);
-                }while (cursor.moveToNext());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            db.cierraConexion();
-        }
-
-        return reng_repo;
-    }
-
-    public List<Generica> traeProductosVnta(){
-        ArrayList<Generica> reng_repo = new ArrayList<>();
-        db.abreConexion();
-        String estatuto="SELECT id,prodid ent1,producto tex1,'estilo' tex2,codigo tex3 FROM productos_di  ";
-        try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
-            if(cursor.moveToFirst()){
-                do{
-                    Generica temp=Generica.leerCursor2(cursor,"ent1,tex1,tex2,tex3");
-                    reng_repo.add(temp);
-                }while (cursor.moveToNext());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            db.cierraConexion();
-        }
-
-        return reng_repo;
-    }
-    public ArrayList<Generica> traeDcatGenerica(Integer pCatalogo){
-        ArrayList<Generica> listaDcatalogos = new ArrayList<>();
-        db.abreConexion();
-        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,abrevi tex1,cata ent1,t1 tex2 FROM " + Estatutos.TABLA_DCATALOGO+" WHERE cata="+pCatalogo+" ORDER BY id DESC", null)){
-            if(cursor.moveToFirst()){
-                do{
-                    listaDcatalogos.add(Generica.leerCursor2(cursor,"tex1,ent1,tex2"));
-                }while (cursor.moveToNext());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            db.cierraConexion();
-        }
-        return listaDcatalogos;
     }
 
     /**

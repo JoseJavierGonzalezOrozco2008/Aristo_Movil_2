@@ -4,18 +4,19 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/regeGen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/venta_shape"
-        android:padding="5dp"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp" >
 
         <LinearLayout
+            android:id="@+id/rere_linea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="5dp">
+            >
 
             <TextView android:id="@+id/rere_codigo"
                 android:layout_width="0dp"
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="5dp">
+            >
 
             <TextView android:id="@+id/txtVentasCliente"
                 android:layout_width="0dp"
@@ -52,7 +53,8 @@
                 android:fontFamily="@font/arial"
                 android:textColor="@color/black"
                 android:text="Cliente"
-                android:textSize="@dimen/textSizeLarge"/>
+                android:textSize="@dimen/textSizeSmall"/>
+
         </LinearLayout>
 
     </LinearLayout>

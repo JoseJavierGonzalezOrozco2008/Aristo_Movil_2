@@ -1,25 +1,25 @@
 package com.example.aristomovil2;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Gravity;
@@ -34,31 +34,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
-import com.example.aristomovil2.adapters.ContadosAdapter;
+import com.example.aristomovil2.adapters.ClienteAdapter;
 import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.facade.Servicio;
-import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.modelos.Producto;
 import com.example.aristomovil2.servicio.Finish;
 import com.example.aristomovil2.servicio.MetodoWs;
 import com.example.aristomovil2.servicio.PruebaWs;
-import com.example.aristomovil2.servicio.ServicioImpresionTicket;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
@@ -67,20 +65,20 @@ import com.example.aristomovil2.utileria.Libreria;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public abstract class ActividadBase extends AppCompatActivity implements Finish {
+public class ActividadBase extends AppCompatActivity implements Finish {
     public ProgressDialog dialogoCarga;
     public Servicio servicio;
     private Toast lToast;
     private TextView txtToast, txtMensaje, dlgSinRegistros;
-    public String usuario, usuarioID;
+    public String usuario, usuarioID, v_nombreestacion;
     private LinearLayout mensaje, mensajeLayout;
     protected Dialog dlgBuscaProds;
     private TableLayout tblaProducto;
-
+    private boolean v_pantalla;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,19 +105,10 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         title.setText(titulo);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        servicio = new Servicio(this);
-
-        mensaje = findViewById(R.id.Mensaje);
-        txtMensaje = mensaje.findViewById(R.id.txtMensaje);
-        mensajeLayout = mensaje.findViewById(R.id.Mensaje_layout_root);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mensaje_init);
-        mensaje.startAnimation(animation);
-
-
-        usuario = getSharedPreferences("renglones", MODE_PRIVATE).getString("user", "administrador");
-        usuarioID = getSharedPreferences("renglones", MODE_PRIVATE).getString("usuarioID", "-1");
+        inicializarActividad();
     }
-    public void inicializarActividad2(String pLinea1,String pLinea2){
+
+    public void inicializarActividad2(String pLinea1, String pLinea2) {
         Toolbar toolbar = findViewById(R.id.toolbar2);
         TextView linea1 = toolbar.findViewById(R.id.TitleToolbar);
         TextView linea2 = toolbar.findViewById(R.id.TitleToolbar2);
@@ -132,7 +121,7 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         inicializarActividad();
     }
 
-    public void inicializarActividad(){
+    public void inicializarActividad() {
         servicio = new Servicio(this);
 
         mensaje = findViewById(R.id.Mensaje);
@@ -141,9 +130,13 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mensaje_init);
         mensaje.startAnimation(animation);
 
-        usuario = getSharedPreferences("renglones", MODE_PRIVATE).getString("user", "administrador");
-        usuarioID = getSharedPreferences("renglones", MODE_PRIVATE).getString("usuarioID", "-1");
+        SharedPreferences sharedPreferences = getSharedPreferences("renglones", MODE_PRIVATE);
+        usuario = sharedPreferences.getString("user", "administrador");
+        usuarioID = sharedPreferences.getString("usuarioID", "-1");
+        v_nombreestacion = sharedPreferences.getString("estacion", "Estacion");
+        v_pantalla = false;
     }
+
     /**
      * Actualiza el titulo en el toolbar
      * @param titulo El titulo nuevo
@@ -153,6 +146,24 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         TextView title = toolbar.findViewById(R.id.TitleToolbar);
         title.setText(titulo);
         //title.setOnClickListener(view -> wsPrueba(""));
+    }
+
+    /**
+     * Actualiza el titulo en el toolbar2
+     * @param pLinea1 El texto de la linea1
+     * @param pLinea2 El texto de la linea2
+     */
+    public void actualizaToolbar2(String pLinea1, String pLinea2) {
+        Toolbar toolbar = findViewById(R.id.toolbar2);
+        TextView linea1 = toolbar.findViewById(R.id.TitleToolbar);
+        TextView linea2 = toolbar.findViewById(R.id.TitleToolbar2);
+        linea1.setText(pLinea1);
+        linea2.setText(pLinea2);
+        if (!Libreria.tieneInformacion(pLinea2)) {
+            linea2.setVisibility(View.GONE);
+        } else {
+            linea2.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -167,7 +178,6 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
     public void peticionWS(Enumeradores.Valores tarea, String Origen, String Clave, String Dato1, String Dato2, String Dato3) {
         cargaDialogo();
         String ip = getValuePreferences("ip");
-
         MetodoWs metodoWS = Libreria.tieneInformacion(ip) ? new MetodoWs(ip) : new MetodoWs();
         metodoWS.termina = this;
         metodoWS.context = this;
@@ -181,28 +191,7 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         metodoWS.enviaPeticion.setUsuario("1"); //****************************************************************************
         metodoWS.execute();
     }
-    /**
-     * Actualiza el titulo en el toolbar2
-     * @param pLinea1 El texto de la linea1
-     * @param pLinea2 El texto de la linea2
-     */
-    public void actualizaToolbar2(String pLinea1,String pLinea2){
-        Toolbar toolbar = findViewById(R.id.toolbar2);
-        TextView linea1 = toolbar.findViewById(R.id.TitleToolbar);
-        TextView linea2 = toolbar.findViewById(R.id.TitleToolbar2);
-        linea1.setText(pLinea1);
-        linea2.setText(pLinea2);
-        if(!Libreria.tieneInformacion(pLinea2)){
-            linea2.setVisibility(View.GONE);
-        }else{
-            linea2.setVisibility(View.VISIBLE);
-        }
-    }
 
-    public boolean esHorizontal(){
-        int display_mode = getResources().getConfiguration().orientation;
-        return display_mode == Configuration.ORIENTATION_LANDSCAPE;
-    }
     public void wsPrueba(String pId) {
         if (!Libreria.tieneInformacion(pId)) {
             pId = getValuePreferences("ip");
@@ -229,7 +218,6 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
     protected void buscarProducto(String busqueda) {
         peticionWS(Enumeradores.Valores.TAREA_PRODUCTOS_BUSQUEDA, "SQL", "SQL",
                 "<linea><d1>" + busqueda + "</d1><d2></d2><d3>|||</d3><cliente></cliente></linea>", "", "");
-        /**/
     }
 
     /**
@@ -255,6 +243,13 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
             dialogoCarga.show();
         }catch (Exception ignored){}
         */
+        /*FragmentManager fragmento = getSupportFragmentManager();
+        if(getApplicationContext()!=null && !fragmento.isDestroyed()){
+            ProgressDialogFragment newFragment = new ProgressDialogFragment();
+            if(newFragment!=null){
+                newFragment.show(fragmento, "Dialogo");
+            }
+        }*/
     }
 
     /**
@@ -264,6 +259,22 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         /*if(dialogoCarga!=null ){
             dialogoCarga.dismiss();
         }*/
+        /*Fragment prev = getSupportFragmentManager().findFragmentByTag("Dialogo");
+        if(prev!=null){
+            ProgressDialogFragment df = (ProgressDialogFragment) prev;
+            df.dismiss();
+        }*/
+    }
+
+    public static class ProgressDialogFragment extends DialogFragment {
+
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Conectando", "Espere un momento...");
+            return progressDialog;
+
+        }
     }
 
     /**
@@ -439,8 +450,28 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
      * @param view El elemento desde el que se ocultara el teclado (Comunmente es un EditText)
      */
     public void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }, 50);
+        /*InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
+    }
+
+    public void showKeyboard(View view) {
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        }, 50);
+        /*InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
     }
 
     /**
@@ -471,7 +502,7 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
                     String busqueda = editProducto.getText().toString();
                     buscarProducto(busqueda);
                 } else
-                    muestraMensaje("Campo vacío", R.drawable.mensaje_warning);
+                    muestraMensaje("Campo vacio", R.drawable.mensaje_warning);
             }
             return false;
         });
@@ -526,109 +557,23 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
     }
 
     public BluetoothConnection traeImpresora(String nombre_impresora) {
-        Dialog d = new Dialog(this);
         BluetoothConnection selectedDevice = null;
-        if(Build.VERSION.SDK_INT >= 31){
-            if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
-                d.setContentView(R.layout.dial_no_permiso);
-                Button btn_ok = d.findViewById(R.id.btn_ok);
-                btn_ok.setOnClickListener(view -> {
-                    d.dismiss();
-                });
-                d.show();
-            } else{
-                final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
-                if (bluetoothDevicesList != null) {
-                    for (BluetoothConnection device : bluetoothDevicesList) {
-                        if (device.getDevice().getName().equals(nombre_impresora))
-                            selectedDevice = device;
-                    }
-                }
-            }
-        }else{
-            final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
-            if (bluetoothDevicesList != null) {
-                for (BluetoothConnection device : bluetoothDevicesList) {
-                    if (device.getDevice().getName().equals(nombre_impresora))
-                        selectedDevice = device;
-                }
+        final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
+        if (bluetoothDevicesList != null) {
+            for (BluetoothConnection device : bluetoothDevicesList) {
+                if (device.getDevice().getName().equals(nombre_impresora))
+                    selectedDevice = device;
             }
         }
-
         return selectedDevice;
     }
 
-    public boolean doPermisos(Context cont, Dialog d){
-        if ((ActivityCompat.checkSelfPermission(cont, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(cont, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
-            d.setContentView(R.layout.dial_no_permiso);
-            Button btn_ok = d.findViewById(R.id.btn_ok);
-            btn_ok.setOnClickListener(view -> {
-                d.dismiss();
-            });
-            d.show();
-            return false;
-        }
-        return true;
+    public boolean esHorizontal(){
+        int display_mode = getResources().getConfiguration().orientation;
+        return display_mode == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    public void doImprimeCB(Dialog d, ContentValues obj, String folioDi, String ordenCompra, String provedorSucursal, boolean imprime_codbarras, boolean imprime_detalle, int imprime_espacios, String nombre_impresora){
-        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
-        String tipoImp = preferences.getString("tImp","");
-
-        if(tipoImp != null && tipoImp.equals("Red")){
-            String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
-            int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
-            String contenido = "";
-            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
-                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
-            } else {
-
-                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
-                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                new Impresora(ip,contenido,puerto, imprime_espacios).execute();
-            }
-
-
-        } else if(tipoImp != null && tipoImp.equals("Bluetooth")){
-            if(Build.VERSION.SDK_INT >= 31){
-                if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED)) {
-                    d.setContentView(R.layout.dial_no_permiso);
-                    Button btn_ok = d.findViewById(R.id.btn_ok);
-                    btn_ok.setOnClickListener(view -> {
-                        d.dismiss();
-                    });
-                    d.show();
-                }else{
-                    Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                    BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
-                    ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-                    impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                    try {
-                        new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                }
-            }else {
-
-                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
-                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-                impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                try {
-                    new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-
-            }
-        }else{
-            muestraMensaje("Error al imprimir.",R.drawable.mensaje_error);
-        }
-    }
-    @SuppressLint("ResourceType")
-    public void dlgMensajeError(String pMensaje, Integer pTipo){
+    public void dlgMensajeError(String pMensaje,Integer pTipo){
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -641,20 +586,29 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         Button regresa= new Button(this);
         linea.addView(regresa);
         TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
-        mensaje.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        mensaje.setText(pMensaje);
+        if(pMensaje.contains("</") || pMensaje.contains("/>")){
+            String html="<html>{0}</html>";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje)));
+            }
+        }else{
+            mensaje.setText(pMensaje);
+        }
         builder.setView(vista);
         builder.setTitle("");
+
         builder.setCancelable(true);
         AlertDialog alert=builder.create();
-        regresa.setText("Cancelar");
+        regresa.setText("Regresar");
         regresa.setGravity(Gravity.CENTER);
-        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2, -1, 1));
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));
         regresa.setOnClickListener(view -> alert.dismiss());
 
         mensaje.setBackgroundResource(pTipo);
-
         if( pTipo == R.drawable.mensaje_error ){
+            mensaje.setBackgroundResource(R.drawable.mensaje_error2);
             mensaje.setTextColor(getResources().getColor(R.color.colorWhite));
         }else{
             mensaje.setTextColor(getResources().getColor(R.color.colorNegro));
@@ -662,4 +616,80 @@ public abstract class ActividadBase extends AppCompatActivity implements Finish 
         alert.show();
     }
 
+    public void doImprime(String pTexto,Boolean pSalida){
+        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
+        String tipoImp = preferences.getString("tImp","");
+        int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
+        if(Libreria.tieneInformacion(tipoImp) ){
+            if(tipoImp.equals("Red")){
+                String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
+                int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
+                new Impresora(ip,pTexto,puerto,espacios).execute();
+            }else if(tipoImp.equals("Bluetooth")){
+                if ( (Build.VERSION.SDK_INT >= 31) && ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED))) {
+                    Dialog d = new Dialog(this);
+                    d.setContentView(R.layout.dial_no_permiso);
+                    Button btn_ok = d.findViewById(R.id.btn_ok);
+                    btn_ok.setOnClickListener(view -> {
+                        d.dismiss();
+                    });
+                    d.show();
+                    return;
+                }
+                SharedPreferences preferencesConf = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
+                String pimpresora = preferencesConf.getString("impresora", "Predeterminada");
+                BluetoothConnection selectedDevice = traeImpresora(pimpresora);
+                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                Libreria.imprimeSol(impresora,pTexto,espacios);
+                try {
+                    new AsyncBluetoothEscPosPrint(this,pSalida).execute(impresora.Imprimir());
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }else{
+            dlgMensajeError("No esta configurada la impresora",R.drawable.mensaje_error);
+        }
+    }
+
+    public void aPantalla(Boolean pPantalla){
+        v_pantalla = pPantalla;
+    }
+
+    public boolean muestraPantalla(){
+        return v_pantalla;
+    }
+
+    public void dlgImprimirAPantalla(String pCadena){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        String pMensaje = Libreria.toHtml(pCadena);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista=inflater.inflate(R.layout.item_venta, null);
+        LinearLayout linea = vista.findViewById(R.id.regeGen);
+        TextView uno=vista.findViewById(R.id.rere_codigo);
+        TextView dos=vista.findViewById(R.id.rere_can);
+        uno.setVisibility(View.GONE);
+        dos.setVisibility(View.GONE);
+        Button regresa= new Button(this);
+        linea.addView(regresa);
+        TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
+        String html="<html>{0}</html>";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje)));
+        }
+        System.out.println(MessageFormat.format(html,pMensaje));
+        builder.setView(vista);
+        builder.setTitle("");
+
+        builder.setCancelable(true);
+        AlertDialog alert=builder.create();
+        regresa.setText("Regresar");
+        regresa.setGravity(Gravity.CENTER);
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));
+        regresa.setOnClickListener(view -> alert.dismiss());
+
+        builder.create().show();
+    }
 }

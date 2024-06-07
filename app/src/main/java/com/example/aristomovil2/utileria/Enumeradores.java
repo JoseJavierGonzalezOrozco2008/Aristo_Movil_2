@@ -1,7 +1,6 @@
 package com.example.aristomovil2.utileria;
 
 import static com.example.aristomovil2.facade.Estatutos.*;
-import static com.example.aristomovil2.facade.Estatutos.TABLA_DCARRO;
 
 import com.example.aristomovil2.facade.Estatutos;
 
@@ -10,8 +9,8 @@ public class Enumeradores {
         HOLA_MUNDO(0,"", "", false, false),
         TAREA_PRUEBA_CONEXION(-2,"validacion", "", false, false),
         TAREA_GUARDA_CLIENTE(18, "validacion", "", false, false),
-        TAREA_COBRAR(233, "validacion", TABLA_PRODUCTOS_COBRADOS, true, true),
-        TAREA_COBRAR_WS(21, "validacion", TABLA_PRODUCTOS_COBRADOS, true, true),
+        TAREA_COBRAR(233, "validacion", "", false, false),
+        TAREA_COBRAR_WS(21, "validacion", "", false, false),
         TAREA_INSERTA_RENGLON(245, "salida", "", false, false),
         TAREA_TRAE_RENGLONES(246, "venta", TABLA_RENGLONES, true, true),
         TAREA_LOGIN(249,"raiz", "", false, false),
@@ -140,11 +139,24 @@ public class Enumeradores {
         TAREA_VNTARETIRO(534, "validacion", "", false, false),
         TAREA_VNTAULTIMAVNTA(1051, "validacion", "", false, false),
         TAREA_ARQEINICIO(1052, "validacion", "", false, false),
-        TAREA_ARQEGUARDA(1053, "validacion", "", false, false),
+        TAREA_ARQEGUARDA(1073, "validacion", "", false, false),
         TAREA_BQDACLTE(1061, "lineas", TABLA_GENERICA, true, true),
         TAREA_VNTACONCREDITO(1063, "validacion", "", false, false),
-        TAREA_VNTAMASPROD(1069, "lineas", TABLA_PRODUCTOS_DI,true, true)
-
+        TAREA_TRAECLTE(1068, "validacion", "", false, false),
+        TAREA_VNTAMASPROD(1069, "lineas", TABLA_PRODUCTOS_DI,true, true),
+        TAREA_TRAECUENTA(1070, "lineas", TABLA_CUENTAS, true, true),
+        TAREA_VNTACANCELA(1071, "validacion", "", false, false),
+        TAREA_GUARDA_CUENTA(22, "validacion", "", false, false),
+        TAREA_REPORTEVNTA(1074, "lineas", TABLA_GENERICA, true, true),
+        TAREA_REPORTEARQE(1075, "lineas", TABLA_GENERICA, true, true),
+        TAREA_IMPRIMEARQE(1076, "validacion", "", false, false),
+        TAREA_REPODOCUMENTO(1077, "lineas", TABLA_GENERICA, true, true),
+        TAREA_IMPRIMEDOCS(1078, "validacion", "", false, false),
+        TAREA_VNTAREGISTRAR(1087, "validacion", "", false, false),
+        TAREA_REPOVNTAESPERA(1086, "lineas", TABLA_GENERICA, true, true),
+        TAREA_REPORETIROS(1088, "lineas", TABLA_GENERICA, true, true),
+        TAREA_IMPRIMERETIRO(1089, "validacion", "", false, false),
+        TAREA_DATAINFO(-3, "validacion", "", false, false)
         ;
 
 

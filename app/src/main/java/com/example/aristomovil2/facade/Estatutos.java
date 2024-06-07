@@ -1,8 +1,8 @@
 package com.example.aristomovil2.facade;
 
 public class Estatutos {
-    public static Integer VERSION_BD = 65;
-    public static  String NOMBRE_BD = "A01Movil2";
+    public static Integer VERSION_BD = 67;
+    public static String NOMBRE_BD = "A01Movil2";
     public static final String TABLA_ESTACIONES = "estaciones";
     public static final String TABLA_PRODUCTOS_UBICACION = "productos_ubicacion";
     public static final String TABLA_ITEMS_MENU = "items_menu";
@@ -36,6 +36,7 @@ public class Estatutos {
     public static final String TABLA_DVIAJE = "dviaje";
     public static final String TABLA_UTIVIAJE = "utiviaje";
     public static final String TABLA_DCARRO = "dcarro";
+    public static final String TABLA_CUENTAS = "cuentas";
 
     public static String[] CREA_BD = {
             "CREATE TABLE estaciones(id integer primary key autoincrement, estaid integer, nombre text, tipo text, asignada text);",
@@ -59,7 +60,7 @@ public class Estatutos {
             "CREATE TABLE ubicaciones(id integer primary key autoincrement, codigo text, disponible text, ubiid integer, estatus text, ubicacion text, asifid text)",
             "CREATE TABLE contados(id integer primary key autoincrement, codigo text, producto text, cant text);",
             "CREATE TABLE asignaciones(id integer primary key autoincrement, ubicacion text, estatus text, numconteo text,puedeabrir integer);",
-            "CREATE TABLE colonias(id integer primary key autoincrement, clave text, colonia text, codigo text)",
+            "CREATE TABLE colonias(id integer primary key autoincrement, clave text, colonia text, codigo text,estado text,municipio text)",
             "CREATE TABLE reposicion(id integer primary key autoincrement,dcinfolio text,rengs integer,fecha text,ubicacion text,claveubicacion text,usuario text ,encarro integer,tipodi text,piezas numeric,prov text,dcin text)",
             "CREATE TABLE repofalta(id integer primary key autoincrement,producto text,destino text,codigo text,faltan numeric,origen text,rengs integer,prodid integer,dacoid)",
             "CREATE TABLE repocalcula(id integer primary key autoincrement,producto text,destino text,origen text,destinoa text,origena text,codigo text,prodid integer,requerido numeric,disponible numeric,asignado numeric)",
@@ -72,6 +73,7 @@ public class Estatutos {
             "CREATE TABLE dviaje(id integer primary key autoincrement,envio TEXT,dcin TEXT,estatus TEXT,texto TEXT,surtidor TEXT,cliente TEXT,ubica TEXT,clteid INTEGER,rengs INTEGER,pzas INTEGER,totreng INTEGER,renglon INTEGER,vol NUMERIC)",
             "CREATE TABLE utiviaje(id integer primary key autoincrement,rid INTEGER, nombre TEXT,  cant NUMERIC, nombre2 TEXT)",
             "CREATE TABLE dcarro(id integer primary key autoincrement,prod INTEGER, codigo TEXT, estilo TEXT,  enoferta INTEGER, detalle TEXT)",
+            "CREATE TABLE cuentas(id integer primary key autoincrement,info TEXT, cuenta TEXT, nombre TEXT,  domiid INTEGER, clteid INTEGER,calle TEXT,exterior TEXT,interior TEXT,cp TEXT,colonia TEXT,coloid INTEGER,estado TEXT,muni TEXT,tel TEXT,cuclid Integer)",
 
             "CREATE UNIQUE INDEX estaciones_data ON estaciones(estaid)",
             "CREATE UNIQUE INDEX productos_ubicacion_data ON productos_ubicacion(prodid)",
@@ -105,7 +107,8 @@ public class Estatutos {
             "CREATE UNIQUE INDEX viaje_data ON viaje(id)",
             "CREATE UNIQUE INDEX dviaje_data ON dviaje(id)",
             "CREATE UNIQUE INDEX utiviaje_data ON utiviaje(id)",
-            "CREATE UNIQUE INDEX dcarro_data ON dcarro(id)"
+            "CREATE UNIQUE INDEX dcarro_data ON dcarro(id)",
+            "CREATE UNIQUE INDEX cuenta_data ON cuentas(id)"
     };
 
     public static  String[] BORRA_BD = {
@@ -141,6 +144,7 @@ public class Estatutos {
             "DROP TABLE IF EXISTS viaje",
             "DROP TABLE IF EXISTS dviaje",
             "DROP TABLE IF EXISTS utiviaje",
-            "DROP TABLE IF EXISTS dcarro"
+            "DROP TABLE IF EXISTS dcarro",
+            "DROP TABLE IF EXISTS cuentas"
     };
 }

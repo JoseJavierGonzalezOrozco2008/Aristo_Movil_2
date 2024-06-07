@@ -36,7 +36,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.2"
                         >
                         <EditText
                             android:id="@+id/vntaCodigo"
@@ -52,7 +52,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.8"
                         >
                         <ImageButton
                             android:id="@+id/vntaEnter"
@@ -71,9 +71,10 @@
                             android:layout_marginRight="@dimen/_2sdp"
                             android:backgroundTint="@color/design_default_color_surface"
                             android:contentDescription="Código de barras"
-                            android:paddingHorizontal="10dp"
+                            android:paddingHorizontal="5dp"
                             android:paddingVertical="5dp"
                             android:src="@drawable/bars_code" />
+
                         <Button
                             android:id="@+id/vntaF1"
                             android:layout_width="0dp"
@@ -90,6 +91,14 @@
                             android:textSize="@dimen/textSizeTiny"
                             android:text="F2" />
                         <Button
+                            android:id="@+id/vntaF0"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:textSize="@dimen/textSizeTiny"
+                            android:visibility="gone"
+                            android:text="F0" />
+                        <Button
                             android:id="@+id/vntaF3"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -104,7 +113,7 @@
                             android:layout_height="match_parent"
                             android:text="F11"
                             android:textSize="@dimen/textSizeTiny"
-                            android:layout_weight="0.3"
+                            android:layout_weight="0.33"
                             android:visibility="gone"
                             />
                         <TextView
@@ -115,18 +124,29 @@
                             android:gravity="center|end"
                             android:textColor="@color/aristo_amarillo"
                             android:textSize="@dimen/_18sdp"
-                            android:layout_weight="1"
-                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_weight="0.8"
                             android:textStyle="bold"
                             />
                     </LinearLayout>
 
                 </LinearLayout>
 
+
+                <TextView
+                    android:id="@+id/vntaSinRegistros"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="Sin artículos"
+                    android:gravity="center"
+                    android:textColor="@color/colorNegro"
+                    android:textSize="@dimen/_22sdp"
+                    android:textStyle="bold"
+                    />
                 <ListView
                     android:id="@+id/vntacarrito"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="0.5"
                     android:fadeScrollbars="false"
                     android:scrollX="0px"
                     android:scrollY="0px"
@@ -139,7 +159,8 @@
                 <GridView
                     android:id="@+id/listPrueba"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
@@ -147,16 +168,6 @@
                     android:scrollbars="horizontal"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp" />
-                <TextView
-                    android:id="@+id/vntaSinRegistros"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:text="Sin artículos"
-                    android:gravity="center"
-                    android:textColor="@color/colorNegro"
-                    android:textSize="@dimen/_22sdp"
-                    android:textStyle="bold"
-                    />
 
             </LinearLayout>
 

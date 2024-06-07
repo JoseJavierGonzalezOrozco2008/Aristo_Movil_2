@@ -17,6 +17,7 @@ import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.google.zxing.BarcodeFormat;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -591,5 +592,48 @@ public final class Libreria {
             retorno = retorno.replace(alias[i],cadenas[i]);
         }
         return retorno;
+    }
+
+    public static ContentValues traeDatosURL(String pURL){
+        ContentValues mapa =new ContentValues();
+        if(tieneInformacion(pURL) && pURL.toUpperCase().contains("HTTP")){
+            mapa.put("url",pURL.substring(0,pURL.indexOf("?")));
+            String cadena1 = pURL.substring(pURL.indexOf("?")+1);
+            String[] datos,cadenas=cadena1.split("&");
+            for(int i=0;i<cadenas.length;i++){
+                datos = cadenas[i].split("=");
+                mapa.put(datos[0],datos.length>1?datos[1]:"");
+            }
+        }
+        return mapa;
+    }
+
+    public static String toHtml(String pCadena){
+        String sIT="";
+        if(tieneInformacion(pCadena)){
+            String detall[]=pCadena.split(Pattern.quote("|")),lexico[];
+            String texto;
+            for(String linea:detall){
+                lexico=linea.split(",");
+                if(lexico.length>1){
+                    texto=lexico[0].replace(";",",");
+                    if(tieneInformacion(texto)){
+                        switch (lexico[1]){
+                            case "T1":sIT+= MessageFormat.format("<div  align=\"center\">{0}</div><br/>",lexico[0]);break;
+                            case "T2":sIT+= MessageFormat.format("<center><h1>{0}</h1></center><br/>",lexico[0]);break;
+                            case "T1n":sIT+= MessageFormat.format("<left><span>{0}</span></left><br/>",lexico[0]);break;
+                            case "T2n":sIT+= MessageFormat.format("<center><h1><b>{0}</b></h1></center><br/>",lexico[0]);break;
+                            case "T1w":sIT+= MessageFormat.format("<right><p>{0}</p></right><br/>",lexico[0]);break;
+                            case "**":
+                            case "QRC":
+                            case "QRM":
+                            case "QRG":
+                            case "CT":sIT+= MessageFormat.format("",lexico[0]);break;
+                        }
+                    }
+                }
+            }
+        }
+        return sIT;
     }
 }

@@ -4,17 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/white">
-
-    <ListView android:id="@+id/listRepoRenglones"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/aristo_amarillo"
-        android:dividerHeight="@dimen/_3sdp"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/repoAyuda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:visibility="gone" />
+
+
+        <ListView android:id="@+id/listRepoRenglones"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/aristo_amarillo"
+            android:dividerHeight="@dimen/_3sdp"/>
+        <TextView
+            android:id="@+id/repoVacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"
+            android:text="Sin elementos"
+            android:textAlignment="center"
+            android:visibility="gone" />
+    </LinearLayout>
 </RelativeLayout>
