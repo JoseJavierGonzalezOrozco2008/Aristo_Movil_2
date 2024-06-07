@@ -1,61 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:id="@+id/regeGen"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/venta_shape"
-        android:layout_margin="5dp" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/rere_linea"
+            android:id="@+id/regeGen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="vertical"
+            android:background="@drawable/venta_shape"
+            android:layout_margin="5dp" >
 
-            <TextView android:id="@+id/rere_codigo"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+            <LinearLayout
+                android:id="@+id/rere_linea"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arial"
-                android:textColor="@color/black"
-                android:text="Folio"
-                android:textSize="@dimen/textSizeMedium"/>
+                android:orientation="horizontal"
+                >
 
-            <TextView android:id="@+id/rere_can"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+                <TextView android:id="@+id/rere_codigo"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:text="Folio"
+                    android:textSize="@dimen/textSizeMedium"/>
+
+                <TextView android:id="@+id/rere_can"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:text="Fecha"
+                    android:textSize="@dimen/textSizeMedium"
+                    android:textAlignment="textEnd"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arial"
-                android:textColor="@color/black"
-                android:text="Fecha"
-                android:textSize="@dimen/textSizeMedium"
-                android:textAlignment="textEnd"/>
+                android:orientation="horizontal"
+                >
 
+                <TextView android:id="@+id/txtVentasCliente"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arial"
+                    android:textColor="@color/black"
+                    android:text="Cliente"
+                    android:textSize="@dimen/textSizeSmall"/>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <TextView android:id="@+id/txtVentasCliente"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arial"
-                android:textColor="@color/black"
-                android:text="Cliente"
-                android:textSize="@dimen/textSizeSmall"/>
-
-        </LinearLayout>
-
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
