@@ -616,14 +616,15 @@ public final class Libreria {
             for(String linea:detall){
                 lexico=linea.split(",");
                 if(lexico.length>1){
+                    System.out.println(lexico[1]);
                     texto=lexico[0].replace(";",",");
                     if(tieneInformacion(texto)){
                         switch (lexico[1]){
-                            case "T1":sIT+= MessageFormat.format("<div  align=\"center\">{0}</div><br/>",lexico[0]);break;
-                            case "T2":sIT+= MessageFormat.format("<center><h1>{0}</h1></center><br/>",lexico[0]);break;
-                            case "T1n":sIT+= MessageFormat.format("<left><span>{0}</span></left><br/>",lexico[0]);break;
-                            case "T2n":sIT+= MessageFormat.format("<center><h1><b>{0}</b></h1></center><br/>",lexico[0]);break;
-                            case "T1w":sIT+= MessageFormat.format("<right><p>{0}</p></right><br/>",lexico[0]);break;
+                            case "T1":sIT+= MessageFormat.format("<div  style=\"text-align: center;\">{0}</div>",lexico[0]);break;
+                            case "T2":sIT+= MessageFormat.format("<h1 style=\"text-align: center;\">{0}</h1>",lexico[0]);break;
+                            case "T1n":sIT+= MessageFormat.format("<span style=\"text-align: start;\" >{0}</span>",lexico[0]);break;
+                            case "T2n":sIT+= MessageFormat.format("<h1 style=\"text-align: center;\"><b>{0}</b></h1>",lexico[0]);break;
+                            case "T1w":sIT+= MessageFormat.format("<p style=\"text-align: end;\">{0}</p><br/>",lexico[0]);break;
                             case "**":
                             case "QRC":
                             case "QRM":
