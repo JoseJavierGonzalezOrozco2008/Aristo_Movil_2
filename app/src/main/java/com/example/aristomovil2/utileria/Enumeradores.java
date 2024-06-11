@@ -156,6 +156,11 @@ public class Enumeradores {
         TAREA_REPOVNTAESPERA(1086, "lineas", TABLA_GENERICA, true, true),
         TAREA_REPORETIROS(1088, "lineas", TABLA_GENERICA, true, true),
         TAREA_IMPRIMERETIRO(1089, "validacion", "", false, false),
+        TAREA_REPORTEEXIS(1091, "lineas", TABLA_GENERICA, true, true),
+        TAREA_IMPRIMEEDOCTA(1090, "validacion", "", false, false),
+        TAREA_PRODGUARDA(1092, "validacion", "", false, false),
+        TAREA_PRECGUARDA(1093, "validacion", "", false, false),
+        TAREA_MGNFAMIGUARDA(1094, "validacion", "", false, false),
         TAREA_DATAINFO(-3, "validacion", "", false, false)
         ;
 
