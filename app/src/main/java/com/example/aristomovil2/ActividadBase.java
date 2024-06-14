@@ -44,6 +44,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,10 +54,12 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import com.example.aristomovil2.adapters.ClienteAdapter;
 import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.facade.Servicio;
+import com.example.aristomovil2.modelos.Bulto;
 import com.example.aristomovil2.modelos.Producto;
 import com.example.aristomovil2.servicio.Finish;
 import com.example.aristomovil2.servicio.MetodoWs;
 import com.example.aristomovil2.servicio.PruebaWs;
+import com.example.aristomovil2.servicio.ServicioImpresionTicket;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
@@ -68,6 +71,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class ActividadBase extends AppCompatActivity implements Finish {
     public ProgressDialog dialogoCarga;
@@ -555,7 +560,79 @@ public class ActividadBase extends AppCompatActivity implements Finish {
             tblaProducto.addView(row);
         }
     }
+    public boolean doPermisos(){
 
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
+        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};
+
+        if(Build.VERSION.SDK_INT < 31){
+            if (!EasyPermissions.hasPermissions(this, perms)) {
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
+                        123, perms);
+                return false;
+            } else {
+                return true;
+            }
+        } else if(Build.VERSION.SDK_INT >= 31){
+            if (!EasyPermissions.hasPermissions(this, permBluConn)) {
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.", 123, permBluConn);
+                return false;
+            } else {
+                System.out.println(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED);
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public boolean doPermisos2(Dialog d, Context context){
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            d.setContentView(R.layout.dial_no_permiso);
+            Button btn_ok = d.findViewById(R.id.btn_ok);
+            btn_ok.setOnClickListener(view -> {
+                d.dismiss();
+            });
+            d.show();
+            return false;
+            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, 1);
+        }
+        return true;
+    }
+    public void doImprimeCB(Dialog d, ContentValues obj, String folioDi, String ordenCompra, String provedorSucursal, boolean imprime_codbarras, boolean imprime_detalle, int imprime_espacios, String nombre_impresora){
+        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
+        String tipoImp = preferences.getString("tImp","");
+
+        if(tipoImp != null && tipoImp.equals("Red")){
+            String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
+            int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
+            String contenido = "";
+            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
+                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
+            } else {
+
+                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
+                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                new Impresora(ip,contenido,puerto, imprime_espacios).execute();
+            }
+
+
+        } else if(tipoImp != null && tipoImp.equals("Bluetooth")){
+            if(doPermisos()){
+                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
+                BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
+                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
+                try {
+                    new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }else{
+            muestraMensaje("Error al imprimir.",R.drawable.mensaje_error);
+        }
+    }
     public BluetoothConnection traeImpresora(String nombre_impresora) {
         BluetoothConnection selectedDevice = null;
         final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
