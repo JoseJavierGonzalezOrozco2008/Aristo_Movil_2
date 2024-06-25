@@ -11,12 +11,16 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.Html;
@@ -30,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,11 +45,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -65,8 +72,13 @@ import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Impresora;
 import com.example.aristomovil2.utileria.Libreria;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -563,7 +575,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     public boolean doPermisos(){
 
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
-        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};
+        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN};
 
         if(Build.VERSION.SDK_INT < 31){
             if (!EasyPermissions.hasPermissions(this, perms)) {
@@ -703,26 +715,19 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
                 new Impresora(ip,pTexto,puerto,espacios).execute();
             }else if(tipoImp.equals("Bluetooth")){
-                if ( (Build.VERSION.SDK_INT >= 31) && ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED))) {
-                    Dialog d = new Dialog(this);
-                    d.setContentView(R.layout.dial_no_permiso);
-                    Button btn_ok = d.findViewById(R.id.btn_ok);
-                    btn_ok.setOnClickListener(view -> {
-                        d.dismiss();
-                    });
-                    d.show();
-                    return;
+                if (doPermisos()){
+                    SharedPreferences preferencesConf = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
+                    String pimpresora = preferencesConf.getString("impresora", "Predeterminada");
+                    BluetoothConnection selectedDevice = traeImpresora(pimpresora);
+                    ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
+                    Libreria.imprimeSol(impresora,pTexto,espacios);
+                    try {
+                        new AsyncBluetoothEscPosPrint(this,pSalida).execute(impresora.Imprimir());
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
-                SharedPreferences preferencesConf = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
-                String pimpresora = preferencesConf.getString("impresora", "Predeterminada");
-                BluetoothConnection selectedDevice = traeImpresora(pimpresora);
-                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-                Libreria.imprimeSol(impresora,pTexto,espacios);
-                try {
-                    new AsyncBluetoothEscPosPrint(this,pSalida).execute(impresora.Imprimir());
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
+
             }
         }else{
             dlgMensajeError("No esta configurada la impresora",R.drawable.mensaje_error);
@@ -738,7 +743,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     }
 
     public void dlgImprimirAPantalla(String pCadena){
-        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder= new AlertDialog.Builder(this);
         String pMensaje = Libreria.toHtml(pCadena);
         LayoutInflater inflater = this.getLayoutInflater();
         View vista=inflater.inflate(R.layout.item_venta, null);
@@ -767,6 +772,122 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));
         regresa.setOnClickListener(view -> alert.dismiss());
 
+        builder.create().show();*/
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String pMensaje = Libreria.toHtml(pCadena);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista = inflater.inflate(R.layout.item_venta, null);
+        LinearLayout linea = vista.findViewById(R.id.regeGen);
+        FlexboxLayout flexLayout = vista.findViewById(R.id.flexOpcs);
+        TextView uno = vista.findViewById(R.id.rere_codigo);
+        TextView dos = vista.findViewById(R.id.rere_can);
+        TextView vntasCliente = vista.findViewById(R.id.txtVentasCliente);
+        uno.setVisibility(View.GONE);
+        dos.setVisibility(View.GONE);
+        vntasCliente.setVisibility(View.GONE);
+
+
+        builder.setView(vista);
+        builder.setTitle("");
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+
+        Button regresa = new Button(this);
+        regresa.setText("Regresar");
+        regresa.setGravity(Gravity.CENTER);
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        regresa.setOnClickListener(view -> alert.hide());
+        WebView webView = new WebView(this);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        ImageButton compartir = new ImageButton(this);
+        compartir.setImageResource(R.drawable.ic_share);
+        compartir.setBackgroundColor(Color.TRANSPARENT);
+        compartir.setOnClickListener(view -> {
+            Bitmap bitmap = captureWebView(webView);
+            if (bitmap != null) {
+                File imageFile = saveBitmap(bitmap);
+
+                compartirMensaje(pMensaje, imageFile);
+            } else {
+                Toast.makeText(this, "Error al generar la imagen", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        LinearLayout.LayoutParams paramsRegresar = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        paramsRegresar.setMargins(0, 0, 20, 0);
+
+        LinearLayout.LayoutParams paramsCompartir = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        paramsCompartir.setMargins(20, 0, 8, 0);
+        compartir.setLayoutParams(paramsCompartir);
+        flexLayout.addView(regresa);
+        flexLayout.addView(compartir);
+        linea.addView(webView);
+
+        String html = "<html><style type=\"text/css\">\n" +
+                "body {\n" +
+                "    font-family: 'monospace';\n" +
+                "     color: #3e3e3e;\n"+
+                "    font-size: 100%;\n" +
+                "}\n" +
+                "</style><body>" + pMensaje + "</body></html>";
+        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+
         builder.create().show();
     }
+
+    private Bitmap captureWebView(WebView webView) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = Bitmap.createBitmap(webView.getWidth(), webView.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            webView.draw(canvas);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    private File saveBitmap(Bitmap bitmap) {
+        File imagePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "shared_image.png");
+        try {
+            FileOutputStream fos = new FileOutputStream(imagePath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imagePath;
+    }
+
+    private void compartirMensaje(String pMensaje, File imageFile) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setType("image/png");
+
+        // Mensaje Extra
+        intent.putExtra(Intent.EXTRA_TEXT, "Compartir");
+
+        // Imagen
+        //Uri imageUri = Uri.fromFile(imageFile);
+        Uri imageUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", imageFile);
+        intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+
+        startActivity(intent);
+
+    }
+
 }

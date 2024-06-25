@@ -29,6 +29,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +40,15 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <activity
             android:name=".Acrividades.Cuentas"
             android:configChanges="orientation|screenSize"
@@ -75,6 +85,10 @@
             android:name=".Acrividades.ListaViaje"
             android:exported="false" />
         <activity
+            android:name=".Manuales"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+        <activity
             android:name=".Acrividades.ConCuenta"
             android:exported="false" />
         <activity
@@ -103,12 +117,15 @@
 
         <activity
             android:name=".Contados"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".Conteo"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".ConteoFisico"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".ProductosDI"
@@ -121,6 +138,7 @@
             android:exported="true" />
         <activity
             android:name=".Inventario"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".Cobro"
@@ -142,6 +160,7 @@
             android:exported="true" />
         <activity
             android:name=".Ubicaciones"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".MainMenu"
@@ -154,6 +173,7 @@
             android:exported="true" />
         <activity
             android:name=".BuscaProd"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".Configuracion"
@@ -161,6 +181,7 @@
             android:label="@string/title_activity_configuracion" />
         <activity
             android:name=".Login"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
