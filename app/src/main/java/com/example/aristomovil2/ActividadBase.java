@@ -43,6 +43,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -716,24 +717,16 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     }
 
     public void dlgImprimirAPantalla(String pCadena,Boolean pFinishAct){
-        AlertDialog.Builder builder= new AlertDialog.Builder(this,R.style.dialogoAnchos);
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
         String pMensaje = Libreria.toHtml(pCadena);
         LayoutInflater inflater = this.getLayoutInflater();
-        View vista=inflater.inflate(R.layout.item_venta, null);
-        LinearLayout linea = vista.findViewById(R.id.regeGen);
-        TextView uno = vista.findViewById(R.id.rere_codigo);
-        TextView dos = vista.findViewById(R.id.rere_can);
+        View vista=inflater.inflate(R.layout.item_dlgreporte, null);
+        ScrollView scrollMsj = vista.findViewById(R.id.scrollTicket);
         FlexboxLayout flexLayout = vista.findViewById(R.id.flexOpcs);
-        uno.setVisibility(View.GONE);
-        dos.setVisibility(View.GONE);
+
         Button regresa= new Button(this);
         //linea.addView(regresa,0);
-        TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
-        mensaje.setGravity(Gravity.CENTER);
 
-        mensaje.setTypeface(Typeface.MONOSPACE);
-        mensaje.setText(pMensaje);
-        mensaje.setVisibility(View.GONE);
         builder.setView(vista);
         builder.setTitle("");
 
@@ -768,7 +761,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         });
         flexLayout.addView(regresa);
         flexLayout.addView(compartir);
-        linea.addView(webView);
+        scrollMsj.addView(webView);
 
         int width = (int)(getResources().getDisplayMetrics().widthPixels);
         String html = "<html><style type=\"text/css\">\n" +
@@ -778,7 +771,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 "    font-size: 100%;\n" +
                 "}\n" +
                 "</style><body>" + pMensaje + "</body></html>";
-        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL(null, html   , "text/html", "UTF-8", null);
 
         alert.getWindow().setLayout(width, -2);
         alert.show();
