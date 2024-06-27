@@ -169,22 +169,6 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
         inicializarActividad("Aristo Movil");
         androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        //Button btnImp = findViewById(R.id.btnImpr);
-        //btnImp.setVisibility(View.INVISIBLE);
-        //btnImp.setOnClickListener(new View.OnClickListener() {
-        // @Override
-        //   public void onClick(View view) {
-        //       String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
-        //       int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
-        //       String contenido = "";
-        //       int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
-
-        //       contenido = ".,T2|.,T2|.,T2|Surtido,T1|XENON INDUSTRIAL ARTICLES,T2|Allende,T1|Pedido:,T1|I0100000247,T2|Fecha:22/04/2024 11:04:01,T1|sistema,T1|Rengs:1 Piezas:1,T1|I0100000247,**|.,T2";
-
-        //       new Impresora(ip,contenido,puerto,espacios).execute();
-        //     }
-        //  });
-
         dialPermis = new Dialog(this);
         Button btnlogin = findViewById(R.id.btnLoginLogin);
         EditText txtUsuario = findViewById(R.id.editLoginUsuario);
@@ -208,11 +192,6 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
             return false;
         }));
 
-        /*txtUsuario.setText("administrador");
-        txtPassword.setText("1111");*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //checkPermissions();
-        }
         checkBluetoothPermissions();
 
     }

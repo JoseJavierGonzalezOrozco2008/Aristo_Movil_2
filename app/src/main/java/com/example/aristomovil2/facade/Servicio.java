@@ -492,6 +492,71 @@ public class Servicio {
         return listaDcatalogos;
     }
 
+    @SuppressLint("Range")
+    public ArrayList<String> traeMargenes(){
+        ArrayList<String> listaDcatalogos = new ArrayList<>();
+        String abrevi;
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT abrevi FROM " + Estatutos.TABLA_DCATALOGO+" WHERE cata=-1 AND id>1 ORDER BY n2,n1", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    abrevi = cursor.getString(cursor.getColumnIndex("abrevi"));
+                    listaDcatalogos.add(abrevi);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            db.cierraConexion();
+        }
+        return listaDcatalogos;
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<String> traeMargen(Integer pCatalogo){
+        ArrayList<String> listaDcatalogos = new ArrayList<>();
+        String abrevi;
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT abrevi FROM " + Estatutos.TABLA_DCATALOGO+" WHERE cata=-1 AND e1="+pCatalogo+" ORDER BY n2,n1", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    abrevi = cursor.getString(cursor.getColumnIndex("abrevi"));
+                    listaDcatalogos.add(abrevi);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            db.cierraConexion();
+        }
+        return listaDcatalogos;
+    }
+
+    @SuppressLint("Range")
+    public Integer traePosicion(Integer pCatalogo,Integer pId){
+        ArrayList<Integer> listaDcatalogos = new ArrayList<>();
+        Integer abrevi = 0,retorno = 0;
+        if(pId!=null){
+            db.abreConexion();
+            try(Cursor cursor = db.getDatabase().rawQuery("SELECT (SELECT COUNT()-1 ordenes FROM dcatalogo b WHERE a.cata=b.cata AND a.id>=b.id ORDER BY b.n2,b.n1 ) orden,id FROM " + Estatutos.TABLA_DCATALOGO+" a WHERE cata="+pCatalogo+" ORDER BY n2,n1", null)){
+                if(cursor.moveToFirst()){
+                    do{
+                        abrevi = cursor.getInt(cursor.getColumnIndex("id"));
+                        if(pId.compareTo(abrevi)==0){
+                            retorno = cursor.getInt(cursor.getColumnIndex("orden"));
+                            break;
+                        }
+                    }while (cursor.moveToNext());
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            } finally {
+                db.cierraConexion();
+            }
+        }
+        return retorno;
+    }
+
     public ArrayList<Generica> traeDcatGenerica(Integer pCatalogo){
         ArrayList<Generica> listaDcatalogos = new ArrayList<>();
         db.abreConexion();

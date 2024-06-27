@@ -52,8 +52,6 @@
         android:layout_width="match_parent"
         android:textSize="@dimen/textSizeSmall"
         android:textColor="@color/black"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
         android:layout_height="wrap_content"
         android:textAlignment="center"/>
     <LinearLayout
@@ -61,15 +59,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:id="@+id/dvtaCantcapt"
-            android:layout_width="@dimen/_105sdp"
-            android:layout_height="wrap_content"
-            android:text="Cant. Nueva:"
-            android:textAlignment="viewStart"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textSizeSmall"
             android:textColor="@color/black"
-            android:textSize="@dimen/textSizeSmall" />
+            android:text="Cant. Nueva:"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd" />
         <EditText
             android:padding="5dp"
             android:id="@+id/dvtaCantidad"
@@ -84,7 +82,7 @@
         <ImageButton android:id="@+id/btnMasmas"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/_7sdp"
+
             android:src="@drawable/add_black"
             android:background="@drawable/button_shape"
             android:layout_weight="0.05"
@@ -93,7 +91,7 @@
         <ImageButton android:id="@+id/btnMenor"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/_7sdp"
+
             android:src="@drawable/minus_black"
             android:background="@drawable/button_shape"
             android:layout_weight="0.05"
@@ -108,10 +106,11 @@
         <TextView
             android:textSize="@dimen/textSizeSmall"
             android:text="Descuento:"
-            android:layout_width="@dimen/_105sdp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"/>
+            android:textAlignment="viewEnd"/>
         <EditText
             android:padding="5dp"
             android:id="@+id/dvtaDesc"
@@ -129,12 +128,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="@dimen/_105sdp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:textSize="@dimen/textSizeSmall"
             android:text="Precio Nuevo:"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"/>
+            android:textAlignment="viewEnd"/>
         <EditText
             android:padding="5dp"
             android:id="@+id/dvtaPrecioN"
@@ -147,10 +147,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/dvtaAvisos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSizeSmall"
+        android:textColor="@color/black"
+        />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="0dp"
@@ -163,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/delete_white"
-                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_shape"
                 android:paddingHorizontal="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
@@ -174,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/delete_white"
-                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_shape"
                 android:paddingHorizontal="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
@@ -185,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/delete_white"
-                android:textColor="@drawable/white_text_button"
+                android:background="@drawable/button_shape"
                 android:paddingHorizontal="5dp"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
@@ -195,4 +202,3 @@
     </LinearLayout>
 
 </LinearLayout>
-

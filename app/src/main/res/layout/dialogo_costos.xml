@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginEnd="5dp">
+
+        <TextView
+            android:id="@+id/prodPrecios"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Costos y Precios"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeSmall" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"             >
+
+
+            <TextView
+                android:id="@+id/prodMargen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="@dimen/textSizeSmall" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.7">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="*"
+                        android:shrinkColumns="*"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginTop="10dp"
+                        >
+                        <TableRow  android:layout_width="match_parent"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Sin Imp"
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeSmall" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Con Imp"
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Costo Ultimo:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodCostoUlt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodCostoUlti"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Costo Promedio:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodCostoPro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodCostoProi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Costo Estandar:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodCostoStd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodCostoStdi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+
+                    </TableLayout>
+                    <TableLayout
+                        android:id="@+id/costprecios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="*"
+                        android:shrinkColumns="1"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        >
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:gravity="center|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeSmall" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="       "
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Precio Normal:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodPcioNormal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodPcioNori"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Precio1:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodPcio1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodPcio1i"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Precio2:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodPcio2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodPcio2i"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                        <TableRow  >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Precio3:"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+
+                            <EditText
+                                android:id="@+id/prodPcio3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textAlignment="viewEnd"
+                                android:ems="3"/>
+                            <TextView
+                                android:id="@+id/prodPcio3i"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="0.0"
+                                android:textColor="@color/black"
+                                android:gravity="end|center"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+        </ScrollView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="end" >
+            <Button
+                android:id="@+id/PrecCerrar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Cerrar"
+                android:textSize="@dimen/textSizeSmall"
+                android:gravity="center"
+                />
+            <Button
+                android:id="@+id/PrecGuarda"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Guardar"
+                android:textSize="@dimen/textSizeSmall"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+</LinearLayout>

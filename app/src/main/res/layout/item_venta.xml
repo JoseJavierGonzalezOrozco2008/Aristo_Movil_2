@@ -1,75 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexOpcs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/flexOpcs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:flexDirection="row"
-            app:justifyContent="flex_start"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_15sdp"/>
+        app:flexDirection="row"
+        app:justifyContent="flex_start"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"/>
+    <LinearLayout
+        android:id="@+id/regeGen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/venta_shape"
+        android:layout_margin="5dp" >
+
         <LinearLayout
-            android:id="@+id/regeGen"
+            android:id="@+id/rere_linea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/venta_shape"
-            android:layout_margin="5dp" >
+            android:orientation="horizontal"
+            >
 
-            <LinearLayout
-                android:id="@+id/rere_linea"
-                android:layout_width="match_parent"
+            <TextView android:id="@+id/rere_codigo"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:text="Folio"
+                android:textSize="@dimen/textSizeMedium"/>
 
-                <TextView android:id="@+id/rere_codigo"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/arial"
-                    android:textColor="@color/black"
-                    android:text="Folio"
-                    android:textSize="@dimen/textSizeMedium"/>
-
-                <TextView android:id="@+id/rere_can"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/arial"
-                    android:textColor="@color/black"
-                    android:text="Fecha"
-                    android:textSize="@dimen/textSizeMedium"
-                    android:textAlignment="textEnd"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView android:id="@+id/rere_can"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:text="Fecha"
+                android:textSize="@dimen/textSizeMedium"
+                android:textAlignment="textEnd"/>
 
-                <TextView android:id="@+id/txtVentasCliente"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/arial"
-                    android:textColor="@color/black"
-                    android:text="Cliente"
-                    android:textSize="@dimen/textSizeSmall"/>
-
-            </LinearLayout>
 
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <TextView android:id="@+id/txtVentasCliente"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:text="Cliente"
+                        android:textSize="@dimen/textSizeSmall"/>
+
+                </LinearLayout>
+            </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <Button
+                    android:id="@+id/repoCerrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar"
+                    android:textSize="@dimen/textSizeTiny"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/arial"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    android:background="@drawable/button_shape"
+                    />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>

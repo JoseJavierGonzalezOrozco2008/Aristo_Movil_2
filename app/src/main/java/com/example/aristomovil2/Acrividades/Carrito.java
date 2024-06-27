@@ -75,7 +75,7 @@ public class Carrito extends ActividadBase {
     private EditText v_codigo;
     private List<Generica> v_clientes;
     private ClienteAdapter v_Adacliente;
-    private AlertDialog v_dlgCliente,v_dlgreporte;
+    private AlertDialog v_dlgCliente;
     private Menu v_menu;
     private List<Generica> renglonesGen;
     private Button v_F2,v_F0;
@@ -375,6 +375,7 @@ public class Carrito extends ActividadBase {
     public void traeTicketVnta(String pFolio){
         traeUltTicket(pFolio);
     }
+
     public void traeTicketArqe(Enumeradores.Valores pTarea, String pFolio){
         peticionWS(pTarea, "SQL", "SQL",  v_estacion+"",pFolio,"");
     }
@@ -397,7 +398,7 @@ public class Carrito extends ActividadBase {
         if(v_dlgreporte!=null && v_dlgreporte.isShowing()){
             v_dlgreporte.dismiss();
         }
-        pFolio = pFolio==v_default.getTex2() ? "" : pFolio;
+        pFolio = pFolio == v_default.getTex2() ? "" : pFolio;
         peticionWS(Enumeradores.Valores.TAREA_VNTATRAEULTIMA, "SQL", "SQL", v_estacion+"", usuarioID+"", pFolio);
     }
 
@@ -552,6 +553,7 @@ public class Carrito extends ActividadBase {
             case TAREA_ARQEGUARDA:
                 if(output.getExito()){
                     String arqefolio = obj.getAsString("anexo");
+                    aPantalla(false);
                     traeTicketArqe(Enumeradores.Valores.TAREA_IMPRIMEARQE,arqefolio);
                     //imprimeTicket();
                 }else{
@@ -560,26 +562,22 @@ public class Carrito extends ActividadBase {
                 ocultaTeclaEnLand();
                 break;
             case TAREA_REPORTEVNTA:
-                dlgRepoVnta(2);
+                dlgReporte(2);
                 break;
             case TAREA_REPORTEARQE:
-                dlgRepoVnta(3);
+                dlgReporte(3);
                 break;
             case TAREA_REPOVNTAESPERA:
-                dlgRepoVnta(5);
+                dlgReporte(5);
                 break;
             case TAREA_REPORETIROS:
-                dlgRepoVnta(6);
+                dlgReporte(6);
                 break;
             case TAREA_IMPRIMERETIRO:
             case TAREA_IMPRIMEARQE:
                 if(output.getExito()){
                     v_ticket = obj.getAsString("anexo");
-                    if(muestraPantalla()){
-                        dlgImprimirAPantalla(v_ticket);
-                    }else{
-                        imprimeTicket();
-                    }
+                    imprimeTicket();
                 }else{
                     dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
                 }
@@ -620,7 +618,7 @@ public class Carrito extends ActividadBase {
         createMenuItem(menu, 1,2,  "Cliente F11");//5
         createMenuItem(menu, 1,9,  "Recargas F3");//6
         createMenuItem(menu, 1,4,  "Retiro F9");//7
-        createMenuItem(menu, 1,5,  "Ultimo ticket F6");//8
+        createMenuItem(menu, 1,5,  "Devolucion");//8
         createMenuItem(menu, 1,6,  "Arqueo F12");//9
         createMenuItem(menu, 2,7,  "Reporte Ventas");//10
         createMenuItem(menu, 2,12,  "Reporte Retiros");//11
@@ -711,7 +709,9 @@ public class Carrito extends ActividadBase {
                 dlgRetiroParcial();
                 break;
             case 5:
-                traeUltTicket("");
+                Intent intent = new Intent(this, Devolucion.class);
+                //mStartForResult.launch(intent);
+                startActivity(intent);
                 break;
             case 6:
                 traeValoresArqueo();
@@ -853,6 +853,7 @@ public class Carrito extends ActividadBase {
         final EditText descuento = dialog.findViewById(R.id.dvtaDesc);
         final EditText precioN = dialog.findViewById(R.id.dvtaPrecioN);
         final RadioGroup grupo = dialog.findViewById(R.id.dvtaRadioGrup);
+        TextView avisos = dialog.findViewById(R.id.dvtaAvisos);
         LinearLayout lnCant = dialog.findViewById(R.id.dvtaLyCant);
         LinearLayout lnDesc = dialog.findViewById(R.id.dvtaLyDesc);
         LinearLayout lnPrec = dialog.findViewById(R.id.dvtaLyPrecio);
@@ -868,6 +869,8 @@ public class Carrito extends ActividadBase {
         cantidad.setSelectAllOnFocus(true);
         precioN.setSelectAllOnFocus(true);
         cantidad.requestFocus();
+        avisos.setText(pRen.getNotas());
+        System.out.println(v_ultprod+" "+pRen.getNotas());
 
         mas.setOnClickListener(v -> {
             hideKeyboard(cantidad);
@@ -1118,50 +1121,6 @@ public class Carrito extends ActividadBase {
         });
         v_dlgCliente = builder.create();
         v_dlgCliente.show();
-    }
-
-    public void dlgRepoVnta(Integer pOpcion){
-        Generica encabezado=servicio.traeGenReporteEnca();
-        if(encabezado==null){
-            dlgMensajeError("No se pudo obtener informacion del Reporte",R.drawable.mensaje_error);
-            return;
-        }
-        AlertDialog.Builder builder= new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View vista=inflater.inflate(R.layout.dialogo_reporenglones, null);
-        View titulo=inflater.inflate(R.layout.item_titulo, null);
-        builder.setView(vista);
-        builder.setCustomTitle(titulo);
-        builder.setTitle("");
-        builder.setCancelable(true);
-
-        TextView ayuda = vista.findViewById(R.id.repoAyuda);
-        TextView titTitulo = titulo.findViewById(R.id.tit_titulo);
-        ImageButton nuevo = titulo.findViewById(R.id.btnTitNuevo);
-        ImageButton regresa = titulo.findViewById(R.id.btnTitRegresa);
-        nuevo.setVisibility(View.GONE);
-        ListView ventas = vista.findViewById(R.id.listRepoRenglones);
-        titTitulo.setText(encabezado.getTex1());
-        ayuda.setText(encabezado.getTex2());
-        ayuda.setVisibility(View.VISIBLE);
-
-        List<Generica> reporte=servicio.traeGenReporte();
-        GenericaAdapter v_Adavnta = new GenericaAdapter(reporte,this,pOpcion);
-        ventas.setAdapter(v_Adavnta);
-        TextView texto=vista.findViewById(R.id.repoVacio);
-        texto.setText("Sin elementos");
-        ventas.setEmptyView(texto);
-
-        int[] colors = {0, 0xFF000000, 0};
-        ventas.setDivider(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
-        ventas.setDividerHeight(1);
-        v_dlgreporte = builder.create();
-
-        regresa.setOnClickListener(v-> v_dlgreporte.dismiss());
-
-        v_dlgreporte.show();
     }
 
     private void imprimeTicket(){

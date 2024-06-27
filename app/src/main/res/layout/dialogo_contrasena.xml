@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTituloContra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cambio de contraseña numérica"
+        android:textSize="@dimen/textSizeMedium"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tvUsuarioContra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSizeMedium"
+        android:textColor="@color/black" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pwdNueva"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Nueva:"
+            android:gravity="end|center_vertical"
+            android:layout_weight="0.3"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/nupaPass1"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:inputType="numberDecimal|numberSigned|numberPassword"
+            android:lines="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/pwdConfirma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Confirma:"
+            android:gravity="end|center_vertical"
+            android:layout_weight="0.3"
+            android:textSize="@dimen/textSizeSmall"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/nupaPass2"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:inputType="numberDecimal|numberSigned|numberPassword"
+            android:lines="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end" >
+        <Button
+            android:id="@+id/btnCerrar"
+            android:text="Cerrar"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_shape"
+            android:layout_marginRight="5dp" />
+        <Button
+            android:id="@+id/btnGuardar"
+            android:text="Guardar"
+            android:textSize="@dimen/textSizeSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_shape"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
+</LinearLayout>

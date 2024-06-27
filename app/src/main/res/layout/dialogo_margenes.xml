@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/prodTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Margenes para precio"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <ListView
+        android:id="@+id/margLista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modifica margen"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeXSmall" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:shrinkColumns="0"
+        >
+        <TableRow>
+            <Spinner
+                android:id="@+id/margMargenes"
+                style="?android:attr/spinnerItemStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/textSizeSmall"
+                />
+
+            <EditText
+                android:id="@+id/margMargen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeSmall"
+
+                />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/MargCierra"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Cerrar"
+            android:textSize="@dimen/textSizeSmall"
+            android:gravity="center"
+            />
+        <Button
+            android:id="@+id/MargGuarda"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Guardar"
+            android:textSize="@dimen/textSizeSmall"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+</LinearLayout>

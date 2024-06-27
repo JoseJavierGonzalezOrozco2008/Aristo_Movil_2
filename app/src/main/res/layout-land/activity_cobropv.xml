@@ -462,8 +462,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cbroLayCambio02"
@@ -510,6 +508,14 @@
                         android:layout_weight="1" >
                     </Button>
                     <Button
+                        android:id="@+id/cbroBtnEnEspera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="En captura"
+                        android:textAllCaps="false"
+                        android:layout_weight="1" >
+                    </Button>
+                    <Button
                         android:id="@+id/cbroBtnNuevo"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -530,7 +536,6 @@
                 android:id="@+id/Mensaje"
                 layout="@layout/mensaje" />
         </LinearLayout>
-
 
     </RelativeLayout>
 

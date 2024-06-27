@@ -1,11 +1,13 @@
 package com.example.aristomovil2;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -14,6 +16,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
@@ -39,13 +42,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -58,15 +60,19 @@ import androidx.fragment.app.FragmentManager;
 
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
+import com.example.aristomovil2.Acrividades.Carrito;
+import com.example.aristomovil2.Acrividades.Cobropv;
+import com.example.aristomovil2.Acrividades.Devolucion;
 import com.example.aristomovil2.adapters.ClienteAdapter;
+import com.example.aristomovil2.adapters.GenericaAdapter;
+import com.example.aristomovil2.adapters.ReporteAdapter;
 import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.facade.Servicio;
-import com.example.aristomovil2.modelos.Bulto;
+import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.Producto;
 import com.example.aristomovil2.servicio.Finish;
 import com.example.aristomovil2.servicio.MetodoWs;
 import com.example.aristomovil2.servicio.PruebaWs;
-import com.example.aristomovil2.servicio.ServicioImpresionTicket;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
@@ -76,12 +82,12 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -90,15 +96,19 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     public ProgressDialog dialogoCarga;
     public Servicio servicio;
     private Toast lToast;
-    private TextView txtToast, txtMensaje, dlgSinRegistros;
-    public String usuario, usuarioID, v_nombreestacion;
+    private TextView txtToast, txtMensaje,dlgSinRegistros;
+    public String usuario, usuarioID,v_nombreestacion;
     private LinearLayout mensaje, mensajeLayout;
     protected Dialog dlgBuscaProds;
+    protected AlertDialog v_dlgreporte;
+    protected boolean v_esMono;
     private TableLayout tblaProducto;
     private boolean v_pantalla;
+    protected Integer v_estacion;
+    protected DialogInterface.OnClickListener vOnClick1;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         //Inicializa la vista para los Toast
@@ -116,7 +126,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * inicializa los valores comunes en todas las actividades
      * @param titulo Titulo que sera mostrado en el toolbar
      */
-    public void inicializarActividad(String titulo) {
+    public void inicializarActividad(String titulo){
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.TitleToolbar);
         title.setText(titulo);
@@ -125,20 +135,16 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         inicializarActividad();
     }
 
-    public void inicializarActividad2(String pLinea1, String pLinea2) {
+    public void inicializarActividad2(String pLinea1,String pLinea2){
         Toolbar toolbar = findViewById(R.id.toolbar2);
-        TextView linea1 = toolbar.findViewById(R.id.TitleToolbar);
-        TextView linea2 = toolbar.findViewById(R.id.TitleToolbar2);
         ImageButton regresa = toolbar.findViewById(R.id.toolRegresa);
         regresa.setOnClickListener(view -> onBackPressed());
-        linea1.setText(pLinea1);
-        linea2.setText(pLinea2);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        actualizaToolbar2(pLinea1,pLinea2);
         inicializarActividad();
     }
 
-    public void inicializarActividad() {
+    public void inicializarActividad(){
         servicio = new Servicio(this);
 
         mensaje = findViewById(R.id.Mensaje);
@@ -151,6 +157,8 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         usuario = sharedPreferences.getString("user", "administrador");
         usuarioID = sharedPreferences.getString("usuarioID", "-1");
         v_nombreestacion = sharedPreferences.getString("estacion", "Estacion");
+        v_estacion  = sharedPreferences.getInt("estaid", 0);
+        v_esMono = sharedPreferences.getBoolean("mono", false);
         v_pantalla = false;
     }
 
@@ -158,7 +166,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * Actualiza el titulo en el toolbar
      * @param titulo El titulo nuevo
      */
-    public void actualizaToolbar(String titulo) {
+    public void actualizaToolbar(String titulo){
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.TitleToolbar);
         title.setText(titulo);
@@ -170,15 +178,15 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param pLinea1 El texto de la linea1
      * @param pLinea2 El texto de la linea2
      */
-    public void actualizaToolbar2(String pLinea1, String pLinea2) {
+    public void actualizaToolbar2(String pLinea1,String pLinea2){
         Toolbar toolbar = findViewById(R.id.toolbar2);
         TextView linea1 = toolbar.findViewById(R.id.TitleToolbar);
         TextView linea2 = toolbar.findViewById(R.id.TitleToolbar2);
         linea1.setText(pLinea1);
         linea2.setText(pLinea2);
-        if (!Libreria.tieneInformacion(pLinea2)) {
+        if(!Libreria.tieneInformacion(pLinea2)){
             linea2.setVisibility(View.GONE);
-        } else {
+        }else{
             linea2.setVisibility(View.VISIBLE);
         }
     }
@@ -192,10 +200,10 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param Dato2 Dato que sera enviado a la peticion
      * @param Dato3 Dato que sera enviado a la peticion
      */
-    public void peticionWS(Enumeradores.Valores tarea, String Origen, String Clave, String Dato1, String Dato2, String Dato3) {
+    public void peticionWS(Enumeradores.Valores tarea, String Origen, String Clave, String Dato1, String Dato2, String Dato3){
         cargaDialogo();
         String ip = getValuePreferences("ip");
-        MetodoWs metodoWS = Libreria.tieneInformacion(ip) ? new MetodoWs(ip) : new MetodoWs();
+        MetodoWs metodoWS = Libreria.tieneInformacion(ip) ? new MetodoWs(ip):new MetodoWs();
         metodoWS.termina = this;
         metodoWS.context = this;
         metodoWS.servicio = servicio;
@@ -209,11 +217,11 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         metodoWS.execute();
     }
 
-    public void wsPrueba(String pId) {
-        if (!Libreria.tieneInformacion(pId)) {
+    public void wsPrueba(String pId){
+        if(!Libreria.tieneInformacion(pId)){
             pId = getValuePreferences("ip");
         }
-        System.out.println("Ip" + pId);
+        System.out.println("Ip"+pId);
         PruebaWs metodoWS = new PruebaWs(pId);
         metodoWS.termina = this;
         metodoWS.context = this;
@@ -224,15 +232,19 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         metodoWS.enviaPeticion.setDato1("");
         metodoWS.enviaPeticion.setDato2("");
         metodoWS.enviaPeticion.setDato3("");
-        metodoWS.enviaPeticion.setUsuario(Libreria.tieneInformacionEntero(usuarioID + "", 1) + ""); //****************************************************************************
+        metodoWS.enviaPeticion.setUsuario(Libreria.tieneInformacionEntero(usuarioID+"",1)+""); //****************************************************************************
         metodoWS.execute();
+    }
+
+    public void wsImprime(Enumeradores.Valores pTarea,String pFolio){
+        peticionWS(pTarea, "SQL", "SQL", v_estacion+"", pFolio, usuarioID+"");
     }
 
     /**
      * LLama al servicio que busca un producto
      * @param busqueda La busqueda realizada
      */
-    protected void buscarProducto(String busqueda) {
+    protected void buscarProducto(String busqueda){
         peticionWS(Enumeradores.Valores.TAREA_PRODUCTOS_BUSQUEDA, "SQL", "SQL",
                 "<linea><d1>" + busqueda + "</d1><d2></d2><d3>|||</d3><cliente></cliente></linea>", "", "");
     }
@@ -242,7 +254,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param key LLave a buscar
      * @return El string del campo correspondiente a la llave proporcionada
      */
-    public String getValuePreferences(String key) {
+    public String getValuePreferences(String key){
         SharedPreferences preferences;
         preferences = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
         return preferences.getString(key, "");
@@ -251,7 +263,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     /**
      * Muestra un dialogo de carga
      */
-    public void cargaDialogo() {
+    public void cargaDialogo(){
         /*dialogoCarga = new ProgressDialog(this);
         dialogoCarga.setMessage("Cargando");
         dialogoCarga.setCancelable(false);
@@ -272,7 +284,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     /**
      * Cierra el dialogo de carga
      */
-    public void cierraDialogo() {
+    public void cierraDialogo(){
         /*if(dialogoCarga!=null ){
             dialogoCarga.dismiss();
         }*/
@@ -300,7 +312,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param color El color del texto
      * @return El TextView
      */
-    public TextView getTextview(String txt, int color) {
+    public TextView getTextview(String txt, int color){
         TextView tv = new TextView(this);
         tv.setText(txt);
         tv.setTextColor(color);
@@ -316,7 +328,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param length La longitud maxima del texto
      * @return El TextView
      */
-    public TextView getTextview(String txt, int color, int length) {
+    public TextView getTextview(String txt, int color, int length){
         TextView tv = new TextView(this);
         tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});
         tv.setText(txt);
@@ -331,12 +343,12 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param msj El mensaje a mostrar
      * @param tipo El tipo de mensaje (error, exito, warning)
      */
-    public void muestraMensaje(String msj, int tipo) {
+    public void muestraMensaje(String msj, int tipo){
         txtMensaje.setText(msj);
         mensajeLayout.setBackgroundResource(tipo);
-        if (tipo == R.drawable.mensaje_error) {
+        if(tipo==R.drawable.mensaje_error){
             txtMensaje.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else {
+        }else{
             txtMensaje.setTextColor(getResources().getColor(R.color.colorNegro));
         }
         mensajeLayout.setAlpha(Float.parseFloat("1.0"));
@@ -344,12 +356,12 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         mensaje.startAnimation(animation);
     }
 
-    public void muestraMensaje(Context context, String msj, int tipo) {
+    public void muestraMensaje(Context context,String msj, int tipo){
         txtMensaje.setText(msj);
         mensajeLayout.setBackgroundResource(tipo);
-        if (tipo == R.drawable.mensaje_error) {
+        if(tipo==R.drawable.mensaje_error){
             txtMensaje.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else {
+        }else{
             txtMensaje.setTextColor(getResources().getColor(R.color.colorNegro));
         }
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.mensaje);
@@ -359,7 +371,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     /**
      * Muestra un mensaje que indicia que un metodo esta en construccion
      */
-    public void enConstruccion() {
+    public void enConstruccion(){
         muestraMensaje("En construccion", R.drawable.mensaje_warning);
     }
 
@@ -368,7 +380,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param pMensaje El mensaje a mostrar
      * @param duracion La duracion del mensaje
      */
-    public void enviaMensaje(String pMensaje, int duracion) {
+    public void enviaMensaje(String pMensaje, int duracion){
         lToast.setDuration(duracion);
         txtToast.setText(pMensaje);
         lToast.show();
@@ -378,7 +390,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * Muestra un Toast con un mensaje
      * @param pMensaje El mensaje a mostrar
      */
-    public void enviaMensaje(String pMensaje) {
+    public void enviaMensaje(String pMensaje){
         enviaMensaje(pMensaje, 1);
     }
 
@@ -387,12 +399,12 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param enable El estado de la vista
      * @param vg La vista
      */
-    public void disableEnableView(boolean enable, ViewGroup vg) {
-        for (int i = 0; i < vg.getChildCount(); i++) {
+    public void disableEnableView(boolean enable, ViewGroup vg){
+        for (int i = 0; i < vg.getChildCount(); i++){
             View child = vg.getChildAt(i);
             child.setEnabled(enable);
-            if (child instanceof ViewGroup) {
-                disableEnableView(enable, (ViewGroup) child);
+            if (child instanceof ViewGroup){
+                disableEnableView(enable, (ViewGroup)child);
             }
         }
     }
@@ -401,14 +413,14 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * Reproduce un audio
      * @param id El ID del recurso de audio
      */
-    public void reproduceAudio(int id) {
+    public void reproduceAudio(int id){
         final MediaPlayer mp;
         mp = MediaPlayer.create(this, id);
         mp.setOnCompletionListener(mediaPlayer -> mediaPlayer.release());//quitar si causa problemas
         mp.start();
     }
 
-    public void vibrar(int time) {
+    public void vibrar(int time){
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -419,7 +431,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     /**
      * Muestra la pantalla para escanear un codigo de barras
      */
-    public void barcodeEscaner() {
+    public void barcodeEscaner(){
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setBeepEnabled(true);
         intentIntegrator.setOrientationLocked(true);
@@ -428,22 +440,22 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         intentIntegrator.initiateScan();
     }
 
-    public void addPreferenceString(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, String pDefault) {
-        if (pObj.containsKey(pKey))
+    public void addPreferenceString(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, String pDefault){
+        if(pObj.containsKey(pKey))
             pEditor.putString(pName, pObj.getAsString(pKey));
         else
             pEditor.putString(pName, pDefault);
     }
 
-    public void addPreferenceInt(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, Integer pDefault) {
-        if (pObj.containsKey(pKey))
+    public void addPreferenceInt(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, Integer pDefault){
+        if(pObj.containsKey(pKey))
             pEditor.putInt(pName, pObj.getAsInteger(pKey));
         else
             pEditor.putInt(pName, pDefault);
     }
 
-    public void addPreferenceBoolean(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, Boolean pDefault) {
-        if (pObj.containsKey(pKey))
+    public void addPreferenceBoolean(SharedPreferences.Editor pEditor, ContentValues pObj, String pKey, String pName, Boolean pDefault){
+        if(pObj.containsKey(pKey))
             pEditor.putBoolean(pName, pObj.getAsBoolean(pKey));
         else
             pEditor.putBoolean(pName, pDefault);
@@ -467,26 +479,26 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param view El elemento desde el que se ocultara el teclado (Comunmente es un EditText)
      */
     public void hideKeyboard(View view) {
-        view.postDelayed(new Runnable() {
+        view .postDelayed(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager keyboard = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-        }, 50);
+        },50);
         /*InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
     }
 
     public void showKeyboard(View view) {
-        view.postDelayed(new Runnable() {
+        view .postDelayed(new Runnable() {
             @Override
             public void run() {
-                InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager keyboard = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
-        }, 50);
+        },50);
         /*InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
     }
@@ -496,10 +508,9 @@ public class ActividadBase extends AppCompatActivity implements Finish {
      * @param output Repsuesta de la peticion
      */
     @Override
-    public void Finish(EnviaPeticion output) throws UnsupportedEncodingException {
-    }
+    public void Finish(EnviaPeticion output) throws UnsupportedEncodingException { }
 
-    public void dialogoBuscaProductos(Boolean pTeclado) {
+    public void dialogoBuscaProductos(Boolean pTeclado){
         dlgBuscaProds = new Dialog(this);
         Objects.requireNonNull(dlgBuscaProds.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         dlgBuscaProds.setContentView(R.layout.dialogo_busca_codigo);
@@ -507,7 +518,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         tblaProducto = dlgBuscaProds.findViewById(R.id.tablaProductos);
         tblaProducto.removeAllViews();
         dlgSinRegistros = dlgBuscaProds.findViewById(R.id.dlgVistaSinRegistros);
-        if (pTeclado)
+        if(pTeclado)
             editProducto.setInputType(InputType.TYPE_CLASS_NUMBER);
         else
             editProducto.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -520,28 +531,27 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                     buscarProducto(busqueda);
                 } else
                     muestraMensaje("Campo vacio", R.drawable.mensaje_warning);
-            }
-            return false;
+            }return false;
         });
         dlgBuscaProds.show();
     }
 
-    public void llenarTablaProductos(View.OnClickListener boton) {
+    public void llenarTablaProductos(View.OnClickListener boton){
         tblaProducto.removeAllViews();
         ArrayList<Producto> productos = servicio.getProductos(this);
         dlgSinRegistros.setVisibility(View.GONE);
-        if (productos.isEmpty()) {
+        if(productos.isEmpty()){
             dlgSinRegistros.setVisibility(View.VISIBLE);
             return;
         }
         final TableRow header = new TableRow(this);
         header.setBackgroundColor(Color.DKGRAY);
         header.setGravity(Gravity.CENTER);
-        TextView h1 = new TextView(this);
+        /*TextView h1 = new TextView(this);
         h1.setText("");
         h1.setTextColor(Color.WHITE);
         h1.setPadding(10, 10, 10, 10);
-        header.addView(h1);
+        header.addView(h1);*/
 
         TextView h2 = new TextView(this);
         h2.setText("Producto");
@@ -550,17 +560,17 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         header.addView(h2);
         tblaProducto.addView(header);
 
-        for (Producto producto : productos) {
+        for(Producto producto: productos){
             final TableRow row = new TableRow(this);
             row.setGravity(Gravity.CENTER);
 
-            ImageButton btnSeleccionar = new ImageButton(this);
+            /*ImageButton btnSeleccionar = new ImageButton(this);
             btnSeleccionar.setImageResource(R.drawable.check);
             btnSeleccionar.setBackgroundColor(Color.TRANSPARENT);
             btnSeleccionar.setPadding(10, 10, 10, 10);
             btnSeleccionar.setOnClickListener(boton);
             btnSeleccionar.setTag(producto.getCodigo());
-            row.addView(btnSeleccionar);
+            row.addView(btnSeleccionar);*/
             TextView r2 = new TextView(this);
 
             r2.setText(producto.getProducto());
@@ -568,84 +578,15 @@ public class ActividadBase extends AppCompatActivity implements Finish {
             r2.setTextColor(Color.BLACK);
             r2.setPadding(10, 10, 10, 10);
             row.addView(r2);
+            row.setOnClickListener(boton);
+            row.setTag(producto.getCodigo());
 
             tblaProducto.addView(row);
         }
     }
-    public boolean doPermisos(){
 
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
-        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN};
-
-        if(Build.VERSION.SDK_INT < 31){
-            if (!EasyPermissions.hasPermissions(this, perms)) {
-                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
-                        123, perms);
-                return false;
-            } else {
-                return true;
-            }
-        } else if(Build.VERSION.SDK_INT >= 31){
-            if (!EasyPermissions.hasPermissions(this, permBluConn)) {
-                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.", 123, permBluConn);
-                return false;
-            } else {
-                System.out.println(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED);
-                return true;
-            }
-        }
-        return true;
-    }
-
-    public boolean doPermisos2(Dialog d, Context context){
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            d.setContentView(R.layout.dial_no_permiso);
-            Button btn_ok = d.findViewById(R.id.btn_ok);
-            btn_ok.setOnClickListener(view -> {
-                d.dismiss();
-            });
-            d.show();
-            return false;
-            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, 1);
-        }
-        return true;
-    }
-    public void doImprimeCB(Dialog d, ContentValues obj, String folioDi, String ordenCompra, String provedorSucursal, boolean imprime_codbarras, boolean imprime_detalle, int imprime_espacios, String nombre_impresora){
-        SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
-        String tipoImp = preferences.getString("tImp","");
-
-        if(tipoImp != null && tipoImp.equals("Red")){
-            String ip = getSharedPreferences("configuracion_edit_ip_impresora", Context.MODE_PRIVATE).getString("ipImpRed", "");
-            int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
-            String contenido = "";
-            if(ip == null || ip.equals("") || Integer.toString(puerto) == null || Integer.toString(puerto).equals("")){
-                muestraMensaje("Configuración Incompleta para Impresora",R.drawable.mensaje_error);
-            } else {
-
-                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                ServicioImpresionTicket impBult = new ServicioImpresionTicket();
-                contenido = impBult.impresionBultos(bulto,impBult,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                new Impresora(ip,contenido,puerto, imprime_espacios).execute();
-            }
-
-
-        } else if(tipoImp != null && tipoImp.equals("Bluetooth")){
-            if(doPermisos()){
-                Bulto bulto=new Bulto(obj.getAsString("bulto"),folioDi,"Cerrado",ordenCompra, obj.getAsString("fecha"),usuario,Integer.parseInt( obj.getAsString("renglones")), Float.parseFloat(obj.getAsString("piezas")), obj.getAsString("detalles"));
-                BluetoothConnection selectedDevice = traeImpresora(nombre_impresora);
-                ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-                impresora=Libreria.imprimeBulto(bulto,impresora,Libreria.upper(provedorSucursal),usuario,imprime_codbarras,imprime_detalle,imprime_espacios);
-                try {
-                    new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());//.get();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
-        }else{
-            muestraMensaje("Error al imprimir.",R.drawable.mensaje_error);
-        }
-    }
-    public BluetoothConnection traeImpresora(String nombre_impresora) {
+    @SuppressLint("MissingPermission")
+    public BluetoothConnection traeImpresora(String nombre_impresora){
         BluetoothConnection selectedDevice = null;
         final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
         if (bluetoothDevicesList != null) {
@@ -672,8 +613,8 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         TextView dos=vista.findViewById(R.id.rere_can);
         uno.setVisibility(View.GONE);
         dos.setVisibility(View.GONE);
-        Button regresa= new Button(this);
-        linea.addView(regresa);
+        Button regresa= vista.findViewById(R.id.repoCerrar);
+        //linea.addView(regresa);
         TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
         if(pMensaje.contains("</") || pMensaje.contains("/>")){
             String html="<html>{0}</html>";
@@ -690,11 +631,11 @@ public class ActividadBase extends AppCompatActivity implements Finish {
 
         builder.setCancelable(true);
         AlertDialog alert=builder.create();
-        regresa.setText("Regresar");
+        /*regresa.setText("Regresar");
         regresa.setGravity(Gravity.CENTER);
-        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));*/
         regresa.setOnClickListener(view -> alert.dismiss());
-
+        regresa.setVisibility(View.VISIBLE);
         mensaje.setBackgroundResource(pTipo);
         if( pTipo == R.drawable.mensaje_error ){
             mensaje.setBackgroundResource(R.drawable.mensaje_error2);
@@ -706,6 +647,10 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     }
 
     public void doImprime(String pTexto,Boolean pSalida){
+        if(muestraPantalla()){
+            dlgImprimirAPantalla(pTexto,pSalida);
+            return;
+        }
         SharedPreferences preferences = getSharedPreferences("tipoImpresion", Context.MODE_PRIVATE);
         String tipoImp = preferences.getString("tImp","");
         int espacios = getSharedPreferences("renglones",Context.MODE_PRIVATE).getInt("espacios",3);
@@ -715,7 +660,8 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 int puerto = Integer.parseInt(getSharedPreferences("configuracion_edit_puerto_impresora", Context.MODE_PRIVATE).getString("puertoImpRed", ""));
                 new Impresora(ip,pTexto,puerto,espacios).execute();
             }else if(tipoImp.equals("Bluetooth")){
-                if (doPermisos()){
+                if ( doPermisos()) {
+                    System.out.println("imprimiendo");
                     SharedPreferences preferencesConf = getSharedPreferences("Configuraciones", Context.MODE_PRIVATE);
                     String pimpresora = preferencesConf.getString("impresora", "Predeterminada");
                     BluetoothConnection selectedDevice = traeImpresora(pimpresora);
@@ -727,11 +673,38 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                         System.out.println(e);
                     }
                 }
-
+            }else if(tipoImp.equals("Pantalla")){
+                v_pantalla = true;
+                dlgImprimirAPantalla(pTexto,pSalida);
             }
         }else{
-            dlgMensajeError("No esta configurada la impresora",R.drawable.mensaje_error);
+            dlgImprimirAPantalla(pTexto,pSalida);
+            //dlgMensajeError("No esta configurada la impresora",R.drawable.mensaje_error);
         }
+    }
+
+    public boolean doPermisos(){
+        String[] perms = { Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
+        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};
+
+        if(Build.VERSION.SDK_INT < 31){
+            if (!EasyPermissions.hasPermissions(this, perms)) {
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
+                        123, perms);
+                return false;
+            } else {
+                return true;
+            }
+        } else if(Build.VERSION.SDK_INT >= 31){
+            if (!EasyPermissions.hasPermissions(this, permBluConn)) {
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.", 123, permBluConn);
+                return false;
+            } else {
+                System.out.println(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED);
+                return true;
+            }
+        }
+        return true;
     }
 
     public void aPantalla(Boolean pPantalla){
@@ -742,26 +715,25 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         return v_pantalla;
     }
 
-    public void dlgImprimirAPantalla(String pCadena){
-        /*AlertDialog.Builder builder= new AlertDialog.Builder(this);
+    public void dlgImprimirAPantalla(String pCadena,Boolean pFinishAct){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this,R.style.dialogoAnchos);
         String pMensaje = Libreria.toHtml(pCadena);
         LayoutInflater inflater = this.getLayoutInflater();
         View vista=inflater.inflate(R.layout.item_venta, null);
         LinearLayout linea = vista.findViewById(R.id.regeGen);
-        TextView uno=vista.findViewById(R.id.rere_codigo);
-        TextView dos=vista.findViewById(R.id.rere_can);
+        TextView uno = vista.findViewById(R.id.rere_codigo);
+        TextView dos = vista.findViewById(R.id.rere_can);
+        FlexboxLayout flexLayout = vista.findViewById(R.id.flexOpcs);
         uno.setVisibility(View.GONE);
         dos.setVisibility(View.GONE);
         Button regresa= new Button(this);
-        linea.addView(regresa);
+        //linea.addView(regresa,0);
         TextView mensaje = vista.findViewById(R.id.txtVentasCliente);
-        String html="<html>{0}</html>";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            mensaje.setText(Html.fromHtml(MessageFormat.format(html,pMensaje)));
-        }
-        System.out.println(MessageFormat.format(html,pMensaje));
+        mensaje.setGravity(Gravity.CENTER);
+
+        mensaje.setTypeface(Typeface.MONOSPACE);
+        mensaje.setText(pMensaje);
+        mensaje.setVisibility(View.GONE);
         builder.setView(vista);
         builder.setTitle("");
 
@@ -769,43 +741,18 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         AlertDialog alert=builder.create();
         regresa.setText("Regresar");
         regresa.setGravity(Gravity.CENTER);
-        regresa.setLayoutParams(new LinearLayout.LayoutParams(-2,-1));
-        regresa.setOnClickListener(view -> alert.dismiss());
+        regresa.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        regresa.setOnClickListener(view -> {
+            alert.dismiss();
+            if(pFinishAct){
+                this.onBackPressed();
+            }
+        });
 
-        builder.create().show();*/
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String pMensaje = Libreria.toHtml(pCadena);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View vista = inflater.inflate(R.layout.item_venta, null);
-        LinearLayout linea = vista.findViewById(R.id.regeGen);
-        FlexboxLayout flexLayout = vista.findViewById(R.id.flexOpcs);
-        TextView uno = vista.findViewById(R.id.rere_codigo);
-        TextView dos = vista.findViewById(R.id.rere_can);
-        TextView vntasCliente = vista.findViewById(R.id.txtVentasCliente);
-        uno.setVisibility(View.GONE);
-        dos.setVisibility(View.GONE);
-        vntasCliente.setVisibility(View.GONE);
-
-
-        builder.setView(vista);
-        builder.setTitle("");
-        builder.setCancelable(true);
-        AlertDialog alert = builder.create();
-
-        Button regresa = new Button(this);
-        regresa.setText("Regresar");
-        regresa.setGravity(Gravity.CENTER);
-        regresa.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        regresa.setOnClickListener(view -> alert.hide());
         WebView webView = new WebView(this);
         webView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-
         ImageButton compartir = new ImageButton(this);
         compartir.setImageResource(R.drawable.ic_share);
         compartir.setBackgroundColor(Color.TRANSPARENT);
@@ -819,23 +766,11 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 Toast.makeText(this, "Error al generar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
-
-        LinearLayout.LayoutParams paramsRegresar = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        paramsRegresar.setMargins(0, 0, 20, 0);
-
-        LinearLayout.LayoutParams paramsCompartir = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        paramsCompartir.setMargins(20, 0, 8, 0);
-        compartir.setLayoutParams(paramsCompartir);
         flexLayout.addView(regresa);
         flexLayout.addView(compartir);
         linea.addView(webView);
 
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
         String html = "<html><style type=\"text/css\">\n" +
                 "body {\n" +
                 "    font-family: 'monospace';\n" +
@@ -845,7 +780,103 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 "</style><body>" + pMensaje + "</body></html>";
         webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
 
-        builder.create().show();
+        alert.getWindow().setLayout(width, -2);
+        alert.show();
+    }
+
+    public void dlgReporte(Integer pOpcion){
+        Generica encabezado=servicio.traeGenReporteEnca();
+        if(encabezado==null){
+            dlgMensajeError("No se pudo obtener informacion del Reporte",R.drawable.mensaje_error);
+            return;
+        }
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista=inflater.inflate(R.layout.dialogo_reporenglones, null);
+        View titulo=inflater.inflate(R.layout.item_titulo, null);
+        builder.setView(vista);
+        builder.setCustomTitle(titulo);
+        builder.setTitle("");
+        builder.setCancelable(true);
+
+        TextView ayuda = vista.findViewById(R.id.repoAyuda);
+        TextView titTitulo = titulo.findViewById(R.id.tit_titulo);
+        ImageButton nuevo = titulo.findViewById(R.id.btnTitNuevo);
+        ImageButton regresa = titulo.findViewById(R.id.btnTitRegresa);
+        nuevo.setVisibility(View.GONE);
+        ListView ventas = vista.findViewById(R.id.listRepoRenglones);
+        titTitulo.setText(encabezado.getTex1());
+        ayuda.setText(encabezado.getTex2());
+        ayuda.setVisibility(View.VISIBLE);
+
+        List<Generica> reporte=servicio.traeGenReporte();
+        //GenericaAdapter v_Adavnta = new GenericaAdapter(reporte,this,pOpcion);
+        ReporteAdapter v_Adavnta = traeadaptador(reporte,pOpcion);
+        ventas.setAdapter(v_Adavnta);
+        TextView texto=vista.findViewById(R.id.repoVacio);
+        texto.setText("Sin elementos");
+        ventas.setEmptyView(texto);
+
+        int[] colors = {0, 0xFF000000, 0};
+        ventas.setDivider(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
+        ventas.setDividerHeight(1);
+        v_dlgreporte = builder.create();
+
+        regresa.setOnClickListener(v-> v_dlgreporte.dismiss());
+
+        v_dlgreporte.show();
+    }
+
+    private ReporteAdapter traeadaptador(List<Generica> pListado,Integer pOpcion){
+        ReporteAdapter retorno ;
+        Enumeradores.Valores pImprime = null;
+        String titulo="",mensaje="",boton1="",boton2="";
+        switch(pOpcion){
+            case 2:
+                pImprime = Enumeradores.Valores.TAREA_VNTAULTIMAVNTA;
+                break;
+            case 3:
+                pImprime = Enumeradores.Valores.TAREA_IMPRIMEARQE;
+                break;
+            case 4:
+                pImprime = Enumeradores.Valores.TAREA_IMPRIMEDOCS;
+                break;
+            case 6:
+                pImprime = Enumeradores.Valores.TAREA_IMPRIMERETIRO;
+                break;
+            case 9:
+                pImprime = Enumeradores.Valores.TAREA_TIKCORTEMOVIL;
+                break;
+            case 5:
+                titulo="Continuar con la venta";
+                mensaje="¿Seguro de bajar la venta con folio {1}?";
+                boton1 = "Continuar";
+                boton2 = "";
+                break;
+            case 7:
+                titulo="Gestion del catalogo del producto";
+                mensaje="Que quiere hace a continuacion con el producto  \n {1}";
+                boton1 = esMono() ? "Continuar":"";
+                boton2 = "";
+                break;
+            case 10:
+                titulo = "Devolución del producto";
+                mensaje = "Que quiere hace a continuacion con el producto  \n {1}";
+                boton1 = "Devolver";
+                boton2 = "";
+                break;
+        }
+        retorno = new ReporteAdapter(pListado,this,pImprime,pOpcion);
+        if(Libreria.tieneInformacion(titulo)){
+            retorno.cambiaMensaje(titulo,mensaje,boton1,boton2);
+        }
+        return retorno;
+    }
+
+    public boolean esMono() {
+        return v_esMono;
     }
 
     private Bitmap captureWebView(WebView webView) {
@@ -889,5 +920,4 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         startActivity(intent);
 
     }
-
 }

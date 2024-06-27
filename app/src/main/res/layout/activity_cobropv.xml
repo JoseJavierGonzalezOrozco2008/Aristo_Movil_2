@@ -182,18 +182,11 @@
                                 android:layout_weight="0.4" >
                             </Button>
                         </LinearLayout>
-                        <com.google.android.flexbox.FlexboxLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:flexWrap='wrap'
-                            app:alignContent="center"
-                            app:flexDirection="row"
-                            app:alignItems="flex_start"
-                            app:justifyContent="space_around"
-                            android:orientation="horizontal"
-                            android:paddingVertical="10dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:layout_marginBottom="@dimen/_10sdp">
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/cbro20"
@@ -252,7 +245,7 @@
                                 android:background="@drawable/button_shape"
                                 android:layout_weight="1"
                                 />
-                        </com.google.android.flexbox.FlexboxLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -302,11 +295,12 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:nextFocusDown="@+id/cbroTDebito"
-                                android:nextFocusRight="@+id/cbroTDebito"
-                                android:nextFocusLeft="@+id/cbroTDebito"
-                                android:nextFocusUp="@+id/cbroTDebito"
+                                android:nextFocusDown="@+id/cbroTCreRef"
+                                android:nextFocusRight="@+id/cbroTCreRef"
+                                android:nextFocusLeft="@+id/cbroTCreRef"
+                                android:nextFocusUp="@+id/cbroTCreRef"
                                 android:hint="Refe."
+                                android:imeOptions="actionNext"
                                 android:lines="1" />
 
                         </LinearLayout>
@@ -358,10 +352,11 @@
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
                                 android:hint="Refe."
-                                android:nextFocusDown="@+id/cbroTrans"
-                                android:nextFocusRight="@+id/cbroTrans"
-                                android:nextFocusLeft="@+id/cbroTrans"
-                                android:nextFocusUp="@+id/cbroTrans"
+                                android:nextFocusDown="@+id/cbroTDebRef"
+                                android:nextFocusRight="@+id/cbroTDebRef"
+                                android:nextFocusLeft="@+id/cbroTDebRef"
+                                android:nextFocusUp="@+id/cbroTDebRef"
+                                android:imeOptions="actionNext"
                                 android:lines="1" />
                         </LinearLayout>
                         <LinearLayout
@@ -409,8 +404,12 @@
                                 android:backgroundTint="@color/aristo_azul"
                                 android:textSize="@dimen/textSizeSmall"
                                 android:inputType="text"
-                                android:imeOptions="actionDone"
+                                android:nextFocusDown="@+id/cbroTransRefe"
+                                android:nextFocusRight="@+id/cbroTransRefe"
+                                android:nextFocusLeft="@+id/cbroTransRefe"
+                                android:nextFocusUp="@+id/cbroTransRefe"
                                 android:hint="Refe."
+                                android:imeOptions="actionDone"
                                 android:lines="1" />
                         </LinearLayout>
                     </LinearLayout>
@@ -458,6 +457,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="Ticket"
+                        android:textAllCaps="false"
+                        android:layout_weight="1" >
+                    </Button>
+                    <Button
+                        android:id="@+id/cbroBtnEnEspera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="En captura"
                         android:textAllCaps="false"
                         android:layout_weight="1" >
                     </Button>

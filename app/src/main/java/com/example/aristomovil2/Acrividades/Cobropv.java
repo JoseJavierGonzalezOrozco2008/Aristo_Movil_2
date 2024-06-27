@@ -1,19 +1,28 @@
 package com.example.aristomovil2.Acrividades;
 
+import static com.example.aristomovil2.facade.Estatutos.TABLA_GENERICA;
+
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.icu.lang.UCharacter;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,22 +31,25 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.example.aristomovil2.ActividadBase;
 import com.example.aristomovil2.R;
 import com.example.aristomovil2.adapters.DcarritoAdapter;
+import com.example.aristomovil2.adapters.GenericaAdapter;
 import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.Renglon;
 import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
+import com.example.aristomovil2.utileria.Impresora;
 import com.example.aristomovil2.utileria.Libreria;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cobropv extends ActividadBase {
     private Integer v_estacion,v_cuendefault,v_imprime_espacios,v_tipovnta;
     private String v_vntafolio,v_nombrecliente,v_ticket,v_nombre_impresora;
-    private Boolean v_metpago,v_pideretiro,v_virtuales;
+    private Boolean v_metpago,v_pideretiro,v_virtuales,v_finalizada;
     private Double v_importe;
     private EditText v_efectivo,v_credito,v_trans,v_debito,v_credref,v_debref,v_trnsref;
     private TextView v_falta,v_cambio,v_cambio2;
@@ -46,11 +58,23 @@ public class Cobropv extends ActividadBase {
     private Spinner spinCred,spinDeb,spinTran;
     private LinearLayout v_lyCambio1,v_lyCapt01,v_lyCapt02,v_lyCapt03,v_lyCambio2;
     private ScrollView v_lyPagos;
+    private AlertDialog v_dlgreporte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cobropv);
+        cambio();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.activity_cobropv);
+        cambio();
+    }
+
+    public void cambio(){
         inicializarActividad2("Folio  Tipo","Cliente");
         Bundle extras = getIntent().getExtras();
         v_vntafolio = extras.getString("folio");
@@ -66,6 +90,8 @@ public class Cobropv extends ActividadBase {
         v_cuendefault = sharedPreferences.getInt("cuentaid", -1);
         v_imprime_espacios = sharedPreferences.getInt("espacios", 3);
         v_nombre_impresora = preferencesConf.getString("impresora", "Predeterminada");
+        v_finalizada = false;
+
         TextView porcobrar = findViewById(R.id.cbroTotal);
         TextView leyenda = findViewById(R.id.cbroLeyendaCredito);
         v_falta = findViewById(R.id.cbroFalta);
@@ -89,6 +115,7 @@ public class Cobropv extends ActividadBase {
         Button btn500 = findViewById(R.id.cbro500);
         Button btnTicket = findViewById(R.id.cbroBtnTicket);
         Button btnNuevo = findViewById(R.id.cbroBtnNuevo);
+        Button btnEnCaptura = findViewById(R.id.cbroBtnEnEspera);
         Button btnRegresa = findViewById(R.id.cbroBtnRegresa);
         Button btnFinaliza = findViewById(R.id.cbroBtnCredito);
         v_efectivo = findViewById(R.id.cbroEtEfe);
@@ -115,10 +142,12 @@ public class Cobropv extends ActividadBase {
         btn100.setOnClickListener(view -> onColocarDinero(100.0,v_efectivo,null,false));
         btn200.setOnClickListener(view -> onColocarDinero(200.0,v_efectivo,null,false));
         btn500.setOnClickListener(view -> onColocarDinero(500.0,v_efectivo,null,false));
+
         limpia.setOnClickListener(view -> onLimpiaCobro());
         cobra.setOnClickListener(view -> wsCobra());
         btnTicket.setOnClickListener(view -> {imprimeTicket();});
         btnNuevo.setOnClickListener(view -> onBackPressed());
+        btnEnCaptura.setOnClickListener(view -> repoVentasEspera());
         v_captura = new ArrayList();
         v_captura.add(v_efectivo);
         v_captura.add(v_credito);
@@ -126,20 +155,22 @@ public class Cobropv extends ActividadBase {
         v_captura.add(v_trans);
 
         v_listacuentas = new ArrayList();
-        String[] cuentasbanco = cuentaBanco.split(",");
-        if(cuentasbanco.length > 0) {
-            Generica cuenta;
-            int contador = 0;
-            for (String s : cuentasbanco) {
-                String[] datos = s.split("\\|");
-                cuenta = new Generica(contador);
-                contador++;
-                cuenta.setEnt1(Integer.parseInt(datos[1]));
-                cuenta.setTex1(datos[0]);
-                v_listacuentas.add(cuenta);
+        if(Libreria.tieneInformacion(cuentaBanco)){
+            String[] cuentasbanco = cuentaBanco.split(",");
+            if(cuentasbanco.length > 0) {
+                Generica cuenta;
+                int contador = 0;
+                for (String s : cuentasbanco) {
+                    String[] datos = s.split("\\|");
+                    cuenta = new Generica(contador);
+                    contador++;
+                    cuenta.setEnt1(Integer.parseInt(datos[1]));
+                    cuenta.setTex1(datos[0]);
+                    v_listacuentas.add(cuenta);
+                }
             }
         }
-        if(v_listacuentas.size()==1){
+        if(v_listacuentas.size()<=1){
             spinCred.setVisibility(View.GONE);
             spinDeb.setVisibility(View.GONE);
             spinTran.setVisibility(View.GONE);
@@ -147,26 +178,31 @@ public class Cobropv extends ActividadBase {
 
         View.OnKeyListener listener = (view, i, keyEvent) -> {
             onActualizaSaldos();
+            ocultarHide(view, i, keyEvent);
             return false;
         };
         v_efectivo.setOnKeyListener(listener);
         v_credito.setOnKeyListener(listener);
+        v_credref.setOnKeyListener(listener);
         v_debito.setOnKeyListener(listener);
+        v_debref.setOnKeyListener(listener);
         v_trans.setOnKeyListener(listener);
+        ocultaTeclaEnLand();
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
                 Intent data = new Intent();
                 data.putExtra("actividad",1);
-                data.putExtra("deberetirar",v_pideretiro);
+                data.putExtra("vntafolio",v_finalizada ? "" : v_vntafolio );
+                //data.putExtra("deberetirar",v_pideretiro);
                 setResult(RESULT_OK,data);
                 finish();
             }
         };
 
         getOnBackPressedDispatcher().addCallback(this, callback);
-        if(!v_metpago){
+        if(!v_metpago || v_tipovnta==52){
             v_lyCapt03.setVisibility(View.VISIBLE);
             v_lyPagos.setVisibility(View.GONE);
             v_lyCapt01.setVisibility(View.GONE);
@@ -180,6 +216,16 @@ public class Cobropv extends ActividadBase {
         onActualizaSaldos();
         colocaTitulo();
         v_efectivo.requestFocus();
+        if(Libreria.tieneInformacion(v_ticket)){
+            if(!v_metpago){
+                v_lyCambio2.setVisibility(View.GONE);
+            }
+            v_lyCambio1.setVisibility(View.VISIBLE);
+            v_lyPagos.setVisibility(View.GONE);
+            v_lyCapt01.setVisibility(View.GONE);
+            v_lyCapt02.setVisibility(View.GONE);
+            v_lyCapt03.setVisibility(View.GONE);
+        }
     }
 
     public void onColocarDinero(Double pimporte, EditText pImpor, EditText pRefe,Boolean pReemplaza){
@@ -266,8 +312,8 @@ public class Cobropv extends ActividadBase {
         double registro ,falta;
         registro = saldoCapturado();
         falta = v_importe-registro;
-        if(falta > 0 && v_metpago){
-            muestraMensaje("Debe de cubrir el importe",R.drawable.mensaje_error);
+        if(falta > 0 && (v_metpago && v_tipovnta!=52)){
+            dlgMensajeError("Debe de cubrir el importe",R.drawable.mensaje_error);
             return;
         }
 
@@ -309,6 +355,7 @@ public class Cobropv extends ActividadBase {
         mapa.put("cdebito",(!v_debito.getText().equals("") && !v_debref.getText().equals("") ? cuendeb:0));
 
         String xml= Libreria.xmlLineaCapturaSV(mapa,"linea");
+        v_ticket = "";
         if(v_virtuales || v_tipovnta==52){
             peticionWS(Enumeradores.Valores.TAREA_COBRAR_WS, "", "",xml,v_vntafolio, v_virtuales+"");
         }else{
@@ -318,6 +365,11 @@ public class Cobropv extends ActividadBase {
         colocaTitulo();
     }
 
+    private void repoVentasEspera(){
+        servicio.borraDatosTabla(TABLA_GENERICA);
+        peticionWS(Enumeradores.Valores.TAREA_REPOVNTAESPERA, "SQL", "SQL", v_estacion+"", usuarioID+"", "");
+    }
+
     @Override
     public void Finish(EnviaPeticion output) {
         ContentValues obj = (ContentValues)output.getExtra1();
@@ -325,7 +377,7 @@ public class Cobropv extends ActividadBase {
             case TAREA_COBRAR_WS:
             case TAREA_COBRAR:
                 if(output.getExito()){
-                    v_ticket = obj.getAsString("impreso");
+                    //v_ticket = obj.getAsString("impreso");
                     v_pideretiro = obj.getAsBoolean("deberetirar");
                     //v_ticket = "Hola es una prueba,T1w";
                     if(v_metpago){
@@ -338,16 +390,30 @@ public class Cobropv extends ActividadBase {
                     }else{
                         v_lyCambio2.setVisibility(View.GONE);
                     }
-
+                    if(v_pideretiro){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("Debe de realizar un retiro")
+                                .setNegativeButton("Regresar", (dialog, id) -> {dialog.dismiss();});
+                        builder.show();
+                    }
+                    v_finalizada = true;
                     v_lyCambio1.setVisibility(View.VISIBLE);
                     v_lyPagos.setVisibility(View.GONE);
                     v_lyCapt01.setVisibility(View.GONE);
                     v_lyCapt02.setVisibility(View.GONE);
                     v_lyCapt03.setVisibility(View.GONE);
-                    imprimeTicket();
+                    //imprimeTicket();
+                    traeUltTicket(v_vntafolio);
                 }else{
-                    muestraMensaje(output.getMensaje(),R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(),R.drawable.mensaje_error);
                 }
+                break;
+            case TAREA_REPOVNTAESPERA:
+                dlgReporte(5);
+                break;
+            case TAREA_VNTAULTIMAVNTA:
+                v_ticket = obj.getAsString("anexo");
+                imprimeTicket();
                 break;
         }
         if(obj != null){
@@ -355,31 +421,52 @@ public class Cobropv extends ActividadBase {
         }
     }
 
-
     private void colocaTitulo(){
         int longitud = v_vntafolio.length();
         boolean esnuevo = v_vntafolio.equalsIgnoreCase("NUEVA");
         String folio = esnuevo ? v_vntafolio : ("C*"+v_vntafolio.substring(longitud-4,longitud));
-        String linea1,linea2="";
-        if(esHorizontal()){
-            linea1 = MessageFormat.format("{0} {1} {2}", folio,esnuevo ? "" : (v_metpago ? "Contado":"Credito"),v_nombrecliente);
-        }else{
-            linea1= MessageFormat.format("{0} {1}", folio,esnuevo ? "" : (v_metpago ? "Contado":"Credito"));
-            linea2= v_nombrecliente;
-        }
+        String linea1,linea2 = "";
+        linea1 = MessageFormat.format("{2} {0} {1}", folio,(v_nombreestacion+" "+usuario), v_tipovnta == 48 ? "":"(Pedido)");
+        linea2 = MessageFormat.format("{0} {1}",esnuevo ? "" : (v_metpago ? "Contado":"Credito"), v_nombrecliente);
         actualizaToolbar2(linea1,linea2);
     }
 
     private void imprimeTicket(){
-        BluetoothConnection selectedDevice = traeImpresora(v_nombre_impresora);
-        ServicioImpresora impresora = new ServicioImpresora(selectedDevice, this);
-        Libreria.imprimeSol(impresora,v_ticket,0);
-        try {
-            new AsyncBluetoothEscPosPrint(this,false).execute(impresora.Imprimir());
-        } catch (/*ExecutionException | InterruptedException e*/ Exception e) {
-            //e.printStackTrace();
-            System.out.println(e);
+        doImprime(v_ticket,false);
+    }
+
+    private void ocultaTeclaEnLand(){
+        if(esHorizontal()){
+            hideKeyboard(v_efectivo);
+            hideKeyboard(v_credito);
+            hideKeyboard(v_debito);
+            hideKeyboard(v_trans);
+            hideKeyboard(v_credref);
+            hideKeyboard(v_debref);
+            hideKeyboard(v_trnsref);
         }
+    }
+
+    public void asignaVntafolio(String pVntafolio){
+        if(v_dlgreporte!=null && v_dlgreporte.isShowing()){
+            v_dlgreporte.dismiss();
+        }
+        v_vntafolio = pVntafolio;
+        v_finalizada = false;
+        onBackPressed();
+    }
+
+    private boolean ocultarHide(View view, int i, KeyEvent keyEvent){
+        if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER || i == KeyEvent.KEYCODE_NAVIGATE_NEXT)){
+            if(esHorizontal()){
+                hideKeyboard(view);
+            }
+        }
+        return false;
+    }
+
+    private void traeUltTicket(String pFolio){
+        peticionWS(Enumeradores.Valores.TAREA_VNTAULTIMAVNTA, "SQL", "SQL", v_estacion+"", pFolio, usuarioID+"");
     }
 
 }

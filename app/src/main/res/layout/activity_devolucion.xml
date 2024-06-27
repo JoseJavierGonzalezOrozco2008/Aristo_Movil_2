@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".Acrividades.Devolucion">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout android:id="@+id/conteo_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar2"
+                layout="@layout/toolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/toolbar2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <TextView
+                        android:id="@+id/devoVntaFolioTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="end|center_vertical"
+                        android:text="Folio venta:"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/textSizeSmall" />
+
+                    <EditText
+                        android:id="@+id/devoVntaFolio"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeSmall"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/devoAplicar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Aplicar"
+                        android:textSize="@dimen/textSizeSmall"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/devoInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text=""
+                    android:fontFamily="monospace"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall" />
+
+                <TextView
+                    android:id="@+id/devoTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Devolución"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/textSizeMedium" />
+
+                <TableLayout
+                    android:id="@+id/devoCapturas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*">
+
+                    <TableRow android:id="@+id/prodRowProd">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center|end"
+                            android:text="Devuleve con:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <RadioGroup android:id="@+id/devoCon"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/radioDevoEfectivo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Efectivo"
+                                android:textSize="@dimen/textSizeSmall" />
+                            <RadioButton
+                                android:id="@+id/radioDevoVale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vale"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </RadioGroup>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center|end"
+                            android:text="Motivo:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <Spinner
+                            android:id="@+id/devoMotivo"
+                            style="?android:attr/spinnerItemStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </TableRow>
+
+                    <TableRow android:id="@+id/prodRowMarca">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center|end"
+                            android:text="Notas:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <EditText
+                            android:id="@+id/devoNotas"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+                    </TableRow>
+
+                    <TableRow android:id="@+id/prodRowLinea">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center|end"
+                            android:text="Tipo:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSizeSmall" />
+
+                        <RadioGroup android:id="@+id/devoTipo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/radioDevoParcial"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Parcial"
+                                android:textSize="@dimen/textSizeSmall" />
+                            <RadioButton
+                                android:id="@+id/radioDevoTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Completa"
+                                android:textSize="@dimen/textSizeSmall" />
+                        </RadioGroup>
+                    </TableRow>
+
+
+                </TableLayout>
+
+                <LinearLayout
+                    android:id="@+id/devoProd1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="end|center_vertical"
+                        android:text="Total:"
+                        android:textSize="@dimen/textSizeMedium"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:id="@+id/devoTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="$0.0"
+                        android:textSize="@dimen/textSizeMedium"
+                        android:textColor="@color/black"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/devoProd2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/btnDevoPorDevo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Productos" />
+
+                    <Button
+                        android:id="@+id/btnDevoCaptDevo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Por DEVOLVER" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
+
+            <include
+                android:id="@+id/Mensaje"
+                layout="@layout/mensaje" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
