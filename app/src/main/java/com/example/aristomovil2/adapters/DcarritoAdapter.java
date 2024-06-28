@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.aristomovil2.Acrividades.Carrito;
@@ -72,20 +73,22 @@ public class DcarritoAdapter extends BaseAdapter{
         if(view == null)
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_carrito, viewGroup, false);
 
-        TextView cantidad=view.findViewById(R.id.item_cantidad);
-        TextView precio=view.findViewById(R.id.item_precio);
+        //TextView cantidad=view.findViewById(R.id.item_cantidad);
+        //TextView precio=view.findViewById(R.id.item_precio);
         TextView total=view.findViewById(R.id.item_totalren);
+        //LinearLayout.LayoutParams params =(LinearLayout.LayoutParams)total.getLayoutParams();
+        //params.weight=0.3f;
         TextView producto=view.findViewById(R.id.item_producto);
-        cantidad.setText(renglones.get(position).getCant()+"");
-        precio.setText(renglones.get(position).getPrecio()+"");
+        //cantidad.setText(renglones.get(position).getCant()+"");
+        //precio.setText(renglones.get(position).getPrecio()+"");
         total.setText("$"+renglones.get(position).getTotal());
         producto.setText(renglones.get(position).getProducto());
-        view.setOnLongClickListener(v -> {
+        view.setOnClickListener(v -> {
             if(activity instanceof Carrito){
                 Carrito actividad=(Carrito)activity;
                 actividad.dlgRenglon(renglones.get(position));
             }
-            return false;
+            return;
         });
 
         return view;

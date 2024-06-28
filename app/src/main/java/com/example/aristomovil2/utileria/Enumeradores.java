@@ -176,9 +176,13 @@ public class Enumeradores {
         TAREA_DEVOLAPLICA(1107, "validacion", "", false, false),
         TAREA_CAMBIAPASS(1108, "validacion", "", false, false),
         TAREA_TRAEORCOINFO(1109, "validacion", "", false, false),
-        TAREA_GUARDADATOSSUCURSAL(1111, "validacion", "", false, false),
-        TAREA_GUARDADATOSPRODUCTO(1111, "validacion", "", false, false),
-        TAREA_GUARDADATOSEXTRA(1111, "validacion", "", false, false),
+        TAREA_LEEDATOSSUCURSAL(1111, "validacion", "", false, false),
+        TAREA_LEEDATOSPRODUCTO(1112, "validacion", "", false, false),
+        TAREA_LEEDATOSTIAI(1113, "validacion", "", false, false),
+        TAREA_GUARDADATOSSUCURSAL(1114, "validacion", "", false, false),
+        TAREA_GUARDADATOSPRODUCTO(1115, "validacion", "", false, false),
+        TAREA_GUARDADATOSEXTRA(1116, "validacion", "", false, false),
+        TAREA_CONSULTASALDOTA(23, "validacion", "", false, false),
         TAREA_DATAINFO(-3, "validacion", "", false, false)
         ;
 

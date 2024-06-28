@@ -1411,6 +1411,26 @@ public class Servicio {
         return colonias;
     }
 
+    public ArrayList<Generica> traeColoniasGenerica(){
+        ArrayList<Generica> colonias = new ArrayList();
+        Generica gen;
+        db.abreConexion();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,colonia tex1,estado tex2,municipio tex3,clave tex4,codigo tex5 FROM colonias", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    gen = Generica.leerCursor2(cursor,"tex1,tex2,tex3,tex4,tex5");
+                    colonias.add(gen);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.cierraConexion();
+        }
+        return colonias;
+    }
+
     @SuppressLint("Range")
     public Cuenta traeCuenta(Integer pCuclid){
         Cuenta colonias =new Cuenta(0);
@@ -1648,11 +1668,11 @@ public class Servicio {
     public List<Generica> traeGenReporte(){
         ArrayList<Generica> reng_repo = new ArrayList<>();
         db.abreConexion();
-        String estatuto="SELECT * FROM generica WHERE id>0 ORDER BY id ASC ";
+        String estatuto="SELECT id,tex1,tex2,tex3,tex4,ent1,COALESCE(log1,'true') log1,dec1,dec2,dec3 FROM generica WHERE id>0 ORDER BY id ASC ";
         try(Cursor cursor = db.getDatabase().rawQuery(estatuto, null)){
             if(cursor.moveToFirst()){
                 do{
-                    Generica temp=Generica.leerCursor2(cursor,"tex1,tex2,tex3,tex4");
+                    Generica temp=Generica.leerCursor2(cursor,"tex1,tex2,tex3,tex4,ent1,log1,dec1,dec2,dec3");
                     reng_repo.add(temp);
                 }while (cursor.moveToNext());
             }

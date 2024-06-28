@@ -1,26 +1,30 @@
 package com.example.aristomovil2;
 
+import static com.example.aristomovil2.facade.Estatutos.TABLA_GENERICA;
 import static com.example.aristomovil2.facade.Estatutos.TABLA_RENGLON;
-import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_ELIMINAR_CONTADOS;
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -30,6 +34,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -39,28 +44,34 @@ import android.widget.TextView;
 
 import com.example.aristomovil2.Acrividades.Ddincontrolador;
 import com.example.aristomovil2.adapters.DocumentosAdapter;
+import com.example.aristomovil2.adapters.GenericaAdapter;
 import com.example.aristomovil2.modelos.Documento;
 import com.example.aristomovil2.modelos.Cliente;
+import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.Proveedor;
 import com.example.aristomovil2.modelos.Subalmacen;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Libreria;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Inventario extends ActividadBase {
-    public int documento, RSprveedorID,estadoProd;
+    public int documento, RSprveedorID,estadoProd,v_estacion;
     private String sucuId, RSproveedor, RSordenCompra, OCNuevo, provSucuNuevo, listaPedidos;
     public String divisa;
     public boolean surtidor, nuevoCaptura, ocultaFiltros = false, ocultaRecibe = false, capDivisa;
     private ArrayList<Documento> documentos;
-    private ArrayList<Subalmacen> subalmacenes;
+    private ArrayList<Generica> subalmacenes;
     private ArrayList<Proveedor> proveedores;
     private ArrayList<Cliente> clientes;
     private ArrayList<String> subalmacenesNombre;
@@ -73,7 +84,7 @@ public class Inventario extends ActividadBase {
     private Proveedor prov;
     private Subalmacen subalmacen;
     public final NumberFormat format = NumberFormat.getCurrencyInstance();
-    private ProgressDialog progressBar;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -82,8 +93,8 @@ public class Inventario extends ActividadBase {
 
         Bundle extras = getIntent().getExtras();
 
-        inicializarActividad(getSharedPreferences("renglones", MODE_PRIVATE).getString("titulo", "Inventario"));
-
+        inicializarActividad2("","");
+        actualizaToolbar2(getSharedPreferences("renglones", MODE_PRIVATE).getString("titulo", "Inventario")+" "+v_nombreestacion,"");
         assert extras != null;
         documento = extras.getInt("documento");
         nuevoCaptura = documento!=17;
@@ -95,8 +106,9 @@ public class Inventario extends ActividadBase {
         sucuId = sharedPreferences.getString("sucuID", "-1");
         capDivisa = sharedPreferences.getBoolean("capdivisa", false);
         estadoProd = sharedPreferences.getInt("estadoprod", 84);
+        v_estacion = sharedPreferences.getInt("estaid", 0);
         divisa = "";
-        estadoProd = documento == 14 ? estadoProd : 84 ;
+        //estadoProd = documento == 14 ? estadoProd : 84 ;
         subalmacenes = new ArrayList<>();
         subalmacenesNombre = new ArrayList<>();
         //subalmacenesNombre.add("Disponible");
@@ -109,6 +121,7 @@ public class Inventario extends ActividadBase {
         btnCerrar = findViewById(R.id.btnBuscarInventarioCerrar);
         btnCerrarRS = findViewById(R.id.btnRSInventarioCerrar);
         Button btnGuardaRS = findViewById(R.id.btnRSInventarioGuardar);
+        Button btnQrCode = findViewById(R.id.btnQRcode);
         btnProveedorSucursal = findViewById(R.id.btnRSInventariosProveedorSucursal);
         Button btnProveedorSucursalBuscar = findViewById(R.id.btnProveedorSucursalInventarios);
         Button btnClienteBuscar = findViewById(R.id.btnClienteInventarios);
@@ -127,6 +140,7 @@ public class Inventario extends ActividadBase {
         EditText editDiascred = findViewById(R.id.editDiasCredito);
         EditText editNotasRS = findViewById(R.id.editRSInventarioCNotas);
         EditText editDivisaRS = findViewById(R.id.editRSInventarioDivisa);
+        EditText editUUID = findViewById(R.id.editUUID);
         Spinner spinnerSubalmacenes = findViewById(R.id.spinnerRSInventariosSubAlmacen);
         CheckBox misPedidos = findViewById(R.id.checkMisPedidosInventarios);
         recibeSurte = findViewById(R.id.RecibeSurteInventario);
@@ -135,6 +149,7 @@ public class Inventario extends ActividadBase {
         listProvedoresSucursales = findViewById(R.id.listRSProveedoresSucursales);
         listProvedoresSucursalesBuscar = findViewById(R.id.listRSProveedoresSucursalesBuscar);
         listClientesBuscar = findViewById(R.id.listRSClienteBuscar);
+        EditText solicitud=findViewById(R.id.editRSInventariosOrdenCompra);
 
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mensaje_init);
         filtrar.startAnimation(animation);
@@ -170,6 +185,19 @@ public class Inventario extends ActividadBase {
 
         });
 
+        solicitud.setOnKeyListener((view, i, keyEvent) -> {
+            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)){
+                if(documento==14){
+                    String dato=solicitud.getText().toString();
+                    if(!Libreria.tieneInformacion(solicitud.getText().toString())){
+                        dlgMensajeError("Debe de capturar la orden",R.drawable.mensaje_error2);
+                        return true;
+                    }
+                    traeOrco(dato);
+                }
+            }
+            return false;
+        });
         btnRecibeSurte.setOnClickListener(v -> {
             if(documento == 17)
                 busquedaFolio();
@@ -177,59 +205,47 @@ public class Inventario extends ActividadBase {
                 surte(0, "", "", "","","",null,0);
         });
 
+        //btnQrCode.setVisibility(documento == 14 ? View.VISIBLE : View.GONE);
+        btnQrCode.setVisibility(View.GONE);
+        btnQrCode.setOnClickListener(view -> {
+            barcodeEscaner();
+        });
+
         btnCerrarRS.setOnClickListener(v -> {
+            Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.filtros_close);
+            recibeSurte.startAnimation(anim);
 
-            progressBar = new ProgressDialog(this);
+            ocultaRecibe = false;
 
-            progressBar.show();
-            progressBar.setMessage("Cargando...");
-            progressBar.setCancelable(false);
+
+            proveedores = null;
+
+            listProvedoresSucursales.setVisibility(View.GONE);
             editProveedorSucursal.setText("");
             editCostoRS.setText("");
             editFechaRS.setText("");
             editFacturaRS.setText("");
             editNotasRS.setText("");
             editDiascred.setText("");
-            new Thread(new Runnable() {
+            editUUID.setText("");
+            hideKeyboard(v);
+
+            anim = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_in);
+            anim.setDuration(300);
+            btnBuscar.startAnimation(anim);
+            btnBuscar.getAnimation().setAnimationListener(new Animation.AnimationListener(){
                 @Override
-                public void run() {
-                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.filtros_close);
-                    recibeSurte.startAnimation(anim);
+                public void onAnimationStart(Animation animation) { btnBuscar.setVisibility(View.VISIBLE); }
 
-                    ocultaRecibe = false;
-                    subalmacenes = null;
-                    subalmacenesNombre = new ArrayList<>();
-                    proveedores = null;
-
-                    listProvedoresSucursales.setVisibility(View.GONE);
-
-                    hideKeyboard(v);
-
-                    anim = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_in);
-                    anim.setDuration(300);
-                    btnBuscar.startAnimation(anim);
-                    btnBuscar.getAnimation().setAnimationListener(new Animation.AnimationListener(){
-                        @Override
-                        public void onAnimationStart(Animation animation) { btnBuscar.setVisibility(View.VISIBLE); }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            disableEnableView(true, findViewById(R.id.inventario_content));
-                            recibeSurte.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {}
-                    });
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.dismiss();
-                        }
-                    });
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    disableEnableView(true, findViewById(R.id.inventario_content));
+                    recibeSurte.setVisibility(View.GONE);
                 }
-            }).start();
 
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
         });
 
         btnGuardaRS.setOnClickListener(v -> {
@@ -238,34 +254,49 @@ public class Inventario extends ActividadBase {
                 String fecha=editFechaRS.getText().toString();
                 String factura=editFacturaRS.getText().toString();
                 String total=editCostoRS.getText().toString();
-                if(!Libreria.tieneInformacion(provsuc) || !Libreria.tieneInformacion(fecha) ||
-                    !Libreria.tieneInformacion(factura) || !Libreria.tieneInformacion(total) || subalmacen.getDcatid() == 0){
-                    muestraMensaje("Se deben llenar todos los campos", R.drawable.mensaje_warning);
+                Integer almacen=servicio.traeDcatIdporAbrevi(14,Libreria.traeInfo(spinnerSubalmacenes.getSelectedItem()+""));
+                String porCapturar="Llenar los campos:";
+                String campos="";
+                if(!Libreria.tieneInformacion(provsuc))
+                    campos+="\n"+"Proveedor";
+                if(!Libreria.tieneInformacion(fecha))
+                    campos+="\n"+"Fecha";
+                if(!Libreria.tieneInformacion(factura))
+                    campos+="\n"+"Factura";
+                if(!Libreria.tieneInformacion(total))
+                    campos+="\n"+"Total";
+                if(almacen == 0)
+                    campos+="\n"+"Subalmacen";
+                if(prov.getProvid() == 0)
+                    campos+="\n"+"Seleccione el proveedor";
+                if(Libreria.tieneInformacion(campos)){
+                    dlgMensajeError(porCapturar+campos, R.drawable.mensaje_warning);
                     return;
                 }
                 String midivisa= editDivisaRS.getText().toString();
+                String uuid = editUUID.getText().toString();
                 if(capDivisa && !Libreria.isNumeric(midivisa)){
-                    muestraMensaje("captura el tipo de cambio",R.drawable.mensaje_warning);
+                    dlgMensajeError("captura el tipo de cambio",R.drawable.mensaje_warning);
                     return ;
                 }
+                RSordenCompra = solicitud.getText().toString();
+                OCNuevo = RSordenCompra;
+                divisa = midivisa;
+                provSucuNuevo = provsuc;
+                String dias=editDiascred.getText().toString();
 
-                    OCNuevo = RSordenCompra;
-                    divisa = midivisa;
-                    provSucuNuevo = provsuc;
-                    String dias=editDiascred.getText().toString();
-
-                    guardaDatos("true", documento, String.valueOf(prov.getProvid()), fecha,factura, total,editNotasRS.getText().toString(),
-                            subalmacen.getDcatid(), RSordenCompra, divisa.equals("")? 1:Float.parseFloat(divisa),Libreria.tieneInformacion(dias) ? Integer.parseInt(dias):1);
-                    btnCerrarRS.performClick();
+                guardaDatos("true", documento, String.valueOf(prov.getProvid()), fecha,factura, total,editNotasRS.getText().toString(),
+                        almacen, RSordenCompra, divisa.equals("")? 1:Float.parseFloat(divisa),Libreria.tieneInformacion(dias) ? Integer.parseInt(dias):1,uuid);
+                btnCerrarRS.performClick();
 
             }
             else if(documento == 16){
                 if(editProveedorSucursal.getText().toString().isEmpty())
-                    muestraMensaje("Selecciona sucursal", R.drawable.mensaje_warning);
+                    dlgMensajeError("Selecciona sucursal", R.drawable.mensaje_warning);
                 else{
                     OCNuevo = RSordenCompra;
                     provSucuNuevo = editProveedorSucursal.getText().toString();
-                    guardaDatos("true", documento, String.valueOf(prov.getProvid()), "", "", "0", editNotasRS.getText().toString(), estadoProd, RSordenCompra, 1,1);
+                    guardaDatos("true", documento, String.valueOf(prov.getProvid()), "", "", "0", editNotasRS.getText().toString(), estadoProd, RSordenCompra, 1,1,"");
                     btnCerrarRS.performClick();
                 }
             }
@@ -279,17 +310,8 @@ public class Inventario extends ActividadBase {
         });
 
         btnProveedorSucursal.setOnClickListener(v -> {
-            if(editProveedorSucursal.getText().toString() == null || editProveedorSucursal.getText().toString().isEmpty()){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Sin datos");
-                builder.setMessage("Ingrese algún dato...");
-                builder.setNeutralButton("Ok",(dialogInterface,i)-> dialogInterface.dismiss());
-                builder.show();
-            }else {
-                listaProveedores(editProveedorSucursal.getText().toString());
-                listProvedoresSucursales.setVisibility(View.VISIBLE);
-            }
-
+            listaProveedores(editProveedorSucursal.getText().toString());
+            listProvedoresSucursales.setVisibility(View.VISIBLE);
         });
 
         editFechaRS.setOnClickListener(v -> {
@@ -334,52 +356,31 @@ public class Inventario extends ActividadBase {
         });
 
         btnCerrar.setOnClickListener(v -> {
+            Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.filtros_close);
+            filtrar.startAnimation(anim);
+            listProvedoresSucursalesBuscar.setVisibility(View.GONE);
+            listClientesBuscar.setVisibility(View.GONE);
+            ocultaFiltros = false;
 
-            progressBar = new ProgressDialog(this);
-
-            progressBar.show();
-            progressBar.setMessage("Cargando...");
-            progressBar.setCancelable(false);
             editProveedorSucursalBuscar.setText("");
             editClienteBuscar.setText("");
-            new Thread(new Runnable() {
+
+            anim = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_in);
+            anim.setDuration(300);
+            btnBuscar.startAnimation(anim);
+            btnBuscar.getAnimation().setAnimationListener(new Animation.AnimationListener(){
                 @Override
-                public void run() {
-                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.filtros_close);
-                    filtrar.startAnimation(anim);
-                    listProvedoresSucursalesBuscar.setVisibility(View.GONE);
-                    listClientesBuscar.setVisibility(View.GONE);
-                    ocultaFiltros = false;
-
-
-                    anim = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_in);
-                    anim.setDuration(300);
-                    btnBuscar.startAnimation(anim);
-                    btnBuscar.getAnimation().setAnimationListener(new Animation.AnimationListener(){
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            disableEnableView(true, findViewById(R.id.inventario_content));
-                            btnBuscar.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) { filtrar.setVisibility(View.GONE);  }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {}
-                    });
-
-                    // Oculta el ProgressBar después de completar la tarea
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.dismiss();
-                        }
-                    });
+                public void onAnimationStart(Animation animation) {
+                    disableEnableView(true, findViewById(R.id.inventario_content));
+                    btnBuscar.setVisibility(View.VISIBLE);
                 }
-            }).start();
 
+                @Override
+                public void onAnimationEnd(Animation animation) { filtrar.setVisibility(View.GONE); }
 
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
         });
 
         btnFiltrar.setOnClickListener(v -> {
@@ -432,6 +433,7 @@ public class Inventario extends ActividadBase {
         else
             traeCatalogos(armaXmlCat(false,1), "true", "1");
         if(documento == 16){
+            findViewById(R.id.linearUUID).setVisibility(View.GONE);
             findViewById(R.id.linearRSCosto).setVisibility(View.GONE);
             findViewById(R.id.linearRSFactura).setVisibility(View.GONE);
             findViewById(R.id.linearRSFecha).setVisibility(View.GONE);
@@ -439,7 +441,7 @@ public class Inventario extends ActividadBase {
             findViewById(R.id.linearRSDivisa).setVisibility(View.GONE);
             btnProveedorSucursalBuscar.setText("SUCURSAL");
             ((RadioButton)findViewById(R.id.radioBuscarInventarioProveedor)).setText("Cliente/Prov");
-            ((TextView)findViewById(R.id.txtRSInventariosOrdenCompra)).setText("Orden de envío: ");
+            ((TextView)findViewById(R.id.txtRSInventariosOrdenCompra)).setText("Orden de envio: ");
             //surtidor = false;
 
             listDocumentos.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -452,7 +454,7 @@ public class Inventario extends ActividadBase {
                     }
                     else if(checked) {
                         listDocumentos.setItemChecked(position, false);
-                        muestraMensaje("Pedido asignado a otro surtidor", R.drawable.mensaje_warning);
+                        dlgMensajeError("Pedido asignado a otro surtidor", R.drawable.mensaje_warning);
                     }
                 }
 
@@ -481,7 +483,7 @@ public class Inventario extends ActividadBase {
                         }
                         case R.id.itemDocumentoSurteTarea: {
                             if(!asignad){
-                                muestraMensaje("No se ha asignado los pedidos a una tarea",R.drawable.mensaje_error);
+                                dlgMensajeError("No se ha asignado los pedidos a una tarea",R.drawable.mensaje_error);
                                 return false;
                             }
                             listaPedidos = pedidos.toString();
@@ -490,7 +492,7 @@ public class Inventario extends ActividadBase {
                                 @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                                 String date = simpleDateFormat.format(new Date());
                                 peticionWS(Enumeradores.Valores.TAREA_SURTE_TAREA, "SQL", "SQL",
-                                        xmlDI("true",documento,"",date,"","","",estadoProd,"0",Libreria.tieneInformacionFloat(divisa,1),0),
+                                        xmlDI("true",documento,"",date,"","","",estadoProd,"0",Libreria.tieneInformacionFloat(divisa,1),0,""),
                                         "",
                                         "");
                                 /*"<linea><nuevo>true</nuevo><difolio></difolio><sucudest></sucudest>" +
@@ -561,6 +563,52 @@ public class Inventario extends ActividadBase {
             if(!capDivisa)
                 findViewById(R.id.linearRSDivisa).setVisibility(View.GONE);
         }
+        subalmacenes = servicio.traeDcatGenerica(14);
+        subalmacenesNombre = servicio.traeDcatalogo(14);
+        spineUbicaciones();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        String menuDocs="Ultimos docs";
+        switch(documento){
+            case 14:
+                menuDocs="Ultimas compras";
+                break;
+            case 16:
+                menuDocs="Ultimos surtidos";
+                break;
+            case 17:
+                menuDocs="Ultimos traspasos";
+                break;
+        }
+        menu.add(Menu.NONE, 1, Menu.NONE, menuDocs);
+
+        return true;
+    }
+
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case 1:
+                repoDocumento();
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if(intentResult.getContents() != null ) {
+                //wsBuscaprod(intentResult.getContents());
+                System.out.println("qr---->"+intentResult.getContents());
+            } else{
+                muestraMensaje("Error al escanear codigo", R.drawable.mensaje_error);
+            }
+        }
     }
 
     public void cambiaDdinControlador(Integer pPosicion){
@@ -630,12 +678,11 @@ public class Inventario extends ActividadBase {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (ocultaFiltros)
+        if(ocultaFiltros)
             btnCerrar.performClick();
-        else if (ocultaRecibe)
+        else if(ocultaRecibe)
             btnCerrarRS.performClick();
-        else {
+        else{
             /*Intent intent = new Intent(this, MainMenu.class);
             startActivity(intent);*/
             finish();
@@ -653,9 +700,9 @@ public class Inventario extends ActividadBase {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String item = adapterView.getItemAtPosition(position).toString();
 
-                for(Subalmacen s:subalmacenes){
-                    if(s.getNombre().equals(item)){
-                        subalmacen.setDcatid(s.getDcatid());
+                for(Generica s:subalmacenes){
+                    if(s.getTex1().equals(item)){
+                        subalmacen.setDcatid(s.getId());
                         //System.out.println(s.getDcatid());
                         break;
                     }
@@ -664,12 +711,12 @@ public class Inventario extends ActividadBase {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                muestraMensaje("Nada seleccionado", R.drawable.mensaje_warning);
+                dlgMensajeError("Nada seleccionado", R.drawable.mensaje_warning);
             }
         });
-        for(Subalmacen sub:subalmacenes){
-            if(sub.getDcatid() == estadoProd){
-                String compareValue=sub.getNombre();
+        for(Generica sub:subalmacenes){
+            if(sub.getId() == estadoProd){
+                String compareValue=sub.getTex1();
                 if (compareValue != null) {
                     int spinnerPosition = adapterSubalmacenes.getPosition(compareValue);
                     spinnerSubalmacenes.setSelection(spinnerPosition);
@@ -716,7 +763,7 @@ public class Inventario extends ActividadBase {
         EditText cliente =findViewById(R.id.editClienteInventarios);
         String xml="<linea>";
         if( prov!=null && prov.getProvid() != 0 ){
-            System.out.println("se llenó con "+prov);
+            System.out.println("se lleno con "+prov);
             xml +="<prov>"+prov.getProvid()+"</prov>";
         }
         if(Libreria.tieneInformacion(editOrdenPedido.getText().toString())){
@@ -736,6 +783,7 @@ public class Inventario extends ActividadBase {
         if(Libreria.tieneInformacion(strCliente)){
             xml +="<cliente>"+strCliente+"</cliente>";
         }
+        xml +="<estacion>"+v_estacion+"</estacion>";
         xml +="<tipo>" + documento + "</tipo><surtidor>" + (surtidor ? usuarioID : "0") + "</surtidor><encaptura>"+(documento==17 ? true:encaptura)+"</encaptura><orden>"+orden+"</orden></linea>";
         return xml;
     }
@@ -756,7 +804,7 @@ public class Inventario extends ActividadBase {
      * Llama al servicio que busca un folio
      */
     public void busquedaFolio(){
-        muestraMensaje("En construccion", R.drawable.mensaje_warning);
+        dlgMensajeError("En construccion", R.drawable.mensaje_warning);
     }
 
     /**
@@ -771,10 +819,10 @@ public class Inventario extends ActividadBase {
      * @param alm .
      * @param OC La orden de compra
      */
-    private void guardaDatos(String nuevo, int documento, String prov, String fecha, String factura, String facturaCant, String notas, int alm, String OC, float divisa, int diascred) {
+    private void guardaDatos(String nuevo, int documento, String prov, String fecha, String factura, String facturaCant, String notas, int alm, String OC, float divisa, int diascred,String pUuid) {
         if (documento == 14) {
 
-            peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",xmlDI(nuevo,documento,prov,fecha,factura,facturaCant,notas,alm,OC,divisa,diascred),"","");
+            peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",xmlDI(nuevo,documento,prov,fecha,factura,facturaCant,notas,alm,OC,divisa,diascred,pUuid),"","");
             /*peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",
                     "<linea><nuevo>" + nuevo + "</nuevo><difolio></difolio><sucudest></sucudest>" +
                             "<usuaid>" + usuarioID + "</usuaid><mvdi>" + documento + "</mvdi><edpr>" + alm + "</edpr>" +
@@ -793,10 +841,11 @@ public class Inventario extends ActividadBase {
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             int ocInt = Integer.parseInt(OC);
 
+
             if (ocInt < 0 && servicio.getVentaFolio(OC).length() > 9)
                 peticionWS(Enumeradores.Valores.TAREA_SURTE_VENTA, "SQL", "SQL", servicio.getVentaFolio(OC), usuarioID, notas);
             else
-                peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",xmlDI(nuevo,documento,prov,fecha,factura,facturaCant,notas,alm,OC,divisa,diascred),"","");
+                peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",xmlDI(nuevo,documento,prov,fecha,factura,facturaCant,notas,alm,OC,divisa,diascred,pUuid),"","");
                 /*peticionWS(Enumeradores.Valores.TAREA_GUARDA_COMPRA, "SQL", "SQL",
                         "<linea><nuevo>" + nuevo + "</nuevo><difolio></difolio><sucudest>" + prov + "</sucudest>" +
                                 "<usuaid>" + usuarioID + "</usuaid><mvdi>" + documento + "</mvdi><edpr>" + alm + "</edpr><prov>" +
@@ -815,7 +864,7 @@ public class Inventario extends ActividadBase {
         }
     }
 
-    private String xmlDI(String nuevo, int documento, String prov, String fecha, String factura, String facturaCant, String notas, int alm, String OC, float divisa, int diascred){
+    private String xmlDI(String nuevo, int documento, String prov, String fecha, String factura, String facturaCant, String notas, int alm, String OC, float divisa, int diascred,String pUuid){
         ContentValues mapa=new ContentValues();
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         mapa.put("nuevo",nuevo);
@@ -835,6 +884,8 @@ public class Inventario extends ActividadBase {
         mapa.put("xmlfac","");
         mapa.put("tipocambio",divisa);
         mapa.put("diasc",diascred);
+        mapa.put("uuid",pUuid);
+        mapa.put("estacion",v_estacion);
         return Libreria.xmlLineaCapturaSV(mapa,"linea");
     }
 
@@ -907,10 +958,9 @@ public class Inventario extends ActividadBase {
             public void onAnimationRepeat(Animation animation) { }
         });
 
-        subalmacen.setDcatid(estadoProd);
-        peticionWS(Enumeradores.Valores.TAREA_SUBALMACENES, "SQL", "SQL", "14", "1", "");
+        //subalmacen.setDcatid(estadoProd);
+        //peticionWS(Enumeradores.Valores.TAREA_SUBALMACENES, "SQL", "SQL", "14", "1", "");
     }
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -949,22 +999,6 @@ public class Inventario extends ActividadBase {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, proveedoresNombre);
                     listProvedoresSucursales.setAdapter(adapter);
                     listProvedoresSucursalesBuscar.setAdapter(adapter);
-
-                    if (proveedores.isEmpty()) {
-                        ViewGroup.LayoutParams params = listProvedoresSucursales.getLayoutParams();
-                        params.height = 0;
-                        listProvedoresSucursales.setLayoutParams(params);
-                        muestraMensaje("Sin resultados",R.drawable.mensaje_error);
-                    }else {
-                        int alturaDp = 200;
-                        float factorDensidad = getResources().getDisplayMetrics().density;
-                        int alturaSdp = (int) (alturaDp * factorDensidad);
-
-                        ViewGroup.LayoutParams params = listProvedoresSucursales.getLayoutParams();
-                        params.height = alturaSdp;
-                        listProvedoresSucursales.setLayoutParams(params);
-
-                    }
                     break;
                 }
                 case TAREA_BUSCAR_CLIENTE:{
@@ -979,11 +1013,7 @@ public class Inventario extends ActividadBase {
                     break;
                 }
                 case TAREA_SUBALMACENES: {
-                    subalmacenes = servicio.getSubalmacenes();
-                    subalmacenesNombre.clear();
-                    for(Subalmacen s:subalmacenes)
-                        subalmacenesNombre.add(s.getNombre());
-                    spineUbicaciones();
+
                     break;
                 }
                 case TAREA_GUARDA_COMPRA:
@@ -1007,7 +1037,7 @@ public class Inventario extends ActividadBase {
                         startActivity(intent);
                     }
                     else{
-                        muestraMensaje(obj.getAsString("mensaje"), R.drawable.mensaje_error);
+                        dlgMensajeError(obj.getAsString("mensaje"), R.drawable.mensaje_error);
                     }
                     break;
                 }
@@ -1020,7 +1050,7 @@ public class Inventario extends ActividadBase {
                             traeCatalogos(armaXmlCat(false,1), "true", "1");
                     }
                     else{
-                        muestraMensaje(obj.getAsString("mensaje"), R.drawable.mensaje_error);
+                        dlgMensajeError(obj.getAsString("mensaje"), R.drawable.mensaje_error);
                     }
                     break;
                 }
@@ -1030,25 +1060,75 @@ public class Inventario extends ActividadBase {
                         if(documento == 16){
                             cambiaDdinControlador(-1);
                         }else{
-                        Intent intent = new Intent(this, RecibeDocumento.class);
-                        intent.putExtra("documento", documento);
-                        intent.putExtra("OC", "0");
-                        intent.putExtra("foliodi", "00000");
-                        intent.putExtra("prov/suc", "-");
-                        intent.putExtra("pedidos", listaPedidos);
-                        startActivity(intent);
+                            Intent intent = new Intent(this, RecibeDocumento.class);
+                            intent.putExtra("documento", documento);
+                            intent.putExtra("OC", "0");
+                            intent.putExtra("foliodi", "00000");
+                            intent.putExtra("prov/suc", "-");
+                            intent.putExtra("pedidos", listaPedidos);
+                            startActivity(intent);
                         }
                     }
                     else
-                        muestraMensaje(obj.getAsString("mensaje"), R.drawable.mensaje_error);
+                        dlgMensajeError(obj.getAsString("mensaje"), R.drawable.mensaje_error);
                 }
+                case TAREA_REPODOCUMENTO:
+                    dlgReporte(4);
+                    break;
+                case TAREA_IMPRIMEDOCS:
+                    if(output.getExito()){
+                        String pticket = obj.getAsString("anexo");
+                        doImprime(pticket,false);
+                    }else
+                        dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
+                    break;
+                case TAREA_TRAEORCOINFO:
+                    if(output.getExito()){
+                        actualizaOrco(obj);
+                    }else{
+                        dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
+                    }
                 default:
                     cierraDialogo();
             }
         }
         else {
             cierraDialogo();
-            muestraMensaje("Error llamando al servicio", R.drawable.mensaje_error);
+            dlgMensajeError("Error llamando al servicio", R.drawable.mensaje_error);
         }
     }
+
+    private void actualizaOrco(ContentValues pValores){
+        String dato=pValores.getAsString("proveedor");
+        EditText editProveedorSucursal = findViewById(R.id.editRSInventarioProveedorSucursal);
+        editProveedorSucursal.setText(dato);
+        dato = pValores.getAsString("totalfactura");
+        EditText edita = findViewById(R.id.editRSInventarioCosto);
+        edita.setText(dato);
+        dato = pValores.getAsString("fechafactura");
+        edita = findViewById(R.id.editRSInventarioFecha);
+        edita.setText(Libreria.fecha_to_fecha(dato,"yyyy-MM-dd","yyMMdd"));
+        dato = pValores.getAsString("diascredito");
+        edita = findViewById(R.id.editDiasCredito);
+        edita.setText(dato);
+        dato = pValores.getAsString("referencia");
+        edita = findViewById(R.id.editRSInventarioFactura);
+        edita.setText(dato);
+        btnProveedorSucursal.callOnClick();
+    }
+
+    private void repoDocumento(){
+        servicio.borraDatosTabla(TABLA_GENERICA);
+        peticionWS(Enumeradores.Valores.TAREA_REPODOCUMENTO, "SQL", "SQL", documento+"",v_estacion+"",  "");
+    }
+
+    public void traeTicketDoc(String pFolio){
+        peticionWS(Enumeradores.Valores.TAREA_IMPRIMEDOCS, "SQL", "SQL",  v_estacion+"",pFolio,"");
+    }
+
+    private void traeOrco(String pOrco){
+
+        peticionWS(Enumeradores.Valores.TAREA_TRAEORCOINFO, "SQL", "SQL", pOrco,usuarioID+"",  v_estacion+"");
+    }
+
 }

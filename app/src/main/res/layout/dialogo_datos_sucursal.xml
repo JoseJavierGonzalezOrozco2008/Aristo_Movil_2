@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="1"
+            android:stretchColumns="*"
+            >
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Correo de admon:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/admoncorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="usuario@correo.com.mx"
+                    android:inputType="textEmailAddress"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Tienda:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/tienda"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Telefono:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Calle:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/calle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="# Ext:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/numext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="# Int:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/numint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Colonia:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <Button
+                    android:id="@+id/btnBusca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Busca"
+                    android:layout_gravity="start"
+                    style="@style/boton_estilo"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <TextView
+                    android:id="@+id/coloniaText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeSmall"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="C.P.:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <TextView
+                    android:id="@+id/datosCP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Tipo costeo:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <RadioGroup android:id="@+id/tipoCosteo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/radioUltimo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ultimo"
+                        android:textSize="@dimen/textSizeTiny"
+                        android:tag="1"
+                        />
+                    <RadioButton
+                        android:id="@+id/radioPromedio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prom"
+                        android:textSize="@dimen/textSizeTiny"
+                        android:tag="2"
+                        />
+                    <RadioButton
+                        android:id="@+id/radioMayor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Std"
+                        android:textSize="@dimen/textSizeTiny"
+                        android:tag="3"
+                        />
+                </RadioGroup>
+            </TableRow>
+            <TableRow >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Despedida en tik:"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeTiny"
+                    />
+                <EditText
+                    android:id="@+id/despedida"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    />
+            </TableRow>
+
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+            <Button
+                android:id="@+id/btnCerrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar"
+                style="@style/boton_estilo"
+                />
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guarda"
+                style="@style/boton_estilo"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
