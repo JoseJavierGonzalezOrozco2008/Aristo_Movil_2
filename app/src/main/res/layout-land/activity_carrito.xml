@@ -244,11 +244,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_15sdp"
                         android:gravity="center"
-                        android:horizontalSpacing="10dp"
-                        android:numColumns="5"
+                        android:horizontalSpacing="-30dp"
+                        android:numColumns="4"
                         android:scrollbars="vertical"
                         android:stretchMode="columnWidth"
-                        android:verticalSpacing="10dp" />
+                        android:verticalSpacing="5dp" />
 
 
                 </LinearLayout>
