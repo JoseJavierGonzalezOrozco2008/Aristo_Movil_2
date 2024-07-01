@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="0dp">
+    <Button
+        android:id="@+id/item_button"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:text="Acción"
+        android:typeface="monospace"
+        android:textAlignment="center"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@drawable/white_text_button"
+        android:background="@drawable/button_light_blue_900"
+        android:lineSpacingExtra="-3dp"/>
+</LinearLayout>
