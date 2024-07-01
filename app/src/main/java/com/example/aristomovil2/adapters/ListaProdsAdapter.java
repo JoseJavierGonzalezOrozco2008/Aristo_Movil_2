@@ -55,7 +55,8 @@ public class ListaProdsAdapter extends ArrayAdapter<Generica> {
         Button itemButton = convertView.findViewById(R.id.item_button);
 
         int limite = 8;
-        String primeraLinea = items.get(position).getTex1().length() > limite
+        String primeraLinea = items.get(position).getTex1();
+                /*items.get(position).getTex1().length() > limite
                 ? items.get(position).getTex1().substring(0, limite)
                 : items.get(position).getTex1();
 
@@ -65,17 +66,18 @@ public class ListaProdsAdapter extends ArrayAdapter<Generica> {
 
         if (segundaLinea.length() > limite) {
             segundaLinea = segundaLinea.substring(0, limite - 3) + "...";
-        }
+        }*/
 
-        String textoFinal = primeraLinea + (segundaLinea.isEmpty() ? "" : "\n" + segundaLinea);
+        String textoFinal = primeraLinea;// + (segundaLinea.isEmpty() ? "" : "\n" + segundaLinea);
 
-        itemButton.setText(items.get(position).getTex1());
+        itemButton.setText(textoFinal);
         itemButton.setOnClickListener(v -> {
             //Toast.makeText(context, "Acción para: " + this.v_ultprod, Toast.LENGTH_SHORT).show();
             //wsLineaCaptura(items.get(position).getTex3());
             if(activity instanceof Carrito){
                 ((Carrito)activity).wsLineaCaptura(items.get(position).getTex3());
             }
+
         });
 
         return convertView;
