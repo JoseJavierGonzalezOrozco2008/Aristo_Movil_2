@@ -1,9 +1,8 @@
 package com.example.aristomovil2;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,7 +10,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,60 +17,36 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
-import android.os.ParcelFileDescriptor;
-import android.print.PageRange;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintDocumentInfo;
-import android.print.PrintManager;
-import android.printservice.PrintJob;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.aristomovil2.adapters.ListaProdsAdapter;
 import com.example.aristomovil2.facade.Estatutos;
-import com.example.aristomovil2.servicio.ServicioImpresionTicket;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
-import com.example.aristomovil2.utileria.Impresora;
 import com.example.aristomovil2.utileria.Libreria;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Login extends ActividadBase implements EasyPermissions.PermissionCallbacks {
+public class Login extends ActividadBase implements EasyPermissions.PermissionCallbacks{
     private String androidId;
     private EditText editIP;
-    int REQUEST_CODE = 200;
     Dialog dialPermis;
+
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -89,77 +63,6 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.BLUETOOTH_CONNECT,
     };
-
-
-    private void mostrarMensajeExplicativo() {
-
-        dialPermis.setContentView(R.layout.dialog_permisos);
-        dialPermis.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ImageView imageViewAcept = dialPermis.findViewById(R.id.imageView);
-        Button btnAceptPermiso = dialPermis.findViewById(R.id.btnAceptarPermis);
-        dialPermis.show();
-        btnAceptPermiso.setOnClickListener(v -> {
-            dialPermis.dismiss();
-            //checkBluetoothPermissions();
-        });
-        /*new AlertDialog.Builder(this,R.style.AlertDialog_Style)
-                .setTitle("Permisos de Bluetooth")
-                .setMessage("Esta aplicación requiere de algunos permisos para funcionar correctamente.")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        checkBluetoothPermissions();
-                    }
-                })
-                /*.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .show();*/
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        // Permiso concedido, realiza las operaciones de Bluetooth aquí
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        // El usuario denegó el permiso, puedes mostrar un mensaje o tomar alguna acción
-        //System.out.println("Denegado " + perms);
-        mostrarMensajeExplicativo();
-    }
-    private void checkBluetoothPermissions() {
-        System.out.println("Permisos "+Build.VERSION_CODES.O);
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
-        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
-
-        if(Build.VERSION.SDK_INT < 31){
-            if (EasyPermissions.hasPermissions(this, perms)) {
-
-            } else {
-                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
-                        123, perms);
-            }
-        } else if(Build.VERSION.SDK_INT >= 31){
-            if (EasyPermissions.hasPermissions(this, permBluConn)) {
-
-            } else {
-                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
-                        123, permBluConn);
-            }
-        }
-        System.out.println();
-    }
-
 
     @SuppressLint({"HardwareIds", "SetTextI18n"})
     @Override
@@ -193,7 +96,72 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
         }));
 
         checkBluetoothPermissions();
+    }
 
+    private void mostrarMensajeExplicativo() {
+
+        dialPermis.setContentView(R.layout.dialog_permisos);
+        dialPermis.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView imageViewAcept = dialPermis.findViewById(R.id.imageView);
+        Button btnAceptPermiso = dialPermis.findViewById(R.id.btnAceptarPermis);
+        dialPermis.show();
+        btnAceptPermiso.setOnClickListener(v -> {
+            dialPermis.dismiss();
+            //checkBluetoothPermissions();
+        });
+        /*new AlertDialog.Builder(this,R.style.AlertDialog_Style)
+                .setTitle("Permisos de Bluetooth")
+                .setMessage("Esta aplicación requiere de algunos permisos para funcionar correctamente.")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkBluetoothPermissions();
+                    }
+                })
+                /*.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        // Permiso concedido, realiza las operaciones de Bluetooth aquí
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        // El usuario denegó el permiso, puedes mostrar un mensaje o tomar alguna acción
+        mostrarMensajeExplicativo();
+    }
+
+    private void checkBluetoothPermissions() {
+        String[] perms = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
+        String[] permBluConn = {Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
+
+        if(Build.VERSION.SDK_INT < 31){
+            if (EasyPermissions.hasPermissions(this, perms)) {
+
+            } else {
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",
+                        123, perms);
+            }
+        } else if(Build.VERSION.SDK_INT >= 31){
+            if (EasyPermissions.hasPermissions(this, permBluConn)) {
+            }else{
+                EasyPermissions.requestPermissions(this, "Se requieren algunos permisos.",123, permBluConn);
+            }
+        }
     }
 
     /**
@@ -202,10 +170,9 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
      */
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         new AlertDialog.Builder(this)
-                .setTitle("Confirmación")
-                .setMessage("¿Estás seguro que desas salir de la aplicación?")
+                .setTitle("Confirmacion")
+                .setMessage("¿Estas seguro que desas salir de la aplicacion?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     finish();
@@ -331,7 +298,7 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        System.out.println("Aqui "+requestCode + " "+ resultCode+" "+data);
+
         if (intentResult.getContents() != null && editIP != null)
             editIP.setText(intentResult.getContents());
         else
@@ -423,7 +390,7 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
                 addPreferenceInt(editor, obj, "espacios", "espacios", 0);
                 addPreferenceInt(editor, obj, "tiporecibo", "tiporecibo", 0);
                 addPreferenceInt(editor, obj, "cantidadusual", "cantidadusual", 10);
-                //addPreferenceBoolean(editor, obj, "mandaimprimir", "mandaimprimir", true);
+                addPreferenceBoolean(editor, obj, "mandaimprimir", "mandaimprimir", true);
                 addPreferenceBoolean(editor, obj, "permif", "permif", false);
                 addPreferenceBoolean(editor, obj, "capdivisa", "capdivisa", false);
                 addPreferenceBoolean(editor, obj, "doc14soli", "doc14soli", true);
@@ -437,9 +404,14 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
                 addPreferenceBoolean(editor, obj, "pidefac", "pidefac", false);
                 addPreferenceBoolean(editor, obj, "solifac", "solifac", false);
                 addPreferenceBoolean(editor, obj, "pideanden", "pideanden", false);
-
+                addPreferenceBoolean(editor, obj, "vertouch", "vertouch", false);
+                addPreferenceBoolean(editor, obj, "rompe", "rompe", true);
+                addPreferenceBoolean(editor, obj, "mono", "mono", false);
+                addPreferenceInt(editor, obj, "muestraf", "muestraf", 3);
 
                 agregaDcatalogos(obj.getAsString("dcatalogo"));
+                agregaMargenes(obj.getAsString("tipomargen"));
+                agregaImpuestos(obj.getAsString("impuesots"));
                 Intent intent = new Intent(this, MainMenu.class);
                 editor.apply();
                 startActivity(intent);
@@ -459,6 +431,7 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
         if(!Libreria.tieneInformacion(pCadena)){
             return;
         }
+        servicio.borraDatosTabla(Estatutos.TABLA_DCATALOGO);
         String dcatalogos[] = pCadena.split(Pattern.quote("|"));
         if(dcatalogos.length==0)
             return;
@@ -472,13 +445,60 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
                 obj.put("cata",campos[0]);
                 obj.put("abrevi",campos[2]);
                 obj.put("n2",campos[3]);
+                if(campos.length>4){
+                    obj.put("t1",campos[4]);
+                }
+                servicio.guardaBD(obj, Estatutos.TABLA_DCATALOGO);
+            }
+        }
+    }
+
+    private void agregaImpuestos(String pCadena){
+        if(!Libreria.tieneInformacion(pCadena)){
+            return;
+        }
+        String dcatalogos[] = pCadena.split(Pattern.quote("|"));
+        if(dcatalogos.length==0)
+            return;
+        String campos[];
+        ContentValues obj;
+        for(String dcat:dcatalogos){
+            campos = dcat.split(",");
+            if(campos.length>0){
+                obj=new ContentValues();
+                obj.put("cata",-2);
+                obj.put("id",campos[0]);
+                obj.put("abrevi",campos[1]);
+                obj.put("l1",campos[2]);
+                servicio.guardaBD(obj, Estatutos.TABLA_DCATALOGO);
+            }
+        }
+    }
+
+    private void agregaMargenes(String pCadena){
+        if(!Libreria.tieneInformacion(pCadena)){
+            return;
+        }
+        String dcatalogos[] = pCadena.split(Pattern.quote("|"));
+        if(dcatalogos.length==0)
+            return;
+        String campos[];
+        ContentValues obj;
+        for(String dcat:dcatalogos){
+            campos = dcat.split(",");
+            if(campos.length>0){
+                obj=new ContentValues();
+                obj.put("cata",-1);
+                obj.put("id",campos[0]);
+                obj.put("abrevi",campos[1]);
+                obj.put("e1",campos[2]);
                 servicio.guardaBD(obj, Estatutos.TABLA_DCATALOGO);
             }
         }
     }
 
     public void dlgPruebaConexion(ContentValues pContenido){
-        String mensaje="No se pudo establecer la conexión con el servidor";
+        String mensaje="No se pudo establecer la conexion con el servidor";
 
         final Dialog dialogo = new Dialog(this);
         //dialogo.setCancelable(false);
