@@ -1,168 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="5dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     >
-
-    <TextView
-        android:id="@+id/dvtaProducto"
-        android:layout_width="match_parent"
-        android:textSize="@dimen/textSizeMedium"
-        android:textColor="@color/black"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textAlignment="center"/>
-    <RadioGroup android:id="@+id/dvtaRadioGrup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <RadioButton android:id="@+id/dvtaRadioCant"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/arial"
-            android:text="Cantidad"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textSizeXSmall"
-            />
-
-        <RadioButton android:id="@+id/dvtaRadioDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/arial"
-            android:text="Descuento"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textSizeXSmall"
-            />
-
-        <RadioButton android:id="@+id/dvtaRadioPrec"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/arial"
-            android:text="Cambio Precio"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textSizeXSmall"
-            />
-    </RadioGroup>
-    <TextView
-        android:id="@+id/dvtaCantorig"
-        android:layout_width="match_parent"
-        android:textSize="@dimen/textSizeSmall"
-        android:textColor="@color/black"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"/>
     <LinearLayout
-        android:id="@+id/dvtaLyCant"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
-            android:id="@+id/dvtaCantcapt"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/textSizeSmall"
+            android:id="@+id/dvtaProducto"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/textSizeMedium"
             android:textColor="@color/black"
-            android:text="Cant. Nueva:"
             android:layout_height="wrap_content"
-            android:textAlignment="viewEnd" />
-        <EditText
-            android:padding="5dp"
-            android:id="@+id/dvtaCantidad"
-            android:textSize="@dimen/textSizeSmall"
-            android:textColor="@color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal"
-            android:lines="1"/>
-
-        <ImageButton android:id="@+id/btnMasmas"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+        <RadioGroup android:id="@+id/dvtaRadioGrup"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-            android:src="@drawable/add_black"
-            android:background="@drawable/button_shape"
-            android:layout_weight="0.05"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"/>
-        <ImageButton android:id="@+id/btnMenor"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            <RadioButton android:id="@+id/dvtaRadioCant"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/arial"
+                android:text="Cantidad"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"
+                />
 
-            android:src="@drawable/minus_black"
-            android:background="@drawable/button_shape"
-            android:layout_weight="0.05"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/dvtaLyDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <RadioButton android:id="@+id/dvtaRadioDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/arial"
+                android:text="Descuento"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"
+                />
+
+            <RadioButton android:id="@+id/dvtaRadioPrec"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/arial"
+                android:text="Cambio Precio"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeXSmall"
+                />
+        </RadioGroup>
         <TextView
+            android:id="@+id/dvtaCantorig"
+            android:layout_width="match_parent"
             android:textSize="@dimen/textSizeSmall"
-            android:text="Descuento:"
-            android:layout_width="0dp"
-            android:layout_weight="1"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"/>
-        <EditText
-            android:padding="5dp"
-            android:id="@+id/dvtaDesc"
-            android:textSize="@dimen/textSizeSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal"
-            android:lines="1"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/dvtaLyPrecio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/textSizeSmall"
-            android:text="Precio Nuevo:"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"/>
-        <EditText
-            android:padding="5dp"
-            android:id="@+id/dvtaPrecioN"
-            android:textSize="@dimen/textSizeSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal"
-            android:lines="1"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/dvtaAvisos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textSizeSmall"
-        android:textColor="@color/black"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:textAlignment="center"/>
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/dvtaLyCant"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33">
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/dvtaCantcapt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/black"
+                android:text="Cant. Nueva:"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd" />
+            <EditText
+                android:padding="5dp"
+                android:id="@+id/dvtaCantidad"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:lines="1"/>
+
+            <ImageButton android:id="@+id/btnMasmas"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:src="@drawable/add_black"
+                android:background="@drawable/button_shape"
+                android:layout_weight="0.05"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"/>
+            <ImageButton android:id="@+id/btnMenor"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:src="@drawable/minus_black"
+                android:background="@drawable/button_shape"
+                android:layout_weight="0.05"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/dvtaLyDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textSize="@dimen/textSizeSmall"
+                android:text="Descuento:"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"/>
+            <EditText
+                android:padding="5dp"
+                android:id="@+id/dvtaDesc"
+                android:textSize="@dimen/textSizeSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:lines="1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/dvtaLyPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="@dimen/textSizeSmall"
+                android:text="Precio Nuevo:"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"/>
+            <EditText
+                android:padding="5dp"
+                android:id="@+id/dvtaPrecioN"
+                android:textSize="@dimen/textSizeSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:lines="1"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/dvtaScrollA"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:layout_weight="1"
+            >
+            <TextView
+                android:id="@+id/dvtaAvisos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSizeSmall"
+                android:textColor="@color/black"
+                android:background="@color/acomodo_Info"
+                />
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="0.15">
             <Button
                 android:id="@+id/btnRegresar"
                 android:text="Regresar"
@@ -197,8 +206,8 @@
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
         </LinearLayout>
-
-
     </LinearLayout>
+
+
 
 </LinearLayout>
