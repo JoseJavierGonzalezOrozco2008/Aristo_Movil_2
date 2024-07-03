@@ -4,7 +4,9 @@ import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_IMPUG
 import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_PRECGUARDA;
 import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_PRODGUARDA;
 import static com.example.aristomovil2.utileria.Enumeradores.Valores.TAREA_TRAEPRODMOVIL;
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +21,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.aristomovil2.ActividadBase;
@@ -28,6 +32,8 @@ import com.example.aristomovil2.adapters.ListaImpuestosAdapter;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Libreria;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -36,7 +42,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Producto extends ActividadBase {
-    private Integer v_prodid;
+    private Integer v_prodid,v_peticion,v_Costeo;
     private String v_producto;
     private Button v_impu,v_costo;
     private ArrayList<Generica> v_impuestos;
@@ -57,6 +63,8 @@ public class Producto extends ActividadBase {
         Boolean mClavesat = extras.getBoolean("pclavesat");
         Boolean mDivisa = extras.getBoolean("pdivisa");
         Boolean mSustancia = extras.getBoolean("psustancia");
+        v_Costeo = Libreria.tieneInformacionEntero(extras.getString("tcosteo","0"));
+        v_peticion = 0;
 
         TextView vista = findViewById(R.id.prodTitulo);
 
@@ -85,6 +93,9 @@ public class Producto extends ActividadBase {
         v_impu = findViewById(R.id.ProdImpuestos);
         v_costo = findViewById(R.id.ProdCierra);
         Button bguarda = findViewById(R.id.prodGuarda);
+        ImageButton btnBarcode = findViewById(R.id.btnBarcode);
+
+        btnBarcode.setOnClickListener(view -> barcodeEscaner());
 
         rowMarca.setVisibility(mMarca ? View.VISIBLE : View.GONE);
         rowLinea.setVisibility(mLinea ? View.VISIBLE : View.GONE);
@@ -125,64 +136,38 @@ public class Producto extends ActividadBase {
         });
         v_costos = new Generica(0);
         if(v_prodid > 0){
-            v_producto = extras.getString("producto");
-            vista.setText(v_producto);
-            producto.setText(v_producto);
-            rowProd.setVisibility(View.GONE);
-            codigo.setText(extras.getString("codigo"));
-            claveSat.setText(extras.getString("sat"));
-            sustancia.setText(extras.getString("sustancia"));
-            caduca.setChecked(Libreria.getBoolean(extras.getString("caduca")));
-            fracci.setChecked(Libreria.getBoolean(extras.getString("granel")));
-            activo.setChecked(Libreria.getBoolean(extras.getString("activo")));
+            ContentValues contenido = new ContentValues();
+            contenido.put("producto",extras.getString("producto"));
+            contenido.put("codigo",extras.getString("codigo"));
+            contenido.put("sat",extras.getString("sat"));
+            contenido.put("sustancia",extras.getString("sustancia"));
+            contenido.put("caduca",extras.getString("caduca"));
+            contenido.put("granel",extras.getString("granel"));
+            contenido.put("activo",extras.getString("activo"));
+            contenido.put("marca",extras.getString("marca"));
+            contenido.put("linea",extras.getString("linea"));
+            contenido.put("familia",extras.getString("familia"));
+            contenido.put("divisa",extras.getString("divisa"));
+            contenido.put("impuestos",extras.getString("impuestos"));
+            contenido.put("valor",extras.getString("valor"));
+            contenido.put("mensaje",extras.getString("mensaje"));
 
-            Integer cprecio = 0;
-            Integer datos = Integer.parseInt(extras.getString("marca","0"));
-            marca.setSelection(servicio.traePosicion(42,datos));
-            datos = Integer.parseInt(extras.getString("linea","0"));
-            linea.setSelection(servicio.traePosicion(44,datos));
-            datos = Integer.parseInt(extras.getString("cprecio","0"));
-            cprecio = datos;
-            spincalpre.setSelection(servicio.traePosicion(54,cprecio));
-            datos = Integer.parseInt(extras.getString("familia","0"));
-            margenes.setSelection(servicio.traePosicion(-1,datos));
-            datos = Integer.parseInt(extras.getString("divisa","0"));
-            divisas.setSelection(servicio.traePosicion(32,datos));
-
-            v_costos.setDec1(new BigDecimal(extras.getString("cult","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec2(new BigDecimal(extras.getString("cstd","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec3(new BigDecimal(extras.getString("cpro","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec4(new BigDecimal(extras.getString("pnormal","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec5(new BigDecimal(extras.getString("p1","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec6(new BigDecimal(extras.getString("p2","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec7(new BigDecimal(extras.getString("p3","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec8(new BigDecimal(extras.getString("culti","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec9(new BigDecimal(extras.getString("cstdi","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec10(new BigDecimal(extras.getString("cproi","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec11(new BigDecimal(extras.getString("pnormali","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec12(new BigDecimal(extras.getString("p1i","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec13(new BigDecimal(extras.getString("p2i","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setDec14(new BigDecimal(extras.getString("p3i","0")).setScale(2,BigDecimal.ROUND_HALF_EVEN));
-            v_costos.setTex1(extras.getString("valor","0%"));
-            v_costos.setTex2(extras.getString("mensaje",""));
-            v_costos.setLog1(cprecio==303 || cprecio==304);
-
-            String tasas=extras.getString("impuestos");
-            if(Libreria.tieneInformacion(tasas)){
-                Generica gen;
-                String[] portasa=tasas
-                        .split(Pattern.quote("|"));
-                if(portasa.length!=0){
-                    String campos[];
-                    for(String ptasa:portasa){
-                        campos = ptasa.split(",");
-                        gen = new Generica(Integer.parseInt(campos[0]));
-                        gen.setTex1(campos[1]);
-                        gen.setLog1(Libreria.getBoolean(campos[2]));
-                        v_impuestos.add(gen);
-                    }
-                }
-            }
+            contenido.put("cult",extras.getString("cult"));
+            contenido.put("cstd",extras.getString("cstd"));
+            contenido.put("cpro",extras.getString("cpro"));
+            contenido.put("pnormal",extras.getString("pnormal"));
+            contenido.put("p1",extras.getString("p1"));
+            contenido.put("p2",extras.getString("p2"));
+            contenido.put("p3",extras.getString("p3"));
+            contenido.put("culti",extras.getString("culti"));
+            contenido.put("cstdi",extras.getString("cstdi"));
+            contenido.put("cproi",extras.getString("cproi"));
+            contenido.put("pnormali",extras.getString("pnormali"));
+            contenido.put("p1i",extras.getString("p1i"));
+            contenido.put("p2i",extras.getString("p2i"));
+            contenido.put("p3i",extras.getString("p3i"));
+            v_peticion=0;
+            asignaValores(contenido);
             codigo.requestFocus();
         }else{
             v_impuestos = servicio.traeDcatGenerica(36);
@@ -195,8 +180,16 @@ public class Producto extends ActividadBase {
             activo.setChecked(true);
             producto.requestFocus();
         }
-        v_impu.setOnClickListener(view -> dlgImpuestos());
-        v_costo.setOnClickListener(view -> dlgCostos());
+        v_impu.setOnClickListener(view -> {
+            v_peticion=1;
+            wsBuscaProd(v_prodid);
+            //dlgImpuestos();
+        });
+        v_costo.setOnClickListener(view -> {
+            v_peticion=2;
+            wsBuscaProd(v_prodid);
+            //dlgCostos()
+        });
         avisos.setText(Libreria.traeInfo(v_costos.getTex2()));
 
         bguarda.setOnClickListener(view -> {
@@ -217,7 +210,6 @@ public class Producto extends ActividadBase {
             String xml = Libreria.xmlLineaCapturaSV(mapa,"linea");
             prodGuarda(xml);
         });
-
 
     }
 
@@ -252,18 +244,27 @@ public class Producto extends ActividadBase {
         TextView p3i = vista.findViewById(R.id.prodPcio3i);
         TextView pMargen = vista.findViewById(R.id.prodMargen);
 
-       /* TextView ultimoa = vista.findViewById(R.id.prodCostoUlta);
-        TextView promedioa = vista.findViewById(R.id.prodCostoProa);
-        TextView estandara = vista.findViewById(R.id.prodCostoStda);
-        TextView normala = vista.findViewById(R.id.prodPcioNora);
-        TextView p1a = vista.findViewById(R.id.prodPcio1a);
-        TextView p2a = vista.findViewById(R.id.prodPcio2a);
-        TextView p3a = vista.findViewById(R.id.prodPcio3a);*/
-
-
-
         View tabla = vista.findViewById(R.id.costprecios);
         tabla.setVisibility(v_costos.getLog1() ? View.VISIBLE:View.GONE);
+
+        TableRow rowStd = vista.findViewById(R.id.rowStd);
+        TableRow rowUltimo = vista.findViewById(R.id.rowUltimo);
+        TableRow rowProm = vista.findViewById(R.id.rowProm);
+        rowStd.setVisibility(View.GONE);
+        rowUltimo.setVisibility(View.GONE);
+        rowProm.setVisibility(View.GONE);
+
+        switch(v_Costeo){
+            case 1:
+                rowUltimo.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                rowProm.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                rowStd.setVisibility(View.VISIBLE);
+                break;
+        }
 
         ultimo.setText(v_costos.getDec1().toString());
         estandar.setText(v_costos.getDec2().toString());
@@ -279,13 +280,6 @@ public class Producto extends ActividadBase {
         p1i.setText(v_costos.getDec12().toString());
         p2i.setText(v_costos.getDec13().toString());
         p3i.setText(v_costos.getDec14().toString());
-        /*ultimoa.setText(v_costos.getDec1().toString());
-        estandara.setText(v_costos.getDec2().toString());
-        promedioa.setText(v_costos.getDec3().toString());
-        normala.setText(v_costos.getDec4().toString());
-        p1a.setText(v_costos.getDec5().toString());
-        p2a.setText(v_costos.getDec6().toString());
-        p3a.setText(v_costos.getDec7().toString());*/
 
         ultimo.setSelectAllOnFocus(true);
         estandar.setSelectAllOnFocus(true);
@@ -343,6 +337,46 @@ public class Producto extends ActividadBase {
     }
 
     private void asignaValores(ContentValues pContentValues){
+        TextView vista = findViewById(R.id.prodTitulo);
+        Spinner marca = findViewById(R.id.prodMarca);
+        Spinner linea = findViewById(R.id.prodLinea);
+        Spinner spincalpre = findViewById(R.id.prodCalprecio);
+        Spinner margenes = findViewById(R.id.prodTipomargen);
+        Spinner divisas = findViewById(R.id.prodDivisa);
+
+        EditText producto = findViewById(R.id.prodProducto);
+        EditText codigo = findViewById(R.id.prodCodigo);
+        EditText sustancia = findViewById(R.id.prodSustancia);
+        EditText claveSat = findViewById(R.id.prodClavesat);
+        CheckBox caduca = findViewById(R.id.prodCaduca);
+        CheckBox fracci = findViewById(R.id.prodFracc);
+        CheckBox activo = findViewById(R.id.prodActivo);
+
+        TextView avisos = findViewById(R.id.costAviso);
+
+        v_producto = pContentValues.getAsString("producto");
+        vista.setText(v_producto);
+        producto.setText(v_producto);
+        codigo.setText(pContentValues.getAsString("codigo"));
+        claveSat.setText(pContentValues.getAsString("sat"));
+        sustancia.setText(pContentValues.getAsString("sustancia"));
+        caduca.setChecked(Libreria.getBoolean(pContentValues.getAsString("caduca")));
+        fracci.setChecked(Libreria.getBoolean(pContentValues.getAsString("granel")));
+        activo.setChecked(Libreria.getBoolean(pContentValues.getAsString("activo")));
+
+        Integer cprecio = 0;
+        Integer datos = Integer.parseInt(Libreria.traeInfo(pContentValues.getAsString("marca"),"0"));
+        marca.setSelection(servicio.traePosicion(42,datos));
+        datos = Integer.parseInt(Libreria.traeInfo(pContentValues.getAsString("linea"),"0"));
+        linea.setSelection(servicio.traePosicion(44,datos));
+        datos = Integer.parseInt(Libreria.traeInfo(pContentValues.getAsString("cprecio"),"0"));
+        cprecio = datos;
+        spincalpre.setSelection(servicio.traePosicion(54,cprecio));
+        datos = Integer.parseInt(Libreria.traeInfo(pContentValues.getAsString("familia"),"0"));
+        margenes.setSelection(servicio.traePosicion(-1,datos));
+        datos = Integer.parseInt(Libreria.traeInfo(pContentValues.getAsString("divisa"),"0"));
+        divisas.setSelection(servicio.traePosicion(32,datos));
+
         String tasas=pContentValues.getAsString("impuestos");
         if(Libreria.tieneInformacion(tasas)){
             v_impuestos = new ArrayList<>();
@@ -396,23 +430,25 @@ public class Producto extends ActividadBase {
         dato=Libreria.traeInfo(pContentValues.getAsString("mensaje"),"");
         v_costos.setTex2(dato);
 
-        dato=Libreria.traeInfo(pContentValues.getAsString("cprecio"),"0");
-        Integer cprecio=Integer.parseInt(dato);
+        //dato=Libreria.traeInfo(pContentValues.getAsString("cprecio"),"0");
+        //Integer cprecio=Integer.parseInt(dato);
         v_costos.setLog1(cprecio==303 || cprecio==304);
+
+        avisos.setText(Libreria.traeInfo(v_costos.getTex2()));
 
         if(v_prodid>0){
             v_impu.setVisibility(View.VISIBLE);
             v_costo.setVisibility(View.VISIBLE);
             actualizaToolbar2(usuario, v_prodid==0 ? "Alta de Producto" : "Edicion de producto");
-            TextView vista = findViewById(R.id.prodTitulo);
             v_producto = pContentValues.getAsString("producto");
             vista.setText(v_producto);
-            TextView codigo = findViewById(R.id.prodCodigo);
             codigo.requestFocus();
         }else{
             v_impu.setVisibility(View.GONE);
             v_costo.setVisibility(View.GONE);
         }
+
+        v_Costeo = Libreria.tieneInformacionEntero(Libreria.traeInfo(pContentValues.getAsString("tcosteo"),"0"));
     }
 
     @Override
@@ -426,6 +462,8 @@ public class Producto extends ActividadBase {
                     if(output.getExito()){
                         Integer prod = obj.getAsInteger("anexo");
                         v_prodid = prod!=null ? prod : v_prodid;
+                        v_peticion = 0;
+                        wsBuscaProd(v_prodid);
                     }
                 case TAREA_PRECGUARDA:
                 case TAREA_MGNFAMIGUARDA:
@@ -433,12 +471,17 @@ public class Producto extends ActividadBase {
                     if(output.getExito()){
                         if(v_dialogo!=null)
                             v_dialogo.dismiss();
-                        wsBuscaProd(v_prodid);
+                        //wsBuscaProd(v_prodid);
                     }
                     dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error2);
                     break;
                 case TAREA_TRAEPRODMOVIL:
                     asignaValores(obj);
+                    if(v_peticion==1){
+                        dlgImpuestos();
+                    }else if(v_peticion==2){
+                        dlgCostos();
+                    }
                     break;
             }
         }else {
@@ -472,5 +515,18 @@ public class Producto extends ActividadBase {
             ids=ids.substring(0,ids.length()-1);
         }
         peticionWS(TAREA_IMPUGUARDA,"SQL","SQL",ids,v_prodid+"","");
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if(intentResult.getContents() != null ) {
+                EditText codigo = findViewById(R.id.prodCodigo);
+                codigo.setText(Libreria.traeInfo(intentResult.getContents()));
+
+            }else
+                muestraMensaje("Error al escanear codigo", R.drawable.mensaje_error);
+        }
     }
 }
