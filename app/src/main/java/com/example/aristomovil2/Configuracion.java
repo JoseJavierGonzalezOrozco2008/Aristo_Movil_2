@@ -212,7 +212,7 @@ public class Configuracion extends ActividadBase {
             if(conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion","") != null && !conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion","").equals("")){
                 estacionConf.setTitle("Estación: "+conf.getSharedPreferences("renglones", Context.MODE_PRIVATE).getString("estacion",""));
             } else{
-              estacionConf.setTitle("Sin Estación");
+                estacionConf.setTitle("Sin Estación");
             }
 
             listaTipoImpresion.setValue(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp",""));
@@ -270,7 +270,7 @@ public class Configuracion extends ActividadBase {
 
             System.out.println("Valor para tImmp "+ conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp",""));
 
-            if(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","") == null || conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","").equals("")){
+            if(conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","") == null || conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","").equals("") || conf.getSharedPreferences("tipoImpresion",Context.MODE_PRIVATE).getString("tImp","").equals("Pantalla")){
                 System.out.println("Entre a vacio");
                 editIpImp.setEnabled(false);
                 editPuertoImp.setEnabled(false);
@@ -342,6 +342,13 @@ public class Configuracion extends ActividadBase {
                     btnPrueba.setSummary(impresora.equals("") ? "Predeterminada" : impresora);
                     assert swCodigo != null;
                     swCodigo.setEnabled(!impresora.equals("") && !impresora.equals("Predeterminada"));
+                }else{
+                    editIpImp.setEnabled(false);
+                    editPuertoImp.setEnabled(false);
+                    btnPruebaRed.setEnabled(false);
+                    listaImpresoras.setEnabled(false);
+                    btnPrueba.setEnabled(false);
+                    swCodigo.setEnabled(false);
                 }
                 return false;
             });
@@ -520,11 +527,11 @@ public class Configuracion extends ActividadBase {
             String id = "";
 
             for(int i=0; i<estaciones.size(); i++){
-               entries[i] = estaciones.get(i).getNombre();
-               entryValues[i] = String.valueOf(estaciones.get(i).getEstaid());
+                entries[i] = estaciones.get(i).getNombre();
+                entryValues[i] = String.valueOf(estaciones.get(i).getEstaid());
 
-               if(estaciones.get(i).isAsignada())
-                   id = String.valueOf(estaciones.get(i).getEstaid());
+                if(estaciones.get(i).isAsignada())
+                    id = String.valueOf(estaciones.get(i).getEstaid());
             }
 
             lp.setEntries(entries);
