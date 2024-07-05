@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.example.aristomovil2.ActividadBase;
 import com.example.aristomovil2.R;
+import com.example.aristomovil2.adapters.GenericaAdapter;
 import com.example.aristomovil2.adapters.ListaImpuestosAdapter;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.utileria.EnviaPeticion;
@@ -163,26 +164,34 @@ public class Producto extends ActividadBase {
 
         ArrayList<String> marcas = servicio.traeDcatalogo(42);
         ArrayList<String> lineas = servicio.traeDcatalogo(44);
-        ArrayList<String> calpre = servicio.traeDcatalogo(54);
-        ArrayList<String> margen = servicio.traeDcatalogo(-1);
-        ArrayList<String> divisa = servicio.traeDcatalogo(32);
+        //ArrayList<String> calpre = servicio.traeDcatalogo(54);
+        List<Generica> calpre = servicio.traeDcatGenerica(54);
+        //ArrayList<String> margen = servicio.traeDcatalogo(-1);
+        List<Generica> margen = servicio.traeDcatGenerica(-1);
+        //ArrayList<String> divisa = servicio.traeDcatalogo(32);
+        List<Generica> divisa = servicio.traeDcatGenerica(32);
 
         ArrayAdapter<String> spinMarca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, marcas);
         marca.setAdapter(spinMarca);
         ArrayAdapter<String> spinlinea = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, lineas);
         linea.setAdapter(spinlinea);
-        ArrayAdapter<String> spincalpreca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, calpre);
+        //ArrayAdapter<String> spincalpreca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, calpre);
+        GenericaAdapter spincalpreca=new GenericaAdapter(calpre,this,11);
         spincalpre.setAdapter(spincalpreca);
-        ArrayAdapter<String> spinmargen = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, margen);
+        //ArrayAdapter<String> spinmargen = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, margen);
+        GenericaAdapter spinmargen=new GenericaAdapter(margen,this,11);
         margenes.setAdapter(spinmargen);
-        ArrayAdapter<String> spindivisa = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, divisa);
+        //ArrayAdapter<String> spindivisa = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, divisa);
+        GenericaAdapter spindivisa=new GenericaAdapter(divisa,this,11);
         divisas.setAdapter(spindivisa);
+
         v_impuestos = new ArrayList();
         spincalpre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<String> margen = servicio.traeMargen(servicio.traeDcatIdporAbrevi(54,adapterView.getSelectedItem()+""));
-                ArrayAdapter<String> spinmargen = new ArrayAdapter(adapterView.getContext(), R.layout.item_spinner, R.id.item_spinner, margen);
+                Generica selectedItem = (Generica) spincalpre.getSelectedItem();
+                List<Generica> margen = servicio.traeMargen2(selectedItem.getId());
+                GenericaAdapter spinmargen=new GenericaAdapter(margen, (ActividadBase) adapterView.getContext(),11);
                 margenes.setAdapter(spinmargen);
                 spinmargen.notifyDataSetChanged();
             }

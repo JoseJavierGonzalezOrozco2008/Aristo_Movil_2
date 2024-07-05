@@ -317,9 +317,11 @@ public class BuscaProd extends ActividadBase {
 
         margen.setText("");
 
-        ArrayList<String> listamargen = servicio.traeMargenes();
-        ArrayAdapter<String> spinmargen = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, listamargen);
-        margenes.setAdapter(spinmargen);
+        //ArrayList<String> listamargen = servicio.traeMargenes();
+        List<Generica> listamargen = servicio.traeDcatGenerica(-1);
+        //ArrayAdapter<String> spinmargen = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, listamargen);
+        GenericaAdapter adapRecarga=new GenericaAdapter(listamargen,this,11);
+        margenes.setAdapter(adapRecarga);
         margenes.setSelection(0);
 
         cerrar.setOnClickListener(view -> v_dialogo.dismiss());
@@ -329,8 +331,10 @@ public class BuscaProd extends ActividadBase {
                 dlgMensajeError("Se debe capturar un valor",R.drawable.mensaje_error2);
                 return;
             }
+            Generica selectedItem = (Generica) margenes.getSelectedItem();
             ContentValues mapa = new ContentValues();
-            mapa.put("fami",servicio.traeDcatIdporAbrevi(-1,margenes.getSelectedItem()+""));
+            //mapa.put("fami",servicio.traeDcatIdporAbrevi(-1,margenes.getSelectedItem()+""));
+            mapa.put("fami",selectedItem.getId());
             mapa.put("valor",captura);
             String xml=Libreria.xmlLineaCapturaSV(mapa,"linea");
             margenGuarda(xml);

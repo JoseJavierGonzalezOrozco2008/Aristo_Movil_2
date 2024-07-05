@@ -7,9 +7,14 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aristomovil2.Acrividades.AristoConfig;
 import com.example.aristomovil2.Acrividades.Carrito;
@@ -25,6 +30,7 @@ import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.Libreria;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenericaAdapter extends BaseAdapter {
@@ -44,6 +50,9 @@ public class GenericaAdapter extends BaseAdapter {
             case 2:
             case 8:
                 v_xml=R.layout.item_carrito;
+                break;
+            case 11:
+                v_xml=R.layout.item_spinner;
                 break;
         }
     }
@@ -70,6 +79,7 @@ public class GenericaAdapter extends BaseAdapter {
         }
         Generica gen=listado.get(i);
         Button accion;
+        RadioButton radioBtn = view.findViewById(R.id.radioGen);
         switch(opcion){
             case 0://default
                 ((TextView)view.findViewById(R.id.acomid)).setText(gen.getTex1());
@@ -81,18 +91,21 @@ public class GenericaAdapter extends BaseAdapter {
                 break;
             case 1:
                 accion=view.findViewById(R.id.btnGen);
-                accion.setVisibility(View.VISIBLE);
-                accion.setText(gen.getTex1());
-                accion.setOnClickListener(v->{
+                accion.setVisibility(View.GONE);
+                radioBtn.setVisibility(View.VISIBLE);
+                radioBtn.setText(gen.getTex1());
+                radioBtn.setOnClickListener(v->{
                     if(gen.getEnt1()==51){
                         ((Recargas)base).recaTelefono(gen);
                     }else{
                         ((Recargas)base).recaReferencia(gen);
                     }
+                    radioBtn.setChecked(false);
                 });
 
                 break;
-            case 2:
+
+                case 2:
                 TextView t1=view.findViewById(R.id.item_producto);
                 TextView t2=view.findViewById(R.id.item_totalren);
                 t2.setVisibility(View.GONE);
@@ -179,6 +192,10 @@ public class GenericaAdapter extends BaseAdapter {
                 margen.setText(gen.getTex1());
                 valor.setText(gen.getTex2());
                 valor.setTextColor(base.getResources().getColor(R.color.black));
+                break;
+            case 11:
+                TextView spinnV = view.findViewById(R.id.item_spinner);
+                spinnV.setText(gen.getTex1());
                 break;
         }
         view.setTag(gen);
