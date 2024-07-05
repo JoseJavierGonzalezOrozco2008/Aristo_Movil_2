@@ -5,6 +5,8 @@
         android:title="Configuración" />
     <item android:id="@+id/menuLoginConectarse"
         android:title="Conectarse al servidor"/>
+    <item android:id="@+id/menuLoginManuales"
+        android:title="Manuales"/>
     <item android:id="@+id/menuLoginAcercade"
         android:title="Acerca de"/>
 </menu>

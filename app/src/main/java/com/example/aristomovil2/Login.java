@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -210,6 +211,9 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
             case R.id.menuLoginConectarse:
                 dialogoIp();
                 break;
+            case R.id.menuLoginManuales:
+                abreWebMans();
+                break;
             case R.id.menuLoginAcercade:
                 dialogoAcercaDe();
                 break;
@@ -217,6 +221,11 @@ public class Login extends ActividadBase implements EasyPermissions.PermissionCa
         return true;
     }
 
+    public void abreWebMans(){
+        Intent intent = new Intent(this, Manuales.class);
+        intent.putExtra("url", "http://www.maxse.com.mx/inicio/index.php/aprendiendo/aprenddo-aristo-android");
+        this.startActivity(intent);
+    }
     public void dialogoAcercaDe(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialogo_acerda_de);
