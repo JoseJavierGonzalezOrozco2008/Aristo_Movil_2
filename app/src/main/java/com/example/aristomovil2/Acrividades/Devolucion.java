@@ -1,11 +1,14 @@
 package com.example.aristomovil2.Acrividades;
 
 import static com.example.aristomovil2.facade.Estatutos.TABLA_GENERICA;
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,15 +26,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.aristomovil2.ActividadBase;
 import com.example.aristomovil2.R;
 import com.example.aristomovil2.adapters.DevolucionAdapter;
+import com.example.aristomovil2.adapters.GenericaAdapter;
+import com.example.aristomovil2.adapters.ListaImpuestosAdapter;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Libreria;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -48,6 +56,8 @@ public class Devolucion extends ActividadBase {
     private Button v_aplica;
     private ArrayList<Generica> porDevol;
     private AlertDialog v_dlgDevol;
+    private TableRow prodRowProd;
+    private ImageButton barcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +83,13 @@ public class Devolucion extends ActividadBase {
         Spinner motivo = findViewById(R.id.devoMotivo);
         RadioButton efectivo = findViewById(R.id.radioDevoEfectivo);
         RadioButton parcial = findViewById(R.id.radioDevoParcial);
+        prodRowProd = findViewById(R.id.prodRowProd);
+        barcode=findViewById(R.id.btnBarcode);
+
         ArrayList<String> motivos=servicio.traeDcatalogo(40);
         ArrayAdapter<String> spinMotivos = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, motivos);
         motivo.setAdapter(spinMotivos);
-
+        barcode.setOnClickListener(view->barcodeEscaner());
 
         v_captura.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -143,7 +156,9 @@ public class Devolucion extends ActividadBase {
                         v_prod2.setVisibility(View.VISIBLE);
                         v_foliovnta.setVisibility(View.GONE);
                         v_captura.setVisibility(View.GONE);
+                        barcode.setVisibility(View.GONE);
                         ((RadioButton)findViewById(R.id.radioDevoVale)).setClickable(v_admitevale);
+                        prodRowProd.setVisibility( !Libreria.getBoolean(obj.getAsString("tienecred")) ? View.VISIBLE:View.GONE);
                     }else{
                         dlgMensajeError(output.getMensaje(),R.drawable.mensaje_error2);
                     }
@@ -162,12 +177,28 @@ public class Devolucion extends ActividadBase {
                         v_tablaCaptura.setVisibility(View.GONE);
                         v_prod1.setVisibility(View.GONE);
                         v_prod2.setVisibility(View.GONE);
+                        v_devmensajes.setText("");
                         ((RadioButton)findViewById(R.id.radioDevoVale)).setClickable(v_admitevale);
+                        String folio=obj.getAsString("anexo");
+                        imprimeTicket(folio);
+                        v_captura.setVisibility(View.VISIBLE);
+                        barcode.setVisibility(View.VISIBLE);
+                        v_foliovnta.setVisibility(View.VISIBLE);
+                        v_captura.setText("");
                     }
                     dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error2);
                     break;
                 case TAREA_DEVOLPRODS:
                     dlgReporte(10);
+                    break;
+                case TAREA_VNTAULTIMAVNTA:
+                    if(output.getExito()) {
+                        String v_ticket = obj.getAsString("anexo");
+                        doImprime(v_ticket,true);
+                    }else{
+                        dlgMensajeError(output.getMensaje(), R.drawable.mensaje_error2);
+                    }
+                    break;
                 default:
                     super.Finish(output);
             }
@@ -209,6 +240,10 @@ public class Devolucion extends ActividadBase {
         peticionWS(Enumeradores.Valores.TAREA_DEVOLPRODS,"SQL","SQL",pFolio.trim().toUpperCase(),v_estacion+"",usuarioID+"");
     }
 
+    private void imprimeTicket(String pFolio){
+        peticionWS(Enumeradores.Valores.TAREA_VNTAULTIMAVNTA, "SQL", "SQL", v_estacion+"", pFolio, usuarioID+"");
+    }
+
     public void agregaPorDevol(Generica pGen){
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -246,10 +281,19 @@ public class Devolucion extends ActividadBase {
                 dlgMensajeError("No puede estar vacio",R.drawable.mensaje_error2);
                 return;
             }
+            Integer cantcap = Libreria.tieneInformacionEntero(cantidad.getText().toString());
+            if(cantcap <= 0){
+                dlgMensajeError("Tiene que ser mayor a cero",R.drawable.mensaje_error2);
+                return;
+            }
+            if(cantcap.compareTo(pGen.getDec3().intValue())>0){
+                dlgMensajeError("No puede devolver mas de lo comprado",R.drawable.mensaje_error2);
+                return;
+            }
             Generica generica = null;
             if(!porDevol.isEmpty()){
                 for(Generica gen:porDevol){
-                    if(gen.getId()==pGen.getId()){
+                    if(gen.getId().compareTo(pGen.getId())==0){
                         generica = gen;
                         break;
                     }
@@ -319,10 +363,10 @@ public class Devolucion extends ActividadBase {
     public BigDecimal traeTotal(){
         BigDecimal total=BigDecimal.ZERO;
         for(Generica gen:porDevol){
-            System.out.println(gen.getDec1()+"--"+(gen.getDec2()));
+            //System.out.println(gen.getDec1()+"--"+(gen.getDec2()));
             total=total.add(gen.getDec1().multiply(gen.getDec2()));
         }
-        return total;
+        return total.setScale(2,BigDecimal.ROUND_HALF_EVEN);
     }
 
     public void quitarElemento(Generica pGen){
@@ -344,6 +388,18 @@ public class Devolucion extends ActividadBase {
         }
 
         return prodis.length()>0 ? prodis.substring(0,prodis.length()-1) : prodis;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if(intentResult.getContents() != null ) {
+                v_captura.setText(Libreria.traeInfo(intentResult.getContents()));
+                wsBuscaFolio(v_captura.getText().toString());
+            }else
+                muestraMensaje("Error al escanear codigo", R.drawable.mensaje_error);
+        }
     }
 
 }

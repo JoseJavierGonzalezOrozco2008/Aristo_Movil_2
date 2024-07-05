@@ -1,7 +1,6 @@
 package com.example.aristomovil2;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -107,6 +106,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
     private boolean v_pantalla;
     protected Integer v_estacion;
     protected DialogInterface.OnClickListener vOnClick1;
+    protected String v_mensajeExtra;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -119,6 +119,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         lToast = new Toast(getApplicationContext());
         lToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         lToast.setView(layout);
+        v_mensajeExtra = "";
     }
 
     /**
@@ -586,7 +587,6 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         }
     }
 
-    @SuppressLint("MissingPermission")
     public BluetoothConnection traeImpresora(String nombre_impresora){
         BluetoothConnection selectedDevice = null;
         final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
@@ -746,15 +746,16 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         webView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        ImageButton compartir = new ImageButton(this);
-        compartir.setImageResource(R.drawable.ic_share);
-        compartir.setBackgroundColor(Color.TRANSPARENT);
+        //ImageButton compartir = new ImageButton(this);
+        Button compartir = new Button(this);
+        compartir.setText("Compartir");
+        //compartir.setBackgroundColor(Color.TRANSPARENT);
         compartir.setOnClickListener(view -> {
             Bitmap bitmap = captureWebView(webView);
             if (bitmap != null) {
                 File imageFile = saveBitmap(bitmap);
-
-                compartirMensaje(pMensaje, imageFile);
+                String mensaje = Libreria.traeInfo(v_mensajeExtra,"Compartir");
+                compartirMensaje(mensaje, imageFile);
             } else {
                 Toast.makeText(this, "Error al generar la imagen", Toast.LENGTH_SHORT).show();
             }
@@ -769,9 +770,11 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 "    font-family: 'monospace';\n" +
                 "     color: #3e3e3e;\n"+
                 "    font-size: 100%;\n" +
+                "    word-break: break-all;\n" +
                 "}\n" +
-                "</style><body>" + pMensaje + "</body></html>";
-        webView.loadDataWithBaseURL(null, html   , "text/html", "UTF-8", null);
+                "</style><body><pre>" + pMensaje + "</pre></body></html>";
+        //System.out.println(html);
+        webView.loadDataWithBaseURL(null,html   , "text/html", "UTF-8",null);
 
         alert.getWindow().setLayout(width, -2);
         alert.show();
@@ -804,9 +807,9 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         ayuda.setText(encabezado.getTex2());
         ayuda.setVisibility(View.VISIBLE);
 
-        List<Generica> reporte=servicio.traeGenReporte();
+        List<Generica> reporte = servicio.traeGenReporte();
         //GenericaAdapter v_Adavnta = new GenericaAdapter(reporte,this,pOpcion);
-        ReporteAdapter v_Adavnta = traeadaptador(reporte,pOpcion);
+        ReporteAdapter v_Adavnta = traeadaptador(reporte,pOpcion,encabezado.getTex1());
         ventas.setAdapter(v_Adavnta);
         TextView texto=vista.findViewById(R.id.repoVacio);
         texto.setText("Sin elementos");
@@ -822,7 +825,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         v_dlgreporte.show();
     }
 
-    private ReporteAdapter traeadaptador(List<Generica> pListado,Integer pOpcion){
+    private ReporteAdapter traeadaptador(List<Generica> pListado,Integer pOpcion,String pTitulo){
         ReporteAdapter retorno ;
         Enumeradores.Valores pImprime = null;
         String titulo="",mensaje="",boton1="",boton2="";
@@ -844,19 +847,19 @@ public class ActividadBase extends AppCompatActivity implements Finish {
                 break;
             case 5:
                 titulo="Continuar con la venta";
-                mensaje="¿Seguro de bajar la venta con folio {1}?";
+                mensaje="¿Seguro de bajar la venta con folio {0}?";
                 boton1 = "Continuar";
                 boton2 = "";
                 break;
             case 7:
-                titulo="Gestion del catalogo del producto";
-                mensaje="Que quiere hace a continuacion con el producto  \n {1}";
-                boton1 = esMono() ? "Continuar":"";
+                titulo="Gestión del catalogo del producto";
+                mensaje="¿Qué quiere hacer a continuación con el producto  \n {1}?";
+                boton1 = esMono() ? "Editar":"";
                 boton2 = "";
                 break;
             case 10:
                 titulo = "Devolución del producto";
-                mensaje = "Que quiere hace a continuacion con el producto  \n {1}";
+                mensaje = "¿Qué quiere hace a continuación con el producto  \n {1}?";
                 boton1 = "Devolver";
                 boton2 = "";
                 break;
@@ -903,7 +906,7 @@ public class ActividadBase extends AppCompatActivity implements Finish {
         intent.setType("image/png");
 
         // Mensaje Extra
-        intent.putExtra(Intent.EXTRA_TEXT, "Compartir");
+        intent.putExtra(Intent.EXTRA_TEXT, pMensaje);
 
         // Imagen
         //Uri imageUri = Uri.fromFile(imageFile);
@@ -912,5 +915,9 @@ public class ActividadBase extends AppCompatActivity implements Finish {
 
         startActivity(intent);
 
+    }
+
+    public void setMensajeExtra(String v_mensajeExtra) {
+        this.v_mensajeExtra = v_mensajeExtra;
     }
 }

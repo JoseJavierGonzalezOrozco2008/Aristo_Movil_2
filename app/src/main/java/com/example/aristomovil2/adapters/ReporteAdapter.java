@@ -21,6 +21,7 @@ import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.Libreria;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -134,10 +135,13 @@ public class ReporteAdapter extends BaseAdapter {
                 break;
             case 10:
                 if(base instanceof Devolucion){
-                    ((Devolucion)base).agregaPorDevol(pGen);
+                    if(pGen.getDec3().compareTo(BigDecimal.ZERO)>0){
+                        ((Devolucion)base).agregaPorDevol(pGen);
+                    }
                 }
                 break;
             default:
+                base.setMensajeExtra(pGen.getTex4());
                 base.wsImprime(imprime,pGen.getTex1());
                 break;
         }

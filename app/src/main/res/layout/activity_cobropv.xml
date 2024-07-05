@@ -71,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:background="@drawable/button_green"
                             android:textColor="@drawable/white_text_button"
-                            android:text="Pagar"
+                            android:text="Cobrar"
                             style="@style/boton_estilo"
                             />
                     </LinearLayout>
@@ -453,10 +453,10 @@
                     android:orientation="horizontal"
                     >
                     <Button
-                        android:id="@+id/cbroBtnTicket"
+                        android:id="@+id/cbroBtnNuevo"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Ticket"
+                        android:text="Nueva"
                         android:textAllCaps="false"
                         android:layout_weight="1" >
                     </Button>
@@ -469,10 +469,10 @@
                         android:layout_weight="1" >
                     </Button>
                     <Button
-                        android:id="@+id/cbroBtnNuevo"
+                        android:id="@+id/cbroBtnTicket"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Nueva"
+                        android:text="Ticket"
                         android:textAllCaps="false"
                         android:layout_weight="1" >
                     </Button>

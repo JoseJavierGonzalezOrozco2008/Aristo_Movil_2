@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,10 +50,67 @@ public class Producto extends ActividadBase {
     private Generica v_costos;
     private AlertDialog v_dialogo;
     private ListaImpuestosAdapter v_impAdapter;
+    private ContentValues v_mapaDatos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cambio();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putBoolean("MyBoolean", true);
+        savedInstanceState.putDouble("myDouble", 1.9);
+        savedInstanceState.putInt("MyInt", 1);
+        savedInstanceState.putString("MyString", "Welcome back to Android");
+        for(String llave:v_mapaDatos.keySet()){
+            savedInstanceState.putString(llave,v_mapaDatos.getAsString(llave));
+        }
+        savedInstanceState.putInt("prodid",v_prodid);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
+        ContentValues v_daValues=new ContentValues();
+
+        v_daValues.put("producto",savedInstanceState.getString("producto"));
+        v_daValues.put("codigo",savedInstanceState.getString("codigo"));
+        v_daValues.put("sat",savedInstanceState.getString("sat"));
+        v_daValues.put("sustancia",savedInstanceState.getString("sustancia"));
+        v_daValues.put("caduca",savedInstanceState.getString("caduca"));
+        v_daValues.put("granel",savedInstanceState.getString("granel"));
+        v_daValues.put("activo",savedInstanceState.getString("activo"));
+        v_daValues.put("marca",savedInstanceState.getString("marca"));
+        v_daValues.put("linea",savedInstanceState.getString("linea"));
+        v_daValues.put("familia",savedInstanceState.getString("familia"));
+        v_daValues.put("divisa",savedInstanceState.getString("divisa"));
+        v_daValues.put("impuestos",savedInstanceState.getString("impuestos"));
+        v_daValues.put("valor",savedInstanceState.getString("valor"));
+        v_daValues.put("mensaje",savedInstanceState.getString("mensaje"));
+        v_daValues.put("cult",savedInstanceState.getString("cult"));
+        v_daValues.put("cstd",savedInstanceState.getString("cstd"));
+        v_daValues.put("cpro",savedInstanceState.getString("cpro"));
+        v_daValues.put("pnormal",savedInstanceState.getString("pnormal"));
+        v_daValues.put("p1",savedInstanceState.getString("p1"));
+        v_daValues.put("p2",savedInstanceState.getString("p2"));
+        v_daValues.put("p3",savedInstanceState.getString("p3"));
+        v_daValues.put("culti",savedInstanceState.getString("culti"));
+        v_daValues.put("cstdi",savedInstanceState.getString("cstdi"));
+        v_daValues.put("cproi",savedInstanceState.getString("cproi"));
+        v_daValues.put("pnormali",savedInstanceState.getString("pnormali"));
+        v_daValues.put("p1i",savedInstanceState.getString("p1i"));
+        v_daValues.put("p12",savedInstanceState.getString("p12"));
+        v_daValues.put("p13",savedInstanceState.getString("p13"));
+        v_prodid=savedInstanceState.getInt("prodid");
+        asignaValores(v_daValues);
+    }
+
+    public void cambio(){
         setContentView(R.layout.activity_producto);
         Bundle extras = getIntent().getExtras();
         v_prodid = Integer.parseInt(extras.getString("prodid"));
@@ -210,7 +268,6 @@ public class Producto extends ActividadBase {
             String xml = Libreria.xmlLineaCapturaSV(mapa,"linea");
             prodGuarda(xml);
         });
-
     }
 
     public void dlgCostos(){
@@ -449,6 +506,7 @@ public class Producto extends ActividadBase {
         }
 
         v_Costeo = Libreria.tieneInformacionEntero(Libreria.traeInfo(pContentValues.getAsString("tcosteo"),"0"));
+        v_mapaDatos = pContentValues;
     }
 
     @Override
