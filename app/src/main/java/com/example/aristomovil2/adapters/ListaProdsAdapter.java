@@ -1,6 +1,8 @@
 package com.example.aristomovil2.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,9 @@ import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.Libreria;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ListaProdsAdapter extends ArrayAdapter<Generica> {
     private final Context context;
@@ -67,15 +71,39 @@ public class ListaProdsAdapter extends ArrayAdapter<Generica> {
         if (segundaLinea.length() > limite) {
             segundaLinea = segundaLinea.substring(0, limite - 3) + "...";
         }*/
-
         String textoFinal = primeraLinea;// + (segundaLinea.isEmpty() ? "" : "\n" + segundaLinea);
 
+        String[] partes = items.get(position).getTex1().split("\\$");
         itemButton.setText(textoFinal);
+        AlertDialog.Builder confirmacion = new AlertDialog.Builder(this.getContext());
         itemButton.setOnClickListener(v -> {
             //Toast.makeText(context, "Acción para: " + this.v_ultprod, Toast.LENGTH_SHORT).show();
             //wsLineaCaptura(items.get(position).getTex3());
-            if(activity instanceof Carrito){
-                ((Carrito)activity).wsLineaCaptura(items.get(position).getTex3());
+
+
+            if(partes.length >= 2){
+                partes[1] = partes[1].trim();
+                String regex = "^(?!0|\\.00)[0-9]+(,\\d{3})*(.[0-9]{0,2})$";
+                if(Pattern.matches(regex, partes[1])){
+                    //partes[1] = partes[1].replaceAll(",","");
+                    //Double precio = Double.parseDouble(partes[1]);
+                    if(activity instanceof Carrito){
+                        ((Carrito)activity).wsLineaCaptura(items.get(position).getTex3());
+                    }
+                } else {
+                    confirmacion.setTitle("Error");
+                    confirmacion.setMessage("Este producto no cuenta con un precio correcto asignado...");
+                    confirmacion.setCancelable(true);
+                    confirmacion.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                    confirmacion.show();
+                }
+
+            } else {
+                confirmacion.setTitle("Error");
+                confirmacion.setMessage("Este producto no cuenta con precio asignado...");
+                confirmacion.setCancelable(true);
+                confirmacion.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                confirmacion.show();
             }
 
         });

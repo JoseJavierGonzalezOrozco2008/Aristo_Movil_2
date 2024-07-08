@@ -70,4 +70,5 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:percent:23.3.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 }
