@@ -533,6 +533,24 @@ public class Servicio {
     }
 
     @SuppressLint("Range")
+    public ArrayList<Generica> traeMargen2(Integer pCatalogo){
+        db.abreConexion();
+        ArrayList<Generica> listaDcatalogos = new ArrayList<>();
+        try(Cursor cursor = db.getDatabase().rawQuery("SELECT id,abrevi tex1,cata ent1,t1 tex2 FROM " + Estatutos.TABLA_DCATALOGO+" WHERE cata=-1 AND e1="+pCatalogo+" ORDER BY n2,n1", null)){
+            if(cursor.moveToFirst()){
+                do{
+                    listaDcatalogos.add(Generica.leerCursor2(cursor,"tex1,ent1,tex2"));
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            db.cierraConexion();
+        }
+        return listaDcatalogos;
+    }
+
+    @SuppressLint("Range")
     public Integer traePosicion(Integer pCatalogo,Integer pId){
         ArrayList<Integer> listaDcatalogos = new ArrayList<>();
         Integer abrevi = 0,retorno = 0;
