@@ -162,8 +162,10 @@ public class Producto extends ActividadBase {
         rowClavesat.setVisibility(mClavesat ? View.VISIBLE : View.GONE);
         rowDivisa.setVisibility(mDivisa ? View.VISIBLE : View.GONE);
 
-        ArrayList<String> marcas = servicio.traeDcatalogo(42);
-        ArrayList<String> lineas = servicio.traeDcatalogo(44);
+        //ArrayList<String> marcas = servicio.traeDcatalogo(42);
+        List<Generica> marcas= servicio.traeDcatGenerica(42);
+        //ArrayList<String> lineas = servicio.traeDcatalogo(44);
+        List<Generica> lineas= servicio.traeDcatGenerica(44);
         //ArrayList<String> calpre = servicio.traeDcatalogo(54);
         List<Generica> calpre = servicio.traeDcatGenerica(54);
         //ArrayList<String> margen = servicio.traeDcatalogo(-1);
@@ -171,9 +173,11 @@ public class Producto extends ActividadBase {
         //ArrayList<String> divisa = servicio.traeDcatalogo(32);
         List<Generica> divisa = servicio.traeDcatGenerica(32);
 
-        ArrayAdapter<String> spinMarca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, marcas);
+        //ArrayAdapter<String> spinMarca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, marcas);
+        GenericaAdapter spinMarca=new GenericaAdapter(marcas,this,11);
         marca.setAdapter(spinMarca);
-        ArrayAdapter<String> spinlinea = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, lineas);
+        //ArrayAdapter<String> spinlinea = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, lineas);
+        GenericaAdapter spinlinea=new GenericaAdapter(lineas,this,11);
         linea.setAdapter(spinlinea);
         //ArrayAdapter<String> spincalpreca = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, calpre);
         GenericaAdapter spincalpreca=new GenericaAdapter(calpre,this,11);
@@ -265,11 +269,11 @@ public class Producto extends ActividadBase {
             mapa.put("codigo",codigo.getText().toString());
             mapa.put("articulo",producto.getText().toString());
             mapa.put("sustancia",sustancia.getText().toString());
-            mapa.put("marca",servicio.traeDcatIdporAbrevi(42,marca.getSelectedItem()+""));
-            mapa.put("line",servicio.traeDcatIdporAbrevi(44,linea.getSelectedItem()+""));
-            mapa.put("cprecio",servicio.traeDcatIdporAbrevi(54,spincalpre.getSelectedItem()+""));
-            mapa.put("divisa",servicio.traeDcatIdporAbrevi(32,divisas.getSelectedItem()+""));
-            mapa.put("margen",servicio.traeDcatIdporAbrevi(-1,margenes.getSelectedItem()+""));
+            mapa.put("marca",((Generica) marca.getSelectedItem()).getId());
+            mapa.put("line",((Generica) linea.getSelectedItem()).getId());
+            mapa.put("cprecio",((Generica) spincalpre.getSelectedItem()).getId());
+            mapa.put("divisa",((Generica) divisas.getSelectedItem()).getId());
+            mapa.put("margen",((Generica) margenes.getSelectedItem()).getId());
             mapa.put("caduca",caduca.isChecked());
             mapa.put("granel",fracci.isChecked());
             mapa.put("activo",activo.isChecked());
