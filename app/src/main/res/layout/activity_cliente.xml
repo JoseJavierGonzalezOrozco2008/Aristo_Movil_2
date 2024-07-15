@@ -27,230 +27,399 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end">
+                    <Button
+                        android:id="@+id/clteEdocta"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Razon Social:"
-                        android:textSize="@dimen/textSizeSmall"
-
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/clteRazon"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="RFC:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
+                        android:text="Edo Cta"
+                        android:textSize="@dimen/textSizeXSmall"
+                        android:visibility="gone"
+                        android:layout_gravity="start"
                         />
-                    <EditText
-                        android:id="@+id/clteRfc"
-                        android:layout_width="0dp"
+                    <Button
+                        android:id="@+id/clteFiscal"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:text="Fiscal"
+                        android:textSize="@dimen/textSizeXSmall"
+                        android:layout_gravity="start"
+                        />
+                    <Button
+                        android:id="@+id/clteCuenta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Cuentas"
+                        android:textSize="@dimen/textSizeXSmall"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/clteGuarda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Guarda"
+                        android:textSize="@dimen/textSizeXSmall"
+                        android:gravity="center"
+                        />
                 </LinearLayout>
-                <LinearLayout
+                <ScrollView
+                    android:id="@+id/clteLyCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Cliente:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black" />
+
+                            <EditText
+                                android:id="@+id/clteAlias"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Telefono:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteTEl"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+                <ScrollView
+                    android:id="@+id/clteLyFiscal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:visibility="gone" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Correo:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteCorreo"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Razon Social:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/clteRazon"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="RFC:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textStyle="bold"
+                                />
+                            <EditText
+                                android:id="@+id/clteRfc"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Correo:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textStyle="bold"
+                                />
+                            <EditText
+                                android:id="@+id/clteCorreo"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Regimen Fiscal:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textStyle="bold"
+                                />
+                            <Spinner
+                                android:id="@+id/clteRegimen"
+                                style="?android:attr/spinnerItemStyle"
+                                android:layout_width="0dp"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+                <ScrollView
+                    android:id="@+id/clteLyDomicilio"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Regimen Fiscal:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteRegimen"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Calle:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteCalle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Calle:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteCalle"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Num Ext:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteExt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Num Ext:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteExt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Num Int:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteint"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Num Int:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteint"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Referencia:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteRef"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Referencia:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteRef"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Codigo postal:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <EditText
+                                android:id="@+id/clteCp"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Telefono:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteTEl"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Colonia:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <Spinner
+                                android:id="@+id/clteColonia"
+                                style="?android:attr/spinnerItemStyle"
+                                android:layout_width="0dp"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Codigo postal:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteCp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Municipio:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <TextView
+                                android:id="@+id/clteMunicipio"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Jesus Maria"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center|end"
-                        android:text="Colonia:"
-                        android:textSize="@dimen/textSizeSmall"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/clteColonia"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="Estado:"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                            <TextView
+                                android:id="@+id/clteEstado"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Ags"
+                                android:textSize="@dimen/textSizeSmall"
+                                android:textColor="@color/black"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
-
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -262,8 +431,5 @@
                 android:id="@+id/Mensaje"
                 layout="@layout/mensaje" />
         </LinearLayout>
-
-
     </RelativeLayout>
-
 </LinearLayout>

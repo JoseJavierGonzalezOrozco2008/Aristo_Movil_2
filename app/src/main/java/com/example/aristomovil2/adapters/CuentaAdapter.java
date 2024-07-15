@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.aristomovil2.Acrividades.Carrito;
+import com.example.aristomovil2.Acrividades.Cliente;
 import com.example.aristomovil2.Acrividades.Cuentas;
 import com.example.aristomovil2.ActividadBase;
 import com.example.aristomovil2.R;
@@ -78,11 +79,11 @@ public class CuentaAdapter extends BaseAdapter {
         seleccion.setVisibility(View.GONE);
         edita.setVisibility(View.GONE);
         texto.setOnClickListener(view1 -> {
-            Intent intent = new Intent(activity, Cuentas.class);
-            intent.putExtra("clteid",reposicion.get(i).getClteid());
-            intent.putExtra("cuclid",reposicion.get(i).getCuclid());
-            intent.putExtra("cliente",reposicion.get(i).getNombre());
-            activity.startActivity(intent);
+            if(activity instanceof  Cliente){
+                ((Cliente)activity).cambiaCuenta(reposicion.get(i));
+            }else{
+                ((Carrito)activity).eligeCuenta(reposicion.get(i));
+            }
         });
 
         return view;
