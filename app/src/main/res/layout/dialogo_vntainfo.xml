@@ -14,142 +14,170 @@
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_3sdp"
         android:paddingVertical="10dp"
         android:paddingHorizontal="10dp">
 
-       <TableLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:stretchColumns="*"
-           android:shrinkColumns="*">
-           <TableRow >
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="0.4"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:text="Tipo:"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:layout_marginBottom="@dimen/_10sdp">
 
-               <Spinner
-                   android:id="@+id/vntaTipos"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:layout_weight="0.6"
-                   android:orientation="horizontal">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+                <TableRow
+                    android:layout_marginBottom="@dimen/_10sdp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:text="Tipo:"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:gravity="end|center_vertical"
+                        android:textSize="@dimen/textSizeMedium" />
 
-               </Spinner>
-           </TableRow>
-           <TableRow >
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="0.4"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:text="Titulo:"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
-               <EditText
-                   android:id="@+id/vntaTitulo"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textSize="@dimen/textSizeMedium"
-                   android:inputType="text"
-                   android:layout_weight="0.6"
-                   />
-           </TableRow>
-           <TableRow >
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="0.4"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:text="Indicaciones:"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
-               <EditText
-                   android:id="@+id/vntaindica"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textSize="@dimen/textSizeMedium"
-                   android:inputType="text"
-                   android:layout_weight="0.6"
-                   />
-           </TableRow>
-           <TableRow >
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="0.4"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:text="Fecha Requ:"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
-               <EditText
-                   android:id="@+id/vntaFeReq"
-                   android:layout_width="0dp"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textSize="@dimen/textSizeMedium"
-                   android:inputType="text"
-                   android:layout_weight="0.6"
-                   />
-           </TableRow>
-           <TableRow >
-               <TextView
-                   android:layout_width="0dp"
-                   android:layout_weight="0.4"
-                   android:layout_height="match_parent"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:text="Entrega:"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
-               <RadioGroup
-                   android:id="@+id/vntaGrop"
-                   android:layout_width="0dp"
-                   android:layout_weight="0.6"
-                   android:layout_height="match_parent"
-                   android:orientation="vertical">
-                   <RadioButton
-                       android:id="@+id/vntaMostrador"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:textSize="@dimen/textSizeMedium"
-                       android:text="Mostrador" />
-                   <RadioButton
-                       android:id="@+id/vntaDomicilio"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:textSize="@dimen/textSizeMedium"
-                       android:text="Domicilio" />
-               </RadioGroup>
-           </TableRow>
-           <TableRow android:id="@+id/cuentass" >
-               <Button
-                   android:id="@+id/vntabtnCuenta"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="0.4"
-                   android:text="Destinos" />
-               <TextView
-                   android:id="@+id/vntaCuenta"
-                   android:layout_width="0dp"
-                   android:layout_weight="0.6"
-                   android:layout_height="wrap_content"
-                   android:fontFamily="@font/arial"
-                   android:textColor="@color/black"
-                   android:gravity="end|center_vertical"
-                   android:textSize="@dimen/textSizeMedium" />
-           </TableRow>
-       </TableLayout>
+                    <Spinner
+                        android:id="@+id/vntaTipos"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                    </Spinner>
+                </TableRow>
+                <TableRow
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:fontFamily="@font/arial"
+                        android:gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:text="Titulo:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSizeMedium" />
+                    <EditText
+                        android:id="@+id/vntaTitulo"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeMedium"
+                        android:inputType="text"
+                        android:layout_weight="0.6"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_marginBottom="@dimen/_10sdp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:text="Indicaciones:"
+                        android:gravity="end|center_vertical"
+                        android:textSize="@dimen/textSizeMedium" />
+                    <EditText
+                        android:id="@+id/vntaindica"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeMedium"
+                        android:inputType="text"
+                        android:layout_weight="0.6"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_marginBottom="@dimen/_10sdp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:textColor="@color/black"
+                        android:text="Fecha Requ:"
+                        android:gravity="end|center_vertical"
+                        android:textSize="@dimen/textSizeMedium" />
+                    <EditText
+                        android:id="@+id/vntaFeReq"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textSize="@dimen/textSizeMedium"
+                        android:inputType="text"
+                        android:layout_weight="0.6"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_marginBottom="@dimen/_10sdp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:text="Entrega:"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:gravity="end|center_vertical"
+                        android:textSize="@dimen/textSizeMedium" />
+                    <RadioGroup
+                        android:id="@+id/vntaGrop"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.6"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:orientation="vertical">
+                        <RadioButton
+                            android:id="@+id/vntaMostrador"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_8sdp"
+                            android:textSize="@dimen/textSizeMedium"
+                            android:text="Mostrador" />
+                        <RadioButton
+                            android:id="@+id/vntaDomicilio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/textSizeMedium"
+                            android:text="Domicilio" />
+                    </RadioGroup>
+                </TableRow>
+                <TableRow android:id="@+id/cuentass"
+                    android:layout_marginBottom="@dimen/_10sdp">
+                    <Button
+                        android:id="@+id/vntabtnCuenta"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:textColor="@drawable/white_text_button"
+                        android:fontFamily="@font/arial"
+                        android:background="@drawable/button_light_blue_900"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:text="Destinos" />
+                    <TextView
+                        android:id="@+id/vntaCuenta"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.6"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/arial"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/textSizeMedium" />
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -160,12 +188,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@drawable/white_text_button"
+            android:background="@drawable/button_colordiferencias"
+            android:fontFamily="@font/arial"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="Regresar" />
         <Button
             android:id="@+id/vntabtnguarda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/button_green"
+            android:textColor="@drawable/white_text_button"
+            android:fontFamily="@font/arial"
             android:text="Guardar" />
     </LinearLayout>
 
