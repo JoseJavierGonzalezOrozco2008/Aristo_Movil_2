@@ -318,8 +318,8 @@ public class BuscaProd extends ActividadBase {
         margen.setText("");
 
         //ArrayList<String> listamargen = servicio.traeMargenes();
-        List<Generica> listamargen = servicio.traeDcatGenerica(-1);
         //ArrayAdapter<String> spinmargen = new ArrayAdapter(this, R.layout.item_spinner, R.id.item_spinner, listamargen);
+        List<Generica> listamargen = servicio.traeDcatGenerica(-1);
         GenericaAdapter adapRecarga=new GenericaAdapter(listamargen,this,11);
         margenes.setAdapter(adapRecarga);
         margenes.setSelection(0);

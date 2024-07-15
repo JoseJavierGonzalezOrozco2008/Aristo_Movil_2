@@ -43,7 +43,6 @@ import com.example.aristomovil2.modelos.RenglonRepo;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Libreria;
-import com.google.android.flexbox.FlexboxLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -67,6 +66,7 @@ public class Acomodo extends ActividadBase {
     private TableLayout tablaProductos;
     private ArrayList<Producto> productos;
     private ImageButton scanUbi,scanProd;
+    private Double pzsporemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,8 @@ public class Acomodo extends ActividadBase {
         SharedPreferences preferences = getSharedPreferences("renglones", Context.MODE_PRIVATE);
         tecladocodigo = preferences.getBoolean("tecladocodigo", true);
         cantidadUsual = preferences.getInt("cantidadusual", 10);
-        inicializarActividad("");
+        //inicializarActividad("","");
+        actualizaToolbar2(usuario+" "+v_nombreestacion,traeTitulo());
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.TitleToolbar);
         title.setText(traeTitulo());
@@ -122,71 +123,53 @@ public class Acomodo extends ActividadBase {
         RadioButton almacen=findViewById(R.id.radioAlmacenado);
         doCambiaProceso();
         if(proceso==1){
-            if(encarro != null){
-                encarro.setChecked(true);
-            }
+            encarro.setChecked(true);
         }else{
             almacen.setChecked(true);
         }
         if(repone == 862){
             almacen.setVisibility(View.GONE);
         }
-        if(nuevo != null){
-            nuevo.setOnCheckedChangeListener((RadioGroup radioGroup, int i)-> {
-                        if(encarro.isChecked()){
-                            doCambiaProceso();
-                        }else if(almacen.isChecked()){
-                            doCambiaProceso();
-                        }
+        nuevo.setOnCheckedChangeListener((RadioGroup radioGroup, int i)-> {
+                    if(encarro.isChecked()){
+                        doCambiaProceso();
+                    }else if(almacen.isChecked()){
+                        doCambiaProceso();
                     }
-            );
-        }
+                }
+        );
 
         limpiaTextos();
         btnAnterior.setOnClickListener(v -> repoRenglonAnt());
         btnSiguiente.setOnClickListener(v -> repoRenglonSig());
         btnQuitar.setOnClickListener(v -> wsMueveProds(false));
-        if(btnSube != null){
-            btnSube.setOnClickListener(v -> {
-                if(repone==476){
-                    wsCreaDaco();
-                }else{
-                    wsMueveProds(true);
-                }
-            });
-        }
+        btnSube.setOnClickListener(v -> {
+            if(repone==476){
+                wsCreaDaco();
+            }else{
+                wsMueveProds(true);
+            }
+        });
         btnCargar.setOnClickListener(v -> wsGuarda());
-        if(btnTermina != null){
-            btnTermina.setOnClickListener(v -> wsFinaliza());
-        }
-        if(btnBorra != null){
-            btnBorra.setOnClickListener(v -> wsDacoBorra());
-        }
+        btnTermina.setOnClickListener(v -> wsFinaliza());
+        btnBorra.setOnClickListener(v -> wsDacoBorra());
         //btnProceso.setOnClickListener(v -> doCambiaProceso());
-        if(repoUbicacion != null){
-            repoUbicacion.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
-            repoUbicacion.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
-        }
-        if(repoCodigo != null){
-            repoCodigo.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
-            repoCodigo.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
-        }
-        if(repoCant != null){
-            repoCant.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
-            repoCant.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
-            repoCant.setOnFocusChangeListener((view, b) -> {
-                if(proceso==2 ){
-                    LinearLayout mensajes=findViewById(R.id.lyUbicIndic);///lyUbicIndic acomMensajes
-                    LinearLayout captura=findViewById(R.id.lyCapCodi);
-                    mensajes.setVisibility(b ? View.GONE:View.VISIBLE);
-                    captura.setVisibility(b ? View.GONE:View.VISIBLE);
-                    muestraTeclado(repoCant);
-                }
-            });
-        }
-        if(btnCodigo != null){
-            btnCodigo.setOnClickListener( v -> dialogoBuscaProductos(tecladocodigo)/*dialogoBuscaCodigo()*/);
-        }
+        repoUbicacion.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
+        repoUbicacion.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
+        repoCodigo.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
+        repoCodigo.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
+        repoCant.setOnKeyListener(((view, i, keyEvent) -> colocaEnter(view,i,keyEvent)));
+        repoCant.setOnEditorActionListener((view, i, keyEvent) -> colocaEnter(view,i,keyEvent));
+        repoCant.setOnFocusChangeListener((view, b) -> {
+            if(proceso==2 ){
+                LinearLayout mensajes=findViewById(R.id.lyUbicIndic);///lyUbicIndic acomMensajes
+                LinearLayout captura=findViewById(R.id.lyCapCodi);
+                mensajes.setVisibility(b ? View.GONE:View.VISIBLE);
+                captura.setVisibility(b ? View.GONE:View.VISIBLE);
+                muestraTeclado(repoCant);
+            }
+        });
+        btnCodigo.setOnClickListener( v -> dialogoBuscaProductos(tecladocodigo)/*dialogoBuscaCodigo()*/);
 
         //proceso=1;//1 en proceso,2 en carro
 
@@ -198,26 +181,14 @@ public class Acomodo extends ActividadBase {
         pen_Origen=findViewById(R.id.pen_origen);
         pen_Destino=findViewById(R.id.pen_destino);
         dacoid=0;
-        if(btnActual != null){
-            btnActual.setOnClickListener((view)->actualizaprod());
-        }
-        if(repoMen1 != null){
-            repoMen1.setVisibility(View.GONE);
-        }
-        if(pen_Destino != null){
-            pen_Destino.setVisibility(View.GONE);
-        }
+        btnActual.setOnClickListener((view)->actualizaprod());
+        repoMen1.setVisibility(View.GONE);
+        pen_Destino.setVisibility(View.GONE);
         //muestraPaneles(repone != 476);
-        if(btnQuitar != null){
-            btnQuitar.setVisibility( repone == 476 ? View.GONE:View.VISIBLE);
-        }
-        if(scanUbi != null){
-            scanUbi.setOnClickListener(view -> {barcodeEscaner();scanubi=true;});
-
-        }
-        if(scanProd != null){
-            scanProd.setOnClickListener(view -> {barcodeEscaner();scanubi=false;});
-        }
+        btnQuitar.setVisibility( repone == 476 ? View.GONE:View.VISIBLE);
+        scanUbi.setOnClickListener(view -> {barcodeEscaner();scanubi=true;});
+        scanProd.setOnClickListener(view -> {barcodeEscaner();scanubi=false;});
+        pzsporemp = 1.0;
 
     }
 
@@ -228,25 +199,20 @@ public class Acomodo extends ActividadBase {
             linea.setVisibility(View.VISIBLE);
             acciones.setVisibility(View.VISIBLE);
         }else{
-            if(linea != null){
-                linea.setVisibility(View.GONE);
-            }
-            if(acciones != null){
-                acciones.setVisibility(View.GONE);
-            }
+            linea.setVisibility(View.GONE);
+            acciones.setVisibility(View.GONE);
         }
 
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
     }
 
     @Override
     public void Finish(EnviaPeticion output) {
-        cierraDialogo();        
+        cierraDialogo();
         if(output!=null){
             ContentValues obj = (ContentValues) output.getExtra1();
             if (output.getTarea()==Enumeradores.Valores.TAREA_REPO_FALTA_SUBIR){
@@ -286,6 +252,7 @@ public class Acomodo extends ActividadBase {
                     repoMen2.setText(producto);
                     repoMen3.setText(codigo+", Dispo:"+(dispo!=null ? dispo:0)+" Pzs/Empq:"+piezas);
                     repoMen4.setText(men4);
+                    pzsporemp = piezas;
                     posicion=mipos!=null && mipos>0 ? mipos:posicion;
                     repoRenglon(posicion);
                     repoCant.requestFocus();
@@ -375,7 +342,7 @@ public class Acomodo extends ActividadBase {
     public void actualizaprod(){
         List<RenglonRepo> lista=servicio.traeRenglones(posicion);
         if(!lista.isEmpty()){
-        RenglonRepo elemento=lista.get(0);
+            RenglonRepo elemento=lista.get(0);
             repoMen1.setText(elemento.getCodigo());
             repoMen2.setText(elemento.getProducto());
             repoMen3.setText(elemento.getCodigo()+", Faltan:"+elemento.getFaltan());
@@ -402,25 +369,12 @@ public class Acomodo extends ActividadBase {
             max_posicion=lista.size();
             txt_regnlon.setText(posicion+" de "+max_posicion);
         }else{
-            if(pen_Codigo != null){
-                pen_Codigo.setText("");
-            }
-            if(pen_Prod != null){
-                pen_Prod.setText("");
-            }
-            if(pen_Cant != null){
-                pen_Cant.setText("");
-            }
-            if(pen_Origen != null){
-                pen_Origen.setText("Ya no hay renglones por acomodar");
-            }
-            if(pen_Destino != null){
-                pen_Destino.setText("");
-            }
-            if(txt_regnlon != null){
-                txt_regnlon.setText("");
-            }
-
+            pen_Codigo.setText("");
+            pen_Prod.setText("");
+            pen_Cant.setText("");
+            pen_Origen.setText("Ya no hay renglones por acomodar");
+            pen_Destino.setText("");
+            txt_regnlon.setText("");
             max_posicion=0;
         }
     }
@@ -445,7 +399,7 @@ public class Acomodo extends ActividadBase {
                     String busqueda = editProducto.getText().toString();
                     buscarProducto(busqueda);
                 } else
-                    muestraMensaje("Campo vacío", R.drawable.mensaje_warning,R.raw.yaexiste);
+                    muestraMensaje("Campo vacio", R.drawable.mensaje_warning,R.raw.yaexiste);
             }return false;
         });
         dialogoProductos.show();
@@ -505,7 +459,7 @@ public class Acomodo extends ActividadBase {
      * Muestra un dialogo con la lsta de productos en la ubicacionactual
      */
     public void muestraListaProductos(){
-        Dialog dialogo = new Dialog(this, R.style.DialogWhiteTxt);
+        Dialog dialogo = new Dialog(this, R.style.Dialog);
 
 
         dialogo.getWindow().setBackgroundDrawableResource(R.color.aristo_azul);
@@ -596,14 +550,14 @@ public class Acomodo extends ActividadBase {
                 }else{
                     AlertDialog.Builder confirmacion = new AlertDialog.Builder(this);
                     confirmacion.setTitle("Cantidad insuficiente");
-                    confirmacion.setMessage("La cantidad "+cant+" supera al permitido \n"+"¿ Está seguro de continuar?");
+                    confirmacion.setMessage("La cantidad "+cant+" supera al permitido \n"+"¿ Esta seguro de continuar?");
                     confirmacion.setCancelable(false);
                     confirmacion.setPositiveButton("SI", (dialog, which) -> wsMueveProds(pSube,cant));
                     confirmacion.setNegativeButton("NO", null);
                     confirmacion.show();
                 }
             }else{
-                muestraMensaje("El código o cantidad esta vacía",R.drawable.mensaje_error,0);
+                muestraMensaje("El codigo o cantidad esta vacia",R.drawable.mensaje_error,0);
                 repoUbicacion.requestFocus();
             }
         }else{
@@ -633,7 +587,7 @@ public class Acomodo extends ActividadBase {
             String xml=Libreria.xmlLineaCapturaSV(mapa,"linea");
             peticionWS(Enumeradores.Valores.TAREA_REPO_BUSCA_PRROD_UBIC, "SQL", "SQL", xml, "", "");
         }else{
-            muestraMensaje("El código de producto esta vacío",R.drawable.mensaje_error,0);
+            muestraMensaje("El codigo de producto esta vacio",R.drawable.mensaje_error,0);
             repoCodigo.requestFocus();
         }
     }
@@ -646,7 +600,7 @@ public class Acomodo extends ActividadBase {
             }else{
                 AlertDialog.Builder confirmacion = new AlertDialog.Builder(this);
                 confirmacion.setTitle("Cantidad insuficiente");
-                confirmacion.setMessage("La cantidad "+cant+" supera al permitido \n"+"¿ Está seguro de continuar?");
+                confirmacion.setMessage("La cantidad "+cant+" supera al permitido \n"+"¿ Esta seguro de continuar?");
                 confirmacion.setCancelable(false);
                 confirmacion.setPositiveButton("SI", (dialog, which) -> wsGuarda1(cant));
                 confirmacion.setNegativeButton("NO", null);
@@ -670,6 +624,7 @@ public class Acomodo extends ActividadBase {
         mapa.put("lleno", lleno);
         mapa.put("dcin", folioDI);
         mapa.put("daco", dacoid);
+        mapa.put("pzasxemp", pzsporemp );
         mapa.put("notas", "");
         String xml=Libreria.xmlLineaCapturaSV(mapa,"linea");
         peticionWS(Enumeradores.Valores.TAREA_REPO_GUARDA, "SQL", "SQL", xml, "", "");
@@ -678,7 +633,7 @@ public class Acomodo extends ActividadBase {
     public void wsFinaliza(){
         AlertDialog.Builder confirmacion = new AlertDialog.Builder(this);
         confirmacion.setTitle("Acomodo libre");
-        confirmacion.setMessage("¿Estás seguro de finalizar el acomodo ?");
+        confirmacion.setMessage("¿Estas seguro de finalizar el acomodo ?");
         confirmacion.setCancelable(false);
         confirmacion.setPositiveButton("SI", (dialog, which) -> peticionWS(Enumeradores.Valores.TAREA_REPO_ACOM_CIERRA, "SQL", "SQL", acomid+"", usuarioID, ""));
         confirmacion.setNegativeButton("NO", null);
@@ -688,48 +643,33 @@ public class Acomodo extends ActividadBase {
 
     public void wsDacoBorra(){
         if(dacoid!=null && dacoid>0){
-        AlertDialog.Builder confirmacion = new AlertDialog.Builder(this);
-        confirmacion.setTitle("Eliminar renglón");
-        confirmacion.setMessage("¿Estás seguro de eliminar el producto "+repoMen2.getText().toString()+" ?");
-        confirmacion.setCancelable(false);
-        confirmacion.setPositiveButton("SI", (dialog, which) -> peticionWS(Enumeradores.Valores.TAREA_REPO_DACO_BORRA, "SQL", "SQL", dacoid+"", usuarioID, ""));
-        confirmacion.setNegativeButton("NO", null);
-        confirmacion.show();
+            AlertDialog.Builder confirmacion = new AlertDialog.Builder(this);
+            confirmacion.setTitle("Eliminar renglon");
+            confirmacion.setMessage("¿Estas seguro de eliminar el producto "+repoMen2.getText().toString()+" ?");
+            confirmacion.setCancelable(false);
+            confirmacion.setPositiveButton("SI", (dialog, which) -> peticionWS(Enumeradores.Valores.TAREA_REPO_DACO_BORRA, "SQL", "SQL", dacoid+"", usuarioID, ""));
+            confirmacion.setNegativeButton("NO", null);
+            confirmacion.show();
         }else{
-            muestraMensaje("Producto no está registrado en la orden de acomodo",R.drawable.mensaje_error,0);
+            muestraMensaje("Producto no esta registro en la orden de acomodo",R.drawable.mensaje_error,0);
         }
     }
 
     public void doCambiaProceso(){
-        FlexboxLayout lineaUbica = findViewById(R.id.lineaUbicacion);
+        LinearLayout lineaUbica = findViewById(R.id.lineaUbicacion);
         LinearLayout lineaLlena = findViewById(R.id.lineaLleno);
         if(proceso==2){
             proceso=1;
             //btnProceso.setText("Al carro");
             btnQuitar.setClickable(true);
-            if(btnSube != null){
-                btnSube.setVisibility(View.VISIBLE);
-            }
+            btnSube.setVisibility(View.VISIBLE);
             btnCargar.setVisibility(View.GONE);
-            if(lineaLlena != null){
-                lineaLlena.setVisibility(View.GONE);
-            }
-
-            if(btnActual != null){
-                btnActual.setVisibility(View.GONE);
-            }
-            if(btnTermina != null){
-                btnTermina.setVisibility(View.GONE);
-            }
-
+            lineaLlena.setVisibility(View.GONE);
+            btnActual.setVisibility(View.GONE);
+            btnTermina.setVisibility(View.GONE);
             if(repone == 476){
-                if(lineaUbica != null){
-                    lineaUbica.setVisibility(View.VISIBLE);
-                }
-                if(btnBorra != null){
-                    btnBorra.setVisibility(View.VISIBLE);
-                }
-
+                lineaUbica.setVisibility(View.VISIBLE);
+                btnBorra.setVisibility(View.VISIBLE);
             }else if(repone == 862){
                 lineaUbica.setVisibility(View.GONE);
                 btnBorra.setVisibility(View.GONE);
@@ -768,41 +708,20 @@ public class Acomodo extends ActividadBase {
 
     private void limpiaTextos(){
         limpiaTextosEUb();
-        if(repoUbicacion != null){
-            repoUbicacion.setText("");
-        }
-        if(repoUbiclave != null){
-            repoUbiclave.setText("");
-            repoUbiclave.setVisibility(View.GONE);
-        }
-        if(scanUbi != null){
-            scanUbi.setVisibility(View.VISIBLE);
-        }
-
+        repoUbicacion.setText("");
+        repoUbiclave.setText("");
+        repoUbiclave.setVisibility(View.GONE);
+        scanUbi.setVisibility(View.VISIBLE);
     }
 
     private void limpiaTextosEUb(){
-        if(repoMen1 != null){
-            repoMen1.setText("");
-        }
-        if(repoMen2 != null){
-            repoMen2.setText("");
-        }
-        if(repoMen3 != null){
-            repoMen3.setText("");
-        }
-        if(repoMen4 != null){
-            repoMen4.setText("");
-        }
-        if(repoCodigo != null){
-            repoCodigo.setText("");
-        }
-        if(repoCant != null){
-            repoCant.setText("");
-        }
-        if(repoLleno != null){
-            repoLleno.setChecked(false);
-        }
+        repoMen1.setText("");
+        repoMen2.setText("");
+        repoMen3.setText("");
+        repoMen4.setText("");
+        repoCodigo.setText("");
+        repoCant.setText("");
+        repoLleno.setChecked(false);
         prodid=0;
     }
 
@@ -857,7 +776,7 @@ public class Acomodo extends ActividadBase {
                 }
                 ocultaTeclado(repoCant);
             }else{
-                muestraMensaje("La acción no configurada correctamente", R.drawable.mensaje_warning,R.raw.yaexiste);
+                muestraMensaje("La accion no configurada correctamente", R.drawable.mensaje_warning,R.raw.yaexiste);
             }
             return true;
         }else
@@ -899,7 +818,7 @@ public class Acomodo extends ActividadBase {
             }
         }
         else
-            muestraMensaje("Error al escanear código", R.drawable.mensaje_error,0);
+            muestraMensaje("Error al escanear codigo", R.drawable.mensaje_error,0);
     }
 
     private void muestraMensaje(String pMsj, int pTipo,int pAudio){
@@ -931,6 +850,6 @@ public class Acomodo extends ActividadBase {
         }else{
             doc = " Libre";
         }
-        return MessageFormat.format(titulo,acomid,usuario,doc);
+        return MessageFormat.format(titulo,acomid,"",doc);
     }
 }

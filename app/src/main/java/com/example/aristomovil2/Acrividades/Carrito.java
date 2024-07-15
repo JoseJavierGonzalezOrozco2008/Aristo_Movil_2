@@ -1,6 +1,8 @@
 package com.example.aristomovil2.Acrividades;
 
 import static com.example.aristomovil2.facade.Estatutos.TABLA_GENERICA;
+import static com.example.aristomovil2.facade.Estatutos.TABLA_RENGLON;
+import static com.example.aristomovil2.facade.Estatutos.TABLA_RENGLONES;
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -8,15 +10,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,8 +28,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,27 +35,31 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.example.aristomovil2.ActividadBase;
+import com.example.aristomovil2.Inventario;
 import com.example.aristomovil2.R;
 import com.example.aristomovil2.adapters.ClienteAdapter;
+import com.example.aristomovil2.adapters.CuentaAdapter;
 import com.example.aristomovil2.adapters.DcarritoAdapter;
 import com.example.aristomovil2.adapters.GenericaAdapter;
 import com.example.aristomovil2.adapters.ListaProdsAdapter;
-import com.example.aristomovil2.async.AsyncBluetoothEscPosPrint;
-import com.example.aristomovil2.modelos.Cliente;
+import com.example.aristomovil2.modelos.Cuenta;
 import com.example.aristomovil2.modelos.Generica;
 import com.example.aristomovil2.modelos.Renglon;
-import com.example.aristomovil2.servicio.ServicioImpresora;
 import com.example.aristomovil2.utileria.Enumeradores;
 import com.example.aristomovil2.utileria.EnviaPeticion;
 import com.example.aristomovil2.utileria.Libreria;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -64,14 +67,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class Carrito extends ActividadBase {
-    private String v_vntafolio,v_nombrecliente,v_nombre_impresora,v_ticket;
-    private Integer v_estacion,v_tipovnta,v_ultprod,v_cliente,v_imprime_espacios,v_cantidadUsual,v_visibleF;
+    private String v_vntafolio,v_nombrecliente,v_nombre_impresora,v_ticket,v_titulo,v_notas,v_fereq,v_cuentanombre;
+    private Integer v_estacion,v_tipovnta,v_ultprod,v_cliente,v_imprime_espacios,v_cantidadUsual,v_visibleF,v_cuenta;
     private Double v_importe,v_retiimporte;
-    private Boolean v_metpago,v_granel,v_tieneCredito,v_virtuales,v_vertouch,v_puedeCobrar,v_registrar;
+    private Boolean v_metpago,v_granel,v_tieneCredito,v_virtuales,v_vertouch,v_puedeCobrar,v_registrar,v_mostrar;
     private ListView v_carrito,v_listaclientes;
     private GridView gridProds;
     private Generica v_default;
-    private TextView v_Total;
+    private TextView v_Total,v_TvCuenta;
     private EditText v_codigo;
     private List<Generica> v_clientes;
     private ClienteAdapter v_Adacliente;
@@ -99,7 +102,7 @@ public class Carrito extends ActividadBase {
                     case 2://buscar prod
                         String codigo = resultado.getStringExtra("codigo");
                         if(Libreria.tieneInformacion(codigo)){
-                            wsLineaCaptura(codigo);
+                            wsLineaCaptura2(codigo);
                         }
                         break;
                     case 3:
@@ -128,7 +131,6 @@ public class Carrito extends ActividadBase {
     }
 
 
-
     public void cambio(){
         inicializarActividad2("Folio Cliente Tipo","");
         SharedPreferences sharedPreferences = getSharedPreferences("renglones", MODE_PRIVATE);
@@ -148,15 +150,26 @@ public class Carrito extends ActividadBase {
         v_registrar = sharedPreferences.getBoolean("rompe", false);
         v_vntafolio = "Nueva";
         v_ticket = "";
+        v_titulo = "";
+        v_notas = "";
+        v_cuentanombre = "";
+        v_cuenta = 0;
         v_ultprod = 0;
+        v_mostrar  = false;
+        v_fereq = "" ;
         v_default = new Generica(0);
         v_default.setEnt1(v_cliente);
         v_default.setEnt2(v_tipovnta);
+        v_default.setEnt3(v_cuenta);
         v_default.setTex1(v_nombrecliente);
         v_default.setTex2(v_vntafolio);
+        v_default.setTex3(v_titulo);
+        v_default.setTex4(v_notas);
+        v_default.setTex5(v_fereq);
         v_default.setLog1(v_metpago);
         v_default.setLog2(false);
         v_default.setLog3(false);
+        v_default.setLog4(v_mostrar);
         v_virtuales = v_default.getLog3();
         v_retiimporte = 1000.0;
         v_tieneCredito = v_default.getLog2();
@@ -187,7 +200,7 @@ public class Carrito extends ActividadBase {
         v_codigo.setOnKeyListener((view, i, keyEvent) -> {
             if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)){
                 String captura = v_codigo.getText().toString();
-                wsLineaCaptura(captura);
+                wsLineaCaptura2(captura);
                 v_codigo.setText("");
             }
             return false;
@@ -199,7 +212,7 @@ public class Carrito extends ActividadBase {
         f11.setOnClickListener(accion);
         enter.setOnClickListener(view -> {
             String captura = v_codigo.getText().toString();
-            wsLineaCaptura(captura);
+            wsLineaCaptura2(captura);
             v_codigo.setText("");
             v_codigo.requestFocus();
         });
@@ -236,7 +249,7 @@ public class Carrito extends ActividadBase {
         if(requestCode == REQUEST_CODE){
             IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if(intentResult.getContents() != null ) {
-                wsLineaCaptura(intentResult.getContents());
+                wsLineaCaptura2(intentResult.getContents());
             }else
                 muestraMensaje("Error al escanear codigo", R.drawable.mensaje_error);
         }
@@ -245,7 +258,7 @@ public class Carrito extends ActividadBase {
     //<editor-fold defaultstate="collapsed" desc="Ws">
     public void wsLineaCaptura(String pCodigo){
         if(!Libreria.tieneInformacion(pCodigo)){
-            dlgMensajeError("Captura un codigo",R.drawable.mensaje_error);
+            dlgMensajeError("Captura un codigo",R.drawable.mensaje_warning2);
             return;
         }
 
@@ -263,11 +276,11 @@ public class Carrito extends ActividadBase {
 
     private boolean wsRetiroParcial(String pCantidad,String pAuto){
         if(!(Libreria.tieneInformacion(pCantidad) && Libreria.isNumeric(pCantidad))){
-            dlgMensajeError("Necesita capturar una cantidad",R.drawable.mensaje_error);
+            dlgMensajeError("Necesita capturar una cantidad",R.drawable.mensaje_warning2);
             return false;
         }
         if(!Libreria.tieneInformacion(pAuto)){
-            dlgMensajeError("Requiere capturar su clave numerica ",R.drawable.mensaje_error);
+            dlgMensajeError("Requiere capturar su clave numerica ",R.drawable.mensaje_warning2);
             return false;
         }
         ContentValues mapa = new ContentValues();
@@ -290,7 +303,7 @@ public class Carrito extends ActividadBase {
 
     private void wsArqeGuarda(String pCantidad,String pArqefolio){
         if(!Libreria.tieneInformacion(pArqefolio)){
-            dlgMensajeError("No hay arqueo disponible",R.drawable.mensaje_error);
+            dlgMensajeError("No hay arqueo disponible",R.drawable.mensaje_warning2);
             return;
         }
         /*ContentValues mapa = new ContentValues();
@@ -406,6 +419,28 @@ public class Carrito extends ActividadBase {
         servicio.borraDatosTabla(TABLA_GENERICA);
         peticionWS(Enumeradores.Valores.TAREA_REPORETIROS, "SQL", "SQL", v_estacion+"", usuarioID+"", "");
     }
+
+    public void wsLineaCaptura2(String pCodigo){
+        if(!Libreria.tieneInformacion(pCodigo)){
+            dlgMensajeError("Captura un codigo",R.drawable.mensaje_warning2);
+            return;
+        }
+        servicio.borraDatosTabla(TABLA_RENGLONES);
+        String xml = Libreria.xmlInsertVenta(v_estacion,usuarioID,pCodigo.trim(),v_cliente,v_vntafolio.equalsIgnoreCase(v_default.getTex2()) ? "":v_vntafolio,v_ultprod==null ? 0 : v_ultprod,v_tipovnta,"",v_metpago);
+        peticionWS(Enumeradores.Valores.TAREA_VNTAINSERTARENGLON, "SQL", "SQL", xml,v_vntafolio==v_default.getTex2() ? "":v_vntafolio,"");
+    }
+
+    private void vntaGuardaInfo(String pXml){
+        peticionWS(Enumeradores.Valores.TAREA_GUARDAF10, "SQL", "SQL", pXml, "", "");
+    }
+
+    private void traeCuentas(String pid){
+        peticionWS(Enumeradores.Valores.TAREA_TRAECUENTA, "SQL", "SQL", pid, "", "");
+    }
+
+    private void traeCuentaNombre(String pid){
+        peticionWS(Enumeradores.Valores.TAREA_TRAECUCL, "SQL", "SQL", pid, "", "");
+    }
     //</editor-fold>
 
 
@@ -416,6 +451,7 @@ public class Carrito extends ActividadBase {
 
         switch (output.getTarea()){
             case TAREA_TRAE_RENGLONES:
+                //System.out.println("imprimiendo la prueba "+ obj.getAsString("prueba"));
                 ArrayList<Renglon> renglones = servicio.getRenglones(this, v_vntafolio);
                 int visiblef2=View.GONE;
                 int visiblef0=View.GONE;
@@ -438,7 +474,7 @@ public class Carrito extends ActividadBase {
                         dlgRenglon(esAGranel);
                         v_granel = false;
                     }
-                    v_Total.setText("$"+v_importe);
+                    actualizaTotal();
                     visiblef2 = v_puedeCobrar ? View.VISIBLE : View.GONE;
                     visiblef0 = v_registrar ? View.VISIBLE : View.GONE;
                 }else{
@@ -447,7 +483,7 @@ public class Carrito extends ActividadBase {
                     nuevoada.notifyDataSetChanged();
                     v_ultprod = 0;
                     v_importe = 0.0;
-                    v_Total.setText("$"+v_importe);
+                    actualizaTotal();
                     v_codigo.requestFocus();
                 }
                 v_F2.setVisibility(visiblef2);
@@ -459,17 +495,23 @@ public class Carrito extends ActividadBase {
                 if(output.getExito()){
                     String anterior = v_vntafolio;
                     String info = obj.getAsString("vntafolio");
-                    v_vntafolio = info;
+
                     v_ultprod = obj.getAsInteger("dvtaid");
                     v_granel = obj.getAsBoolean("granel");
                     v_granel = v_granel == null ? false : v_granel;
-                    traeVnta(v_vntafolio);
+                    if(!v_vntafolio.equals(info)){
+                        v_vntafolio = info;
+                        traeVnta(v_vntafolio);
+                    } else{
+                        traeRenglones();
+                    }
+
                     if(v_ultprod == null){
                         v_ultprod = 0;
                     }
                 }else{
                     String mensaje=obj.getAsString("msg");
-                    dlgMensajeError(mensaje,R.drawable.mensaje_error);
+                    dlgMensajeError(mensaje,R.drawable.mensaje_warning2);
                 }
                 v_codigo.requestFocus();
                 break;
@@ -484,6 +526,12 @@ public class Carrito extends ActividadBase {
                     v_metpago = obj.getAsBoolean("contado");
                     v_tieneCredito = obj.getAsBoolean("concredito");
                     v_virtuales = obj.getAsBoolean("virtuales");
+                    v_titulo = obj.getAsString("titulo");
+                    v_notas = obj.getAsString("notas");
+                    v_fereq = obj.getAsString("fecha");
+                    v_mostrar = obj.getAsBoolean("llevar");
+                    v_cuenta = obj.getAsInteger("cuenta");
+                    v_cuentanombre = obj.getAsString("vcuenta");
                     menuCredito();
                     traeRenglones();
                     colocaTitulo();
@@ -496,14 +544,11 @@ public class Carrito extends ActividadBase {
                 if(output.getExito()){
                     v_ticket = obj.getAsString("impreso");
                     imprimeTicket();
-                    dlgMensajeError("Se hizo un retiro exitosamente",R.drawable.mensaje_exito);
+                    dlgMensajeError("Se hizo un retiro exitosamente",R.drawable.mensaje_exito2);
                 }else{
-                    dlgMensajeError(output.getMensaje(),R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(),R.drawable.mensaje_warning2);
                 }
                 ocultaTeclaEnLand();
-                break;
-            case TAREA_VNTAMASPROD:
-
                 break;
             case TAREA_VNTAULTIMAVNTA:
                 v_ticket = "";
@@ -511,7 +556,7 @@ public class Carrito extends ActividadBase {
                     v_ticket = obj.getAsString("anexo");
                     imprimeTicket();
                 }else{
-                    dlgMensajeError(output.getMensaje(), R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(), R.drawable.mensaje_warning2);
                 }
                 break;
             case TAREA_ARQEINICIO:
@@ -525,7 +570,7 @@ public class Carrito extends ActividadBase {
                     deb = Libreria.tieneInformacion(deb) ? deb : "0.0" ;
                     dlgArqueo(trans,cred,deb,arquefolio);
                 }
-                dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito : R.drawable.mensaje_error);
+                dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2 : R.drawable.mensaje_warning2);
                 break;
             case TAREA_BQDACLTE:
                 v_clientes = servicio.traeGenerica();
@@ -544,7 +589,7 @@ public class Carrito extends ActividadBase {
                     //v_metpago = cred;
                     traeVnta(v_vntafolio);
                 }else{
-                    dlgMensajeError(output.getMensaje(), R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(), R.drawable.mensaje_warning2);
                 }
                 break;
             case TAREA_FACT_GUARDA:
@@ -557,7 +602,7 @@ public class Carrito extends ActividadBase {
                     traeTicketArqe(Enumeradores.Valores.TAREA_IMPRIMEARQE,arqefolio);
                     //imprimeTicket();
                 }else{
-                    dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2:R.drawable.mensaje_warning2);
                 }
                 ocultaTeclaEnLand();
                 break;
@@ -579,7 +624,7 @@ public class Carrito extends ActividadBase {
                     v_ticket = obj.getAsString("anexo");
                     imprimeTicket();
                 }else{
-                    dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
+                    dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2 : R.drawable.mensaje_warning2);
                 }
                 ocultaTeclaEnLand();
                 break;
@@ -589,8 +634,95 @@ public class Carrito extends ActividadBase {
                     imprimeTicket();
                     traeUltVnta();
                 }
-                dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito:R.drawable.mensaje_error);
+                dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2 : R.drawable.mensaje_warning2);
                 ocultaTeclaEnLand();
+                break;
+            case TAREA_GUARDAF10:
+                if(output.getExito()){
+                    v_dlgreporte.dismiss();
+                    colocaTitulo();
+                    menuCredito();
+                }
+                dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2 : R.drawable.mensaje_warning2);
+                ocultaTeclaEnLand();
+                break;
+            case TAREA_VNTAINSERTARENGLON:
+                if(output.getExito()){
+                    String info=obj.getAsString("vntafolio");
+                    v_vntafolio = info;
+                    info = obj.getAsString("cliente");
+                    v_nombrecliente = info;
+                    v_cliente = obj.getAsInteger("clteid");
+                    v_tipovnta = obj.getAsInteger("tipo");
+                    v_metpago = obj.getAsBoolean("contado");
+                    v_tieneCredito = obj.getAsBoolean("concredito");
+                    v_virtuales = obj.getAsBoolean("virtuales");
+
+                    v_ultprod = obj.getAsInteger("dvtaid");
+                    v_granel = obj.getAsBoolean("granel");
+                    v_granel = v_granel == null ? false : v_granel;
+
+                    v_titulo = obj.getAsString("titulo");
+                    v_notas = obj.getAsString("notas");
+                    v_fereq = obj.getAsString("fecha");
+                    v_mostrar = obj.getAsBoolean("llevar");
+                    v_cuenta = obj.getAsInteger("cuenta");
+                    v_cuentanombre = obj.getAsString("vcuenta");
+
+                    renglones = servicio.getRenglones(this, v_vntafolio);
+                    visiblef2 = View.GONE;
+                    visiblef0 = View.GONE;
+                    if(!renglones.isEmpty()){
+                        v_importe = Double.valueOf(renglones.get(0).getVntatotal()+"");
+                        DcarritoAdapter adapter = new DcarritoAdapter(renglones, this);
+                        v_carrito.setAdapter(adapter);
+                        v_codigo.requestFocus();
+                        if(v_ultprod==null || v_ultprod == 0){
+                            v_ultprod = renglones.get(0).getDvtaid();
+                        }else if(v_granel){
+                            hideKeyboard(v_codigo);
+                            Renglon esAGranel=renglones.get(0);
+                            for(Renglon renglon:renglones){
+                                if(renglon.getDvtaid()==v_ultprod){
+                                    esAGranel=renglon;
+                                    break;
+                                }
+                            }
+                            dlgRenglon(esAGranel);
+                            v_granel = false;
+                        }
+                        actualizaTotal();
+                        visiblef2 = v_puedeCobrar ? View.VISIBLE : View.GONE;
+                        visiblef0 = v_registrar ? View.VISIBLE : View.GONE;
+                    }else{
+                        DcarritoAdapter nuevoada = new DcarritoAdapter(new ArrayList(), this);
+                        v_carrito.setAdapter(nuevoada);
+                        nuevoada.notifyDataSetChanged();
+                        v_ultprod = 0;
+                        v_importe = 0.0;
+                        actualizaTotal();
+                        v_codigo.requestFocus();
+                    }
+                    v_F2.setVisibility(visiblef2);
+                    v_F0.setVisibility(visiblef0);
+                    ocultaTeclaEnLand();
+                    v_carrito.setEmptyView(findViewById(R.id.vntaSinRegistros));
+                    menuCredito();
+                    colocaTitulo();
+                }else{
+                    dlgMensajeError(output.getMensaje(),output.getExito() ? R.drawable.mensaje_exito2:R.drawable.mensaje_warning2);
+                }
+                break;
+            case TAREA_TRAECUENTA:
+                dlgBuscaCuentas();
+                break;
+            case TAREA_TRAECUCL:
+                if(output.getExito()){
+                    v_cuentanombre = obj.getAsString("anexo");
+                    if(v_TvCuenta!=null){
+                        v_TvCuenta.setText(v_cuentanombre);
+                    }
+                }
                 break;
         }
         if(obj != null){
@@ -618,11 +750,12 @@ public class Carrito extends ActividadBase {
         createMenuItem(menu, 1,2,  "Cliente F11");//5
         createMenuItem(menu, 1,9,  "Recargas F3");//6
         createMenuItem(menu, 1,4,  "Retiro F9");//7
-        createMenuItem(menu, 1,5,  "Devolucion");//8
-        createMenuItem(menu, 1,6,  "Arqueo F12");//9
-        createMenuItem(menu, 2,7,  "Reporte Ventas");//10
-        createMenuItem(menu, 2,12,  "Reporte Retiros");//11
-        createMenuItem(menu, 2,8,  "Reporte Arqueos");//12
+        createMenuItem(menu, 1,13,  "Notas F10");//8
+        createMenuItem(menu, 1,5,  "Devolucion");//9
+        createMenuItem(menu, 1,6,  "Arqueo F12");//10
+        createMenuItem(menu, 2,7,  "Reporte Ventas");//11
+        createMenuItem(menu, 2,12,  "Reporte Retiros");//12
+        createMenuItem(menu, 2,8,  "Reporte Arqueos");//13
 
         //menu.add(Menu.NONE, 7, Menu.NONE, "Lealtad");
         //menu.add(Menu.NONE, 8, Menu.NONE, "Devolucion");
@@ -632,8 +765,8 @@ public class Carrito extends ActividadBase {
         System.out.println((v_visibleF!=3)+"    "+(v_visibleF!=11));
         menu.getItem(4).setVisible(v_visibleF!=11);
         menu.getItem(5).setVisible(v_visibleF!=3);
-        menu.getItem(10).setVisible(v_puedeCobrar);
         menu.getItem(11).setVisible(v_puedeCobrar);
+        menu.getItem(12).setVisible(v_puedeCobrar);
         v_menu = menu;
         menuCredito();
         return true;
@@ -679,8 +812,6 @@ public class Carrito extends ActividadBase {
         /*if(pId==1){
             menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }*/
-
-
     }
 
     @Override
@@ -735,6 +866,7 @@ public class Carrito extends ActividadBase {
                 repoRetiros();
                 break;
             case 13:
+                dlgVentaInfo();
                 break;
             default:
                 muestraMensaje("Menu en construccion",R.drawable.mensaje_warning);
@@ -752,6 +884,12 @@ public class Carrito extends ActividadBase {
         v_metpago = v_default.getLog1();
         v_tipovnta = v_default.getEnt2();
         v_tieneCredito = v_default.getLog2();
+        v_titulo = v_default.getTex3();
+        v_notas = v_default.getTex4();
+        v_fereq = v_default.getTex5();
+        v_mostrar = v_default.getLog4();
+        v_cuenta = v_default.getEnt3();
+
         v_Total.setText("$0.0");
         v_importe = 0.0;
         v_ultprod = null;
@@ -772,7 +910,7 @@ public class Carrito extends ActividadBase {
             mStartForResult.launch(intent);
             //startActivity(intent);
         }else{
-            dlgMensajeError("No tiene venta para continuar",R.drawable.mensaje_error);
+            dlgMensajeError("No tiene venta para continuar",R.drawable.mensaje_warning2);
         }
         return true;
     }
@@ -802,6 +940,9 @@ public class Carrito extends ActividadBase {
             case R.id.vntaF9:
                 dlgRetiroParcial();
                 break;
+            case R.id.vntaF10:
+                dlgVentaInfo();
+                break;
             case R.id.vntaF11:
                 dlgBuscaCliente();
                 break;
@@ -829,10 +970,11 @@ public class Carrito extends ActividadBase {
     private void colocaTitulo(){
         int longitud = v_vntafolio.length();
         boolean esnuevo = v_vntafolio.equalsIgnoreCase("NUEVA");
+        String tipoventa = servicio.traeAbreviPorCata(7,v_tipovnta);
         String folio = esnuevo ? v_vntafolio : ("C*"+v_vntafolio.substring(longitud-4,longitud));
         String linea1,linea2 = "";
-        linea1 = MessageFormat.format("{2} {0} {1}", folio,(v_nombreestacion+" "+usuario), v_tipovnta == 48 ? "":"(Pedido)");
-        linea2 = MessageFormat.format("{0} {1}",esnuevo ? "" : (v_metpago ? "Contado":"Credito"), v_nombrecliente);
+        linea1 = MessageFormat.format("{2} {0} {1}", folio,(v_nombreestacion+" "+usuario),"");
+        linea2 = MessageFormat.format("{2} {0} {1}",(esnuevo || v_tipovnta == 50) ? "" : (v_metpago ? "Contado":"Credito"), v_nombrecliente,tipoventa);
         actualizaToolbar2(linea1,linea2);
     }
 
@@ -854,6 +996,7 @@ public class Carrito extends ActividadBase {
         final EditText precioN = dialog.findViewById(R.id.dvtaPrecioN);
         final RadioGroup grupo = dialog.findViewById(R.id.dvtaRadioGrup);
         TextView avisos = dialog.findViewById(R.id.dvtaAvisos);
+        ScrollView scroll1 = dialog.findViewById(R.id.dvtaScrollA);
         LinearLayout lnCant = dialog.findViewById(R.id.dvtaLyCant);
         LinearLayout lnDesc = dialog.findViewById(R.id.dvtaLyDesc);
         LinearLayout lnPrec = dialog.findViewById(R.id.dvtaLyPrecio);
@@ -870,23 +1013,23 @@ public class Carrito extends ActividadBase {
         precioN.setSelectAllOnFocus(true);
         cantidad.requestFocus();
         avisos.setText(pRen.getNotas());
-        System.out.println(v_ultprod+" "+pRen.getNotas());
+        avisos.setVisibility(Libreria.traeInfo(pRen.getNotas()).length()>2 ? View.VISIBLE:View.GONE);
 
         mas.setOnClickListener(v -> {
             hideKeyboard(cantidad);
-            wsLineaCaptura("+");
+            wsLineaCaptura2("+");
             dialog.dismiss();
         });
 
         menos.setOnClickListener(v -> {
             hideKeyboard(cantidad);
-            wsLineaCaptura("-");
+            wsLineaCaptura2("-");
             dialog.dismiss();
         });
 
         borrar.setOnClickListener(v -> {
             hideKeyboard(cantidad);
-            wsLineaCaptura(pRen.getCodigo()+"*0");
+            wsLineaCaptura2(pRen.getCodigo()+"*0");
             dialog.dismiss();
         });
 
@@ -949,12 +1092,12 @@ public class Carrito extends ActividadBase {
                     break;
             }
             if(Libreria.tieneInformacionFloat(numero,0)>maxCant){
-                dlgMensajeError(dato+" excede al permitida",R.drawable.mensaje_error);
+                dlgMensajeError(dato+" excede al permitido",R.drawable.mensaje_warning2);
                 return ;
             }
             DecimalFormat df = new DecimalFormat("0.0000");
             cadena +=df.format(Libreria.tieneInformacionFloat(numero,0));
-            wsLineaCaptura(cadena);
+            wsLineaCaptura2(cadena);
             dialog.dismiss();
         });
 
@@ -1002,7 +1145,7 @@ public class Carrito extends ActividadBase {
         guardar.setOnClickListener(v-> {
             String cantReti=cantidad.getText().toString();
             if(Libreria.tieneInformacionFloat(cantReti,0)<=0){
-                dlgMensajeError("Es un valor no permitido",R.drawable.mensaje_error);
+                dlgMensajeError("Es un valor no permitido",R.drawable.mensaje_warning2);
                 return ;
             }
             if(wsRetiroParcial(cantReti,autoriza.getText().toString())){
@@ -1058,7 +1201,7 @@ public class Carrito extends ActividadBase {
         regresar.setOnClickListener(v-> dialog.dismiss());
         guardar.setOnClickListener(v-> {
             if(!Libreria.tieneInformacion(captura.getText().toString())){
-                dlgMensajeError("Debe de capturar un valor",R.drawable.mensaje_error);
+                dlgMensajeError("Debe de capturar un valor",R.drawable.mensaje_warning2);
                 return;
             }
             wsArqeGuarda(captura.getText().toString(),pArqueo);
@@ -1176,16 +1319,179 @@ public class Carrito extends ActividadBase {
         }
     }
 
+    public void dlgVentaInfo(){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_vntainfo, null);
+        View titulo = inflater.inflate(R.layout.item_titulo, null);
+        builder.setView(vista);
+        builder.setCustomTitle(titulo);
+        builder.setTitle("");
+        TextView titTitulo = titulo.findViewById(R.id.tit_titulo);
+        titTitulo.setText("Informacion de la venta "+v_vntafolio+" "+v_nombrecliente);
+
+        EditText titu = vista.findViewById(R.id.vntaTitulo);
+        EditText indica = vista.findViewById(R.id.vntaindica);
+        EditText fereq = vista.findViewById(R.id.vntaFeReq);
+        Spinner spin = vista.findViewById(R.id.vntaTipos);
+        RadioGroup grupo = vista.findViewById(R.id.vntaGrop);
+        RadioButton mostrador = vista.findViewById(R.id.vntaMostrador);
+        RadioButton domicilio = vista.findViewById(R.id.vntaDomicilio);
+        Button regresar = vista.findViewById(R.id.vntabtnregresa);
+        Button guarda = vista.findViewById(R.id.vntabtnguarda);
+        Button cuentas = vista.findViewById(R.id.vntabtnCuenta);
+        ImageButton reg = titulo.findViewById(R.id.btnTitRegresa);
+        ImageButton mas = titulo.findViewById(R.id.btnTitNuevo);
+        TableRow row = vista.findViewById(R.id.cuentass);
+
+        v_TvCuenta = vista.findViewById(R.id.vntaCuenta);
+
+        reg.setVisibility(View.GONE);
+        mas.setVisibility(View.GONE);
+
+        v_TvCuenta.setText(v_cuentanombre);
+
+        titu.setText(v_titulo);
+        indica.setText(v_notas);
+
+
+        String []dates = Libreria.traeInfo(v_fereq,"").split("T");//------
+        fereq.setText(Libreria.fecha_to_fecha(dates[0],"yyyy-MM-dd","yyMMdd"));
+
+        List<Generica> tipos = servicio.traeDcatGenerica(7);
+        GenericaAdapter tiposadapter = new GenericaAdapter(tipos,this,11);
+        spin.setAdapter(tiposadapter);
+
+        grupo.setOnCheckedChangeListener((radioGroup, i) -> {
+            switch (i){
+                case R.id.vntaMostrador:
+                    row.setVisibility(View.GONE);
+                    break;
+                case R.id.vntaDomicilio:
+                    row.setVisibility(View.VISIBLE);
+                    traeCuentaNombre(v_cuenta+"");
+                    break;
+            }
+        });
+
+        if( v_mostrar==null || !v_mostrar ){
+            mostrador.setChecked(true);
+        }else{
+            domicilio.setChecked(true);
+        }
+        for(int i=0;i<tipos.size();i++){
+            if(tipos.get(i).getId().compareTo(v_tipovnta)==0){
+                spin.setSelection(i);
+            }
+        }
+
+        cuentas.setOnClickListener(view -> traeCuentas(""+v_cliente));
+
+        fereq.setOnClickListener(v -> {
+            DialogFragment newFragment = new Inventario.DatePickerFragment(fereq);
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+        });
+
+        fereq.setOnFocusChangeListener((view, b) -> {
+            if(b){
+                DialogFragment newFragment = new Inventario.DatePickerFragment(fereq);
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
+
+        builder.setCancelable(true);
+
+        v_dlgreporte = builder.create();
+        regresar.setOnClickListener(view -> v_dlgreporte.dismiss());
+        guarda.setOnClickListener(view -> {
+            boolean esmostra= domicilio.isChecked();
+            Integer tipo=((Generica)spin.getSelectedItem()).getId();
+            ContentValues mapa =new ContentValues();
+            mapa.put("vntafolio",v_vntafolio);
+            mapa.put("titulo",titu.getText().toString());
+            mapa.put("indicaciones",indica.getText().toString());
+            mapa.put("fereq",fereq.getText().toString());
+            mapa.put("llevar",esmostra);
+            mapa.put("cuenta",v_cuenta);
+            mapa.put("tipo",tipo);
+            String xml = Libreria.xmlLineaCapturaSV(mapa,"linea");
+            vntaGuardaInfo(xml);
+            v_tipovnta=tipo;
+        });
+        v_dlgreporte.show();
+    }
+
+    public void dlgBuscaCuentas(){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View vista=inflater.inflate(R.layout.dialogo_cliente, null);
+        View titulo=inflater.inflate(R.layout.item_titulo, null);
+        builder.setView(vista);
+        builder.setCustomTitle(titulo);
+        builder.setTitle("");
+        //builder.setContentView();
+        builder.setCancelable(true);
+
+        LinearLayout busqueda = vista.findViewById(R.id.clteLtBusca);
+        busqueda.setVisibility(View.GONE);
+
+        final EditText cantidad = vista.findViewById(R.id.clteBusca);
+        ImageButton busca = vista.findViewById(R.id.btnClteBusca);
+        TextView titTitulo = titulo.findViewById(R.id.tit_titulo);
+        ImageButton nuevo = titulo.findViewById(R.id.btnTitNuevo);
+        ImageButton regresa = titulo.findViewById(R.id.btnTitRegresa);
+        ListView v_lista = vista.findViewById(R.id.listClte);
+        titTitulo.setText("Lista cuentas \n"+v_nombrecliente);
+
+        List<Cuenta> listaCuentas = servicio.traeCuentas();
+        CuentaAdapter cuenta = new CuentaAdapter(listaCuentas,this);
+        v_lista.setAdapter(cuenta);
+        v_lista.setEmptyView(vista.findViewById(R.id.clteListSinReg));
+
+        cantidad.setVisibility(View.GONE);
+        busca.setVisibility(View.GONE);
+
+        int[] colors = {0, 0xFF000000, 0};
+        v_lista.setDivider(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
+        v_lista.setDividerHeight(1);
+
+        v_dlgCliente = builder.create();
+        regresa.setOnClickListener(v-> {
+            if(v_dlgCliente!=null){
+                v_dlgCliente.dismiss();
+            }
+        });
+
+        nuevo.setVisibility(View.GONE);
+
+        v_dlgCliente.show();
+    }
+
+    public void eligeCuenta(Cuenta pGen){
+        v_cuenta = pGen.getCuclid();
+        traeCuentaNombre(v_cuenta+"");
+        v_dlgCliente.dismiss();
+    }
+
     public ActivityResultLauncher<Intent> getmStartForResult() {
         return mStartForResult;
     }
 
     private void menuCredito(){
         if(v_menu!=null){
-            String titulo ="Cambar a {0}";
+            String titulo ="Cambiar a {0}";
             v_menu.getItem(0).setTitle(MessageFormat.format(titulo,v_tieneCredito ? (!v_metpago ? "Contado" : "Credito"):"Sin credito"));
-            v_menu.getItem(0).setEnabled(v_tieneCredito);
+            v_menu.getItem(0).setEnabled(v_tieneCredito||v_tipovnta==50);
         }
+    }
+
+    private void actualizaTotal(){
+        Integer escala = esHorizontal() ? 1:2 ;
+        v_Total.setText("$"+new BigDecimal(v_importe).setScale(escala,BigDecimal.ROUND_HALF_EVEN));
     }
 
     private void ocultaTeclaEnLand(){
@@ -1193,5 +1499,7 @@ public class Carrito extends ActividadBase {
             hideKeyboard(v_codigo);
         }
     }
+
+
 
 }

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="10dp">
+
+       <TableLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:stretchColumns="*"
+           android:shrinkColumns="*">
+           <TableRow >
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="0.4"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:text="Tipo:"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+
+               <Spinner
+                   android:id="@+id/vntaTipos"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="0.6"
+                   android:orientation="horizontal">
+
+               </Spinner>
+           </TableRow>
+           <TableRow >
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="0.4"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:text="Titulo:"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+               <EditText
+                   android:id="@+id/vntaTitulo"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textSize="@dimen/textSizeMedium"
+                   android:inputType="text"
+                   android:layout_weight="0.6"
+                   />
+           </TableRow>
+           <TableRow >
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="0.4"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:text="Indicaciones:"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+               <EditText
+                   android:id="@+id/vntaindica"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textSize="@dimen/textSizeMedium"
+                   android:inputType="text"
+                   android:layout_weight="0.6"
+                   />
+           </TableRow>
+           <TableRow >
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="0.4"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:text="Fecha Requ:"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+               <EditText
+                   android:id="@+id/vntaFeReq"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textSize="@dimen/textSizeMedium"
+                   android:inputType="text"
+                   android:layout_weight="0.6"
+                   />
+           </TableRow>
+           <TableRow >
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="0.4"
+                   android:layout_height="match_parent"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:text="Entrega:"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+               <RadioGroup
+                   android:id="@+id/vntaGrop"
+                   android:layout_width="0dp"
+                   android:layout_weight="0.6"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical">
+                   <RadioButton
+                       android:id="@+id/vntaMostrador"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textSize="@dimen/textSizeMedium"
+                       android:text="Mostrador" />
+                   <RadioButton
+                       android:id="@+id/vntaDomicilio"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textSize="@dimen/textSizeMedium"
+                       android:text="Domicilio" />
+               </RadioGroup>
+           </TableRow>
+           <TableRow android:id="@+id/cuentass" >
+               <Button
+                   android:id="@+id/vntabtnCuenta"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="0.4"
+                   android:text="Destinos" />
+               <TextView
+                   android:id="@+id/vntaCuenta"
+                   android:layout_width="0dp"
+                   android:layout_weight="0.6"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/arial"
+                   android:textColor="@color/black"
+                   android:gravity="end|center_vertical"
+                   android:textSize="@dimen/textSizeMedium" />
+           </TableRow>
+       </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/vntabtnregresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Regresar" />
+        <Button
+            android:id="@+id/vntabtnguarda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar" />
+    </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

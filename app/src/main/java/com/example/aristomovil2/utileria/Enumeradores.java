@@ -183,6 +183,13 @@ public class Enumeradores {
         TAREA_GUARDADATOSPRODUCTO(1115, "validacion", "", false, false),
         TAREA_GUARDADATOSEXTRA(1116, "validacion", "", false, false),
         TAREA_CONSULTASALDOTA(23, "validacion", "", false, false),
+        TAREA_CONTMODELOS(1118, "validacion", TABLA_GENERICA, true, true),
+        TAREA_REPFALTCONTAR(1119, "lineas", TABLA_GENERICA, true, true),
+        TAREA_VNTAINSERTARENGLON(1121, "validacion", TABLA_RENGLONES, true, true),
+        TAREA_CONTCHEKFINMODELO(1122, "validacion", "", false, false),
+        TAREA_GUARDAF10(1125, "validacion", "", false, false),
+        TAREA_FINCOTIZA(1126, "validacion", "", false, false),
+        TAREA_TRAECUCL(1127, "validacion", "", false, false),
         TAREA_DATAINFO(-3, "validacion", "", false, false)
         ;
 

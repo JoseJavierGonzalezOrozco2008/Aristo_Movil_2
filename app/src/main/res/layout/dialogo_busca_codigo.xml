@@ -47,6 +47,14 @@
             android:textSize="@dimen/_12sdp"
             android:fontFamily="@font/arial"
             android:visibility="gone"/>
+        <TextView
+            android:id="@+id/dlgProdAviso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clic en el renglon para seleccionar"
+            android:textColor="#000000"
+            android:fontFamily="@font/arial"
+            android:visibility="gone"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
