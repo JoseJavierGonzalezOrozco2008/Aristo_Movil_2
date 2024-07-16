@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -29,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -1320,6 +1323,9 @@ public class Carrito extends ActividadBase {
     }
 
     public void dlgVentaInfo(){
+        //dialogoFragment dialogFragment = new dialogoFragment();
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //dialogFragment.show(fragmentManager, "");
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         builder.setCancelable(false);
 
@@ -1404,6 +1410,14 @@ public class Carrito extends ActividadBase {
         builder.setCancelable(true);
 
         v_dlgreporte = builder.create();
+        v_dlgreporte.setOnShowListener(dialog -> {
+            Window window = v_dlgreporte.getWindow();
+            if (window != null) {
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                window.setAttributes(params);
+            }
+        });
         regresar.setOnClickListener(view -> v_dlgreporte.dismiss());
         guarda.setOnClickListener(view -> {
             boolean esmostra= domicilio.isChecked();
