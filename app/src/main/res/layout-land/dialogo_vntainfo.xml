@@ -6,49 +6,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7"
-            android:layout_marginBottom="@dimen/_10sdp">
-            <LinearLayout
-                android:layout_height="wrap_content"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="10dp">
-                <androidx.gridlayout.widget.GridLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:columnCount="2"
-                    app:useDefaultMargins="true"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp">
-
-                    <!-- Primera columna del GridLayout -->
-                    <LinearLayout
-                        android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:layout_marginBottom="@dimen/_10sdp">
+                    <androidx.gridlayout.widget.GridLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_columnWeight="1"
-                        android:orientation="vertical">
+                        app:columnCount="2"
+                        app:useDefaultMargins="true"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_15sdp">
 
-                        <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:flexWrap='nowrap'
-                            app:alignContent="center"
-                            app:flexDirection="column"
-                            app:alignItems="center"
-                            app:justifyContent="space_around"
-                            android:gravity="center"
-                            android:paddingVertical="10dp">
 
                             <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_columnWeight="1"
+                                android:orientation="vertical">
 
                                 <TableRow
                                     android:layout_marginBottom="@dimen/_10sdp">
@@ -56,13 +34,14 @@
                                     <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="0.2"
+                                        android:layout_weight="0.4"
                                         android:layout_marginEnd="@dimen/_7sdp"
                                         android:fontFamily="@font/arial"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:gravity="center_vertical"
                                         android:text="Tipo:"
                                         android:textColor="@color/black"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_14sdp" />
 
                                     <Spinner
                                         android:id="@+id/vntaTipos"
@@ -78,13 +57,14 @@
                                     <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="0.2"
+                                        android:layout_weight="0.4"
                                         android:fontFamily="@font/arial"
                                         android:textColor="@color/black"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:text="Titulo:"
                                         android:layout_marginEnd="@dimen/_7sdp"
                                         android:gravity="center_vertical"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_14sdp" />
                                     <EditText
                                         android:id="@+id/vntaTitulo"
                                         android:layout_width="0dp"
@@ -104,9 +84,10 @@
                                         android:layout_marginEnd="@dimen/_7sdp"
                                         android:fontFamily="@font/arial"
                                         android:textColor="@color/black"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:text="Indicaciones:"
                                         android:gravity="center_vertical"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_14sdp" />
                                     <EditText
                                         android:id="@+id/vntaindica"
                                         android:layout_width="0dp"
@@ -119,30 +100,15 @@
                                 </TableRow>
                             </TableLayout>
 
-                        </com.google.android.flexbox.FlexboxLayout>
 
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_columnWeight="1"
-                        android:orientation="vertical">
 
-                        <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:flexWrap='nowrap'
-                            app:alignContent="center"
-                            app:flexDirection="column"
-                            app:alignItems="center"
-                            app:justifyContent="space_around"
-                            android:gravity="center"
-                            android:paddingVertical="10dp">
 
                             <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_columnWeight="1"
+                                android:orientation="vertical"
                                 >
 
                                 <TableRow
@@ -154,9 +120,10 @@
                                         android:layout_weight="0.4"
                                         android:fontFamily="@font/arial"
                                         android:textColor="@color/black"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:text="Fecha Requ:"
                                         android:gravity="center_vertical"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_14sdp" />
                                     <EditText
                                         android:id="@+id/vntaFeReq"
                                         android:layout_width="0dp"
@@ -175,13 +142,14 @@
                                     <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="0.2"
+                                        android:layout_weight="0.4"
                                         android:fontFamily="@font/arial"
                                         android:textColor="@color/black"
                                         android:text="Entrega:"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:layout_marginEnd="@dimen/_5sdp"
                                         android:gravity="center_vertical"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_14sdp" />
                                     <RadioGroup
                                         android:id="@+id/vntaGrop"
                                         android:layout_width="0dp"
@@ -192,13 +160,15 @@
                                             android:id="@+id/vntaMostrador"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:textSize="@dimen/textSizeMedium"
+                                            android:layout_marginTop="@dimen/_15sdp"
+                                            android:textSize="@dimen/_15sdp"
                                             android:text="Mostrador" />
                                         <RadioButton
                                             android:id="@+id/vntaDomicilio"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:textSize="@dimen/textSizeMedium"
+                                            android:layout_marginTop="@dimen/_15sdp"
+                                            android:textSize="@dimen/_15sdp"
                                             android:text="Domicilio" />
                                     </RadioGroup>
                                 </TableRow>
@@ -209,6 +179,7 @@
                                         android:id="@+id/vntabtnCuenta"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_5sdp"
                                         android:textColor="@drawable/white_text_button"
                                         android:fontFamily="@font/arial"
                                         android:background="@drawable/button_light_blue_900"
@@ -229,20 +200,18 @@
                                 </TableRow>
                             </TableLayout>
 
-                        </com.google.android.flexbox.FlexboxLayout>
-
-                    </LinearLayout>
-
-
-                </androidx.gridlayout.widget.GridLayout>
-
-            </LinearLayout>
 
 
 
-        </ScrollView>
+                    </androidx.gridlayout.widget.GridLayout>
 
-        <LinearLayout
+
+
+
+            </ScrollView>
+
+
+    <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="vertical"
